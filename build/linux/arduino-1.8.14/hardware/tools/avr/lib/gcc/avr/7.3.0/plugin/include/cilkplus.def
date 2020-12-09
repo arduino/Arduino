@@ -1,0 +1,59 @@
+/* This file contains the definitions and documentation for the
+   CilkPlus builtins used in the GNU compiler.
+   Copyright (C) 2013-2017 Free Software Foundation, Inc.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 3, or (at your option) any later
+version.
+
+GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU General Public License
+along with GCC; see the file COPYING3.  If not see
+<http://www.gnu.org/licenses/>.  */
+
+/* Before including this file, you should define a macro:
+
+     DEF_CILKPLUS_BUILTIN (ENUM, NAME, TYPE, ATTRS)
+
+   See builtins.def for details.  */
+
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_ADD,
+		      "__sec_reduce_add", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_MUL,
+		      "__sec_reduce_mul", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_ALL_ZERO,
+		      "__sec_reduce_all_zero", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_ANY_ZERO,
+		      "__sec_reduce_any_zero", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_MAX,
+		      "__sec_reduce_max", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_MIN,
+		      "__sec_reduce_min", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_MIN_IND,
+		      "__sec_reduce_min_ind", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_MAX_IND,
+		      "__sec_reduce_max_ind", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_ANY_NONZERO,
+		      "__sec_reduce_any_nonzero", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_ALL_NONZERO,
+		      "__sec_reduce_all_nonzero", BT_FN_INT_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE,
+		      "__sec_reduce", BT_FN_INT_PTR_PTR_PTR, ATTR_NULL)
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_REDUCE_MUTATING,
+		      "__sec_reduce_mutating", BT_FN_INT_PTR_PTR_PTR, ATTR_NULL)
+// FIXME: This probably needs to be rewritten as a keyword.
+DEF_CILKPLUS_BUILTIN (BUILT_IN_CILKPLUS_SEC_IMPLICIT_INDEX,
+		      "__sec_implicit_index", BT_FN_INT_INT, ATTR_NULL)
+
+/*
+Local variables:
+mode:c
+End:
+*/

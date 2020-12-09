@@ -181,7 +181,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   }
 
   private void loadButtons() {
-    Image allButtons = Theme.getThemeImage("projectButtons", this,
+    Image allButtons = Theme.getThemeImage("projectbuttons", this,
       BUTTON_IMAGE_SIZE * BUTTON_COUNT,
       BUTTON_IMAGE_SIZE * 3);
     buttonImages = new Image[BUTTON_COUNT][3];
@@ -201,7 +201,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   }
 
   private void loadTouchBarImages() {
-    Image allButtonsRetina = Theme.getThemeImage("projectButtons", this,
+    Image allButtonsRetina = Theme.getThemeImage("projectbuttons", this,
       BUTTON_IMAGE_SIZE * BUTTON_COUNT * 2,
       BUTTON_IMAGE_SIZE * 3 * 2);
     touchBarImages = new com.thizzer.jtouchbar.common.Image[BUTTON_COUNT][3];

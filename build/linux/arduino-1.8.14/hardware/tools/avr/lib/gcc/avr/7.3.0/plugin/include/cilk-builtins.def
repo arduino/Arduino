@@ -1,0 +1,35 @@
+/* This file contains the definitions and documentation for the
+   Cilk Plus builtins used in the GNU compiler.
+   Copyright (C) 2013-2017 Free Software Foundation, Inc.
+
+   Contributed by Balaji V. Iyer <balaji.v.iyer@intel.com>
+   	          Intel Corporation.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 3, or (at your option) any later
+version.
+
+GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU General Public License
+along with GCC; see the file COPYING3.  If not see
+<http://www.gnu.org/licenses/>.  */
+
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_ENTER_FRAME, "__cilkrts_enter_frame_1")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_ENTER_FRAME_FAST, 
+		       "__cilkrts_enter_frame_fast_1")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_DETACH, "__cilkrts_detach")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_RETHROW, "__cilkrts_rethrow")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_SYNCHED, "__cilkrts_synched")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_SYNC, "__cilkrts_sync")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_LEAVE_FRAME, "__cilkrts_leave_frame")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_POP_FRAME, "__cilkrts_pop_frame")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_SAVE_FP, "__cilkrts_save_fp_ctrl_state")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_FOR_32, "__cilkrts_cilk_for_32")
+DEF_CILK_BUILTIN_STUB (BUILT_IN_CILK_FOR_64, "__cilkrts_cilk_for_64")

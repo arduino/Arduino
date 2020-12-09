@@ -4,3 +4,6 @@ arduino.avr-gcc=7.3.0-atmel3.6.1-arduino7
 arduino.avrdude=6.3.0-arduino17
 arduino.arduinoOTA=1.3.0
 arduino.avr-gcc=7.3.0-atmel3.6.1-arduino7
+arduino.avrdude=6.3.0-arduino17
+arduino.arduinoOTA=1.3.0
+arduino.avr-gcc=7.3.0-atmel3.6.1-arduino7

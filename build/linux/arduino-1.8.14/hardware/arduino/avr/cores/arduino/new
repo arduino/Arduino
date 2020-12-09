@@ -1,0 +1,5 @@
+/*
+this header is for compatibility with standard c++ header names
+so that #include<new> works as expected
+*/
+#include "new.h"

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<!--html5-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<!-- Mirrored from www.arduino.cc/en/Guide/Troubleshooting by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 26 Oct 2015 14:00:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  	<meta charset="utf-8" />
+
+	<title>Arduino - Troubleshooting </title>
+	<link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+	<link rel="stylesheet" href="../../fonts/fonts.css" type="text/css" />
+	<link rel="stylesheet" href="../../css/arduino-icons.css">
+	<link rel="stylesheet" href="../../css/animation.css"><!--[if IE 7]>
+	<link rel="stylesheet" href="//arduino.cc/css/arduino-icons-ie7.css"><![endif]-->
+	<!--[if gte IE 9]><!-->
+	<link rel='stylesheet' href='../../css/foundation2.css' type='text/css' />
+	<!--<![endif]-->
+	<!--[if IE 8]>
+		<link rel='stylesheet' href='//arduino.cc/css/foundation_ie8.css' type='text/css' />
+	<![endif]-->
+	<link rel='stylesheet' href='../../css/arduino_code_highlight.css' type='text/css' />
+	<link rel="stylesheet" type="text/css" media="screen" href="../../css/typeplate.css">
+	<link rel='stylesheet' href='../pub/skins/arduinoWide_SSO/css/arduinoWide_SSO.css' type='text/css' />
+
+	<link rel='stylesheet' href='../../css/common.css' type='text/css' />
+	<link rel="stylesheet" href="../../css/download_page.css" />
+	<link href="https://plus.google.com/114839908922424087554" rel="publisher" />
+
+	<!-- embedded JS and CSS from PmWiki plugins -->	
+	<!--HeaderText--><style type='text/css'><!--
+  ul, ol, pre, dl, p { margin-top:0px; margin-bottom:0px; }
+  code { white-space: nowrap; }
+  .vspace { margin-top:1.33em; }
+  .indent { margin-left:40px; }
+  .outdent { margin-left:40px; text-indent:-40px; }
+  a.createlinktext { text-decoration:none; border-bottom:1px dotted gray; }
+  a.createlink { text-decoration:none; position:relative; top:-0.5em;
+    font-weight:bold; font-size:smaller; border-bottom:none; }
+  img { border:0px; }
+  
+span.anchor {
+	float: left;
+	font-size: 10px;
+	margin-left: -10px;
+	width: 10px;
+    position:relative; top:-0.1em;
+	text-align: center;
+}
+span.anchor a { text-decoration: none; }
+span.anchor a:hover { text-decoration: underline; }
+ol.toc { text-indent:-20px; list-style: none; }
+ol.toc ol.toc { text-indent:-40px; }
+div.tocfloat { font-size: smaller; margin-bottom: 10px;
+    border-top: 1px dotted #555555; border-bottom: 1px dotted #555555;
+    padding-top: 5px; padding-bottom: 5px; 
+    width: 38%; float: right; margin-left: 10px; clear: right;
+    margin-right:-13px; padding-right: 13px; padding-left: 13px;
+    background-color: #eeeeee; }
+div.toc { font-size: smaller; 
+    padding: 5px; border: 1px dotted #cccccc;
+    background: #f7f7f7;
+    margin-bottom: 10px; }
+div.toc p { background-color: #f9f6d6;
+    margin-top:-5px;   padding-top: 5px;
+    margin-left:-5px;  padding-left: 5px;
+    margin-right:-5px; padding-right: 5px;
+    padding-bottom: 3px;
+    border-bottom:  1px dotted #cccccc; }.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+
+  table.markup { border: 2px dotted #ccf; width:90%; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  td.markup1 { border-bottom: 1px solid #ccf; }
+  div.faq { margin-left:2em; }
+  div.faq p.question { margin: 1em 0 0.75em -2em; font-weight:bold; }
+  div.faq hr { margin-left: -2em; }
+   
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }
+a.varlink { text-decoration:none; }
+
+--></style><script type="text/javascript">
+function toggle(obj) {
+    var elstyle = document.getElementById(obj).style;
+    var text    = document.getElementById(obj + "tog");
+    if (elstyle.display == 'none') {
+        elstyle.display = 'block';
+        text.innerHTML = "hide";
+    } else {
+        elstyle.display = 'none';
+        text.innerHTML = "show";
+    }
+}
+</script><script src="http://www.arduino.cc/en/pub/galleria/galleria-1.2.6.min.js"></script><script type="text/javascript">Galleria.loadTheme("http://www.arduino.cc/en/pub/galleria/themes/classic/galleria.classic.min.js");</script>  <meta name='robots' content='index,follow' />
+
+
+	<script src="http://arduino.cc/js/vendor/custom.modernizr.js"></script>
+
+	<!-- do not remove none of those lines, comments embedding in pages will break! -->
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="http://arduino.cc/en/pub/js/newsletter_subscribe_popup.js" type="text/javascript"></script>
+	<script src="https://checkout.stripe.com/checkout.js" type="text/javascript"></script>
+	<script src="https://www.arduino.cc/en/pub/js/software_download.js" type="text/javascript"></script><!-- keep https! -->
+	<link rel='stylesheet' href='../../../code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.min.css' type='text/css' />
+</head>
+<body>
+
+	<div id="menuWings" class="fixed"></div>
+	<div id="page">
+		
+		
+<script>
+	var userAgent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
+	if(userAgent.indexOf('mac')>0){
+		$("head").append('<style type="text/css">@-moz-document url-prefix() {h1 a, h2 a, h3 a, h4 a, h5 a, h1 a:hover, h2 a:hover, th a, th a:hover, h3 a:hover, h4 a:hover, h5 a:hover, #wikitext h2 a:hover, #wikitext h3 a:hover, #wikitext h4 a:hover {padding-bottom: 0.5em!important;} #pageheader .search input{font-family: "TyponineSans Regular 18";} #pagefooter .monospace{margin-top: -4px;} #navWrapper ul.left &gt; li{margin-top: -2px; padding-bottom: 2px;}#navWrapper ul.right &gt; li{margin-top: -5px; padding-bottom: 5px;}#navWrapper ul.right &gt; li ul{margin-top: 4px;} .slider-container .fixed-caption p{padding:8px 0 14px 0}}</style>');
+	}
+</script>
+
+<!--[if IE]>
+<link rel='stylesheet' href='https://id.arduino.cc//css/ie-monospace.css' type='text/css' />
+<![endif]-->
+
+<div id="menuWings" class="fixed"></div>
+
+<!--[if IE 8]>
+<div class="alert-box panel ie8alert">
+  <p><strong>Arduino.cc offers limited compatibility for Internet Explorer 8. Get a modern browser as Chrome, Firefox or Safari.</strong></p>
+  <a href="" class="close">&times;</a>
+</div>
+<![endif]-->
+
+<div id="pageheader">
+	<div class="row" class="contain-to-grid">
+		<div class="small-6 large-8 eight columns">
+			<div class="title"><a href="http://www.arduino.cc/">Arduino</a></div>
+		</div>
+		<div class="small-6 large-4 four columns search">
+			<div class="row collapse">
+				<form method="GET" action="http://www.google.com/search">
+	<div class="small-12 twelve columns">
+		<i class="icon-search-2"></i>
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="hidden" name="oe" value="UTF-8">
+		<input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search the Arduino Website">
+		<input type="submit" name="btnG" VALUE="search">
+		<input type="hidden" name="domains" value="http://www.arduino.cc">
+		<input type="hidden" name="sitesearch" value="http://www.arduino.cc">
+	</div>
+</form>			</div>
+		</div>
+	</div>
+
+	<!--[if gte IE 9]><!-->
+	<div id="navWrapper"  class="sticky">
+	<!--<![endif]-->
+	<!--[if IE 8]>
+		<div id="navWrapper">
+	<![endif]-->
+		<nav class="top-bar"  data-options="is_hover:true" >
+			<ul class="title-area">
+				<li class="name"></li>
+			</ul>
+
+			<section class="top-bar-section">
+				<ul class="left">
+					<li id="navLogo">
+						<a href="http://www.arduino.cc/">
+							<img src="../../img/logo_46.png" alt="userpicture" />
+						</a>
+					</li>
+					<li id="navHome"><a href="http://www.arduino.cc/">Home</a></li>
+					<li><a href="http://store.arduino.cc/">Buy</a></li>
+					<li><a href="http://www.arduino.cc/en/Main/Software">Download</a></li>
+					<li class="has-dropdown"><a href="#">Products</a>
+						<ul class="dropdown">
+							<li><a href="http://www.arduino.cc/en/Main/Products">Arduino <span class="menudescription">(USA only)</span></a></li>
+							<li><a href="http://www.arduino.cc/en/Main/GenuinoProducts">Genuino <span class="menudescription">(outside USA)</span></a></li>
+							<li><a href="http://www.arduino.cc/en/ArduinoAtHeart/Products">AtHeart</a></li>
+							<li><a href="http://www.arduino.cc/en/ArduinoCertified/Products">Certified</a></li>
+						</ul>
+					</li>
+					<li class="has-dropdown active"><a href="#">Learning</a>
+						<ul class="dropdown">
+							<li><a href="http://www.arduino.cc/en/Guide/HomePage">Getting started</a></li>
+							<li><a href="http://www.arduino.cc/en/Tutorial/HomePage">Tutorials</a></li>
+							<li><a href="../Reference/HomePage.html">Reference</a></li>
+							<li><a href="http://www.arduino.cc/en/Main/CTCprogram">CTC Program</a></li>
+							<li><a href="http://playground.arduino.cc/">Playground</a></li>
+						</ul>
+					</li>
+					<li><a href="http://forum.arduino.cc/">Forum</a></li>
+					<li class="has-dropdown"><a href="#">Support</a>
+						<ul class="dropdown">
+							<li><a href="http://www.arduino.cc/en/Main/FAQ">FAQ</a></li>
+							<li><a href="http://www.arduino.cc/en/ContactUs">Contact Us</a></li>
+						</ul>
+					</li>
+					<li><a href="http://blog.arduino.cc/">Blog</a></li>
+				</ul>
+
+								<ul class="right">
+					<li><a href="https://id.arduino.cc/auth/login/?returnurl=http%3A%2F%2Fwww.arduino.cc%2Fen%2FGuide%2FTroubleshooting" class="cart">LOG IN</a></li>
+					<li><a href="https://id.arduino.cc/auth/signup" class="cart">SIGN UP</a></li>
+				</ul>
+							</section>
+		</nav>
+	</div>
+</div>
+
+
+
+		<br class="clear"/>
+
+		<div id="pagetext">
+				<!--PageText-->
+<div id='wikitext'>
+<h2>Arduino Troubleshooting</h2>
+<div class='toc'><p><a name='toc' id='toc'></a><b>On this page...</b> (<a id="tocidtog" href="javascript:toggle('tocid');">hide</a>)</p><ul class='toc' id='tocid'><li><a href='#toc1'>Why I can't upload my programs to the Arduino board?</a></li><li><a href='#toc2'>Why do I get "Build folder disappeared or could not be written" (Mac OS X)?</a></li><li><a href='#toc3'>Why doesn't the Arduino software run after I updated the Java on my Mac?</a></li><li><a href='#toc4'>Why do I get a java.lang.StackOverflowError when I try to compile my program?</a></li><li><a href='#toc5'>What type of power supply should I use with my Arduino board?</a></li><li><a href='#toc6'>Why doesn't my sketch start when I'm powering the board with an external power supply?  (Arduino Diecimila or earlier)</a></li><li><a href='#toc7'>Why does the Arduino software freeze when I try to upload a program?  (on Windows)?</a></li><li><a href='#toc8'>What if my board doesn't turn on (the green power LED doesn't light up)?</a></li><li><a href='#toc9'>Why does my Diecimila take such a long time (6-8 seconds) to start my sketch?</a></li><li><a href='#toc10'>What should I do if I get an error when launching arduino.exe on Windows?</a></li><li><a href='#toc11'>Why won't Arduino run on old versions of Mac OS X?</a></li><li><a href='#toc12'>What do I do if I get an UnsatisfiedLinkError error (about native library librxtxSerial.jnilib) when launching Arduino?</a></li><li><a href='#toc13'>What about the error "Could not find the main class."?</a></li><li><a href='#toc14'>What can I do about cygwin conflicts on Windows?</a></li><li><a href='#toc15'>Why does do the Arduino software and the Tools menu take a long time to open (on Windows)?</a></li><li><a href='#toc16'>Why doesn't my board show in the Tools | Serial Port menu ?</a></li><li><a href='#toc17'>What if I get a gnu.io.PortInUseException when uploading code or using the serial monitor (on the Mac)?</a></li><li><a href='#toc18'>I'm having trouble with the FTDI USB drivers.</a></li><li><a href='#toc19'>Why doesn't my sketch start when I power up or reset the Arduino board?</a></li><li><a href='#toc20'>Why does my sketch appear to upload successfully but not do anything?</a></li><li><a href='#toc21'>How can I reduce the size of my sketch?</a></li><li><a href='#toc22'>Why don't I get a PWM (an analog output) when I call analogWrite() on pins other than 3, 5, 6, 9, 10, or 11?</a></li><li><a href='#toc23'>Why do I get errors about undeclared functions or undeclared types?</a></li><li><a href='#toc24'>Why do I get errors about an invalid device signature when trying to upload a sketch?</a></li></ul></div>
+<p class='vspace'></p><p><a name='upload' id='upload'></a>
+</p><h3><a name='toc1' id='toc1'></a>Why I can't upload my programs to the Arduino board?</h3>
+<p>There are many pieces involved in getting a program onto your Arduino board, and if any of them aren't right, the upload can fail.  They include: the drivers for the board, the board and serial port selections in the Arduino software, access to the serial port, the physical connection to the board, the firmware on the 8U2 (on the Uno and Mega 2560), the bootloader on the main microcontroller on the board, the microcontroller's fuse settings, and more.  Here are some specific suggestions for troubleshooting each of the pieces.
+</p>
+<p class='vspace'></p><p><em>Arduino Software</em>
+</p>
+<p class='vspace'></p><ul><li>Make sure you have the right item selected in the <strong>Tools &gt; Board</strong> menu.  If you have an Arduino Uno, you'll need to choose it.  Also, newer Arduino Duemilanove boards come with an <span class='wikiword'>ATmega328</span>, while older ones have an <span class='wikiword'>ATmega168</span>.  To check, read the text on the microcontroller (the larger chip) on your Arduino board.  For more information on the board menu items, see the <a class='wikilink' href='http://www.arduino.cc/en/Guide/Environment'>guide to the Arduino environment</a>.
+<p class='vspace'></p></li><li>Then, check that the proper port is selected in the <strong>Tools &gt; Serial Port</strong> menu (if your port doesn't appear, try restarting the IDE with the board connected to the computer).  On the Mac, the serial port should be something like /dev/tty.usbmodem621 (for the Uno or Mega 2560) or /dev/tty.usbserial-A02f8e (for older, FTDI-based boards).  On Linux, it should be /dev/ttyACM0 or similar (for the Uno or Mega 2560) or /dev/ttyUSB0 or similar (for older boards).  On Windows, it will be a COM port but you'll need to check in the Device Manager (under Ports) to see which one.  If you don't seem to have a serial port for your Arduino board, see the following information about drivers.
+</li></ul><p class='vspace'></p><p><em>Drivers</em>
+</p>
+<p class='vspace'></p><p>Drivers provide a way for software on your computer (i.e. the Arduino software) to talk to hardware you connect to your computer (the Arduino board).  In the case of Arduino, the drivers work by providing a virtual serial port (or virtual COM port).  The Arduino Uno and Mega 2560 use standard drivers (USB CDC) provided by the operating system to communicate with the <span class='wikiword'>ATmega8U2</span> on the board.  Other Arduino boards use FTDI drivers to communicate with the FTDI chip on the board (or in the USB-serial convertor).  
+</p>
+<p class='vspace'></p><p>The easiest way to check if the drivers for your board are installed correctly is by opening the <strong>Tools &gt; Serial Port</strong> menu in the Arduino software with the Arduino board connected to your computer.  Additional menu items should appear relative to when you open the menu without the Arduino connected to your computer.  Note that it shouldn't matter what name the Arduino board's serial port gets assigned as long as that's the one you pick from the menu.
+</p>
+<p class='vspace'></p><ul><li>On Windows 7 (particularly the 64-bit version), you might need to go into the Device Manager and update the drivers for the Uno or Mega 2560.  Just right click on the device (the board should be connected to your computer), and point Windows at the appropriate .inf file again.  The .inf is in the drivers/ directory of the Arduino software (not in the FTDI USB Drivers sub-directory of it).  
+<p class='vspace'></p></li><li>If you get this error when installing the Uno or Mega 2560 drivers on Windows XP: "The system cannot find the file specified", you might try <a class='urllink' href='http://forums.techguy.org/1680041-post1.html' rel='nofollow'>this suggestion</a> (about adding a "<span class='wikiword'>RunOnce</span>" key to "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\<span class='wikiword'>CurrentVersion</span>").
+<p class='vspace'></p></li><li>On Linux, the Uno and Mega 2560 show up as devices of the form /dev/ttyACM0.  These are not supported by the standard version of the RXTX library that the Arduino software uses for serial communication.  The Arduino software download for Linux includes a version of the RXTX library patched to also search for these /dev/ttyACM* devices.  There's also <a class='urllink' href='https://launchpad.net/ubuntu/+source/rxtx/2.2pre2-3' rel='nofollow'>an Ubuntu package</a> (for 11.04) which includes support for these devices.  If, however, you're using the RXTX package from your distribution, you may need to symlink from /dev/ttyACM0 to /dev/ttyUSB0 (for example) so that the serial port appears in the Arduino software.
+</li></ul><p class='vspace'></p><p><em>Access to the Serial Port</em>
+</p>
+<p class='vspace'></p><ul><li>On Windows, if the software is slow to start or crashes on launch, or the Tools menu is slow to open, you may need to disable Bluetooth serial ports or other networked COM ports in the Device Manager.  The Arduino software scans all the serial (COM) ports on your computer when it starts and when you open the Tools menu, and these networked ports can sometimes cause large delays or crashes.  
+<p class='vspace'></p></li><li>Check that you're not running any programs that scan all serial ports, like USB Cellular Wifi Dongle software (e.g. from Sprint or Verizon), PDA sync applications, Bluetooth-USB drivers (e.g. <span class='wikiword'>BlueSoleil</span>), virtual daemon tools, etc.
+<p class='vspace'></p></li><li>Make sure you don't have firewall software that blocks access to the serial port (e.g. <span class='wikiword'>ZoneAlarm</span>).
+<p class='vspace'></p></li><li>You may need to quit Processing, PD, vvvv, etc. if you're using them to read data over the USB or serial connection to the Arduino board.
+<p class='vspace'></p></li><li>On Linux, you might try running the Arduino software as root, at least temporarily to see if fixes the upload.
+</li></ul><p class='vspace'></p><p><em>Physical Connection</em>
+</p>
+<p class='vspace'></p><ul><li>First make sure your board is on (the green LED is on) and connected to the computer.
+<p class='vspace'></p></li><li>The Arduino Uno and Mega 2560 may have trouble connecting to a Mac through a USB hub.  If nothing appears in your "Tools &gt; Serial Port" menu, try plugging the board directly to your computer and restarting the Arduino IDE.
+<p class='vspace'></p></li><li>Disconnect digital pins 0 and 1 while uploading as they are shared with serial communication with the computer (they can connected and used after the code has been uploaded).
+<p class='vspace'></p></li><li>Try uploading with nothing connected to the board (apart from the USB cable, of course).
+<p class='vspace'></p></li><li>Make sure the board isn't touching anything metallic or conductive.
+<p class='vspace'></p></li><li>Try a different USB cable; sometimes they don't work.
+</li></ul><p class='vspace'></p><p><em>Auto-Reset</em>
+</p>
+<p class='vspace'></p><ul><li>If you have a board that doesn't support auto-reset, be sure that you are resetting the board a couple of seconds before uploading. (The Arduino Diecimila, Duemilanove, and Nano support auto-reset as do the <span class='wikiword'>LilyPad</span>, Pro, and Pro Mini with 6-pin programming headers).
+<p class='vspace'></p></li><li>However, note that some Diecimila were accidently burned with the wrong bootloader and may require you to physically press the reset button before uploading; see <a href='#wrongbootloader'>this question</a> below.
+<p class='vspace'></p></li><li>However, on some computers, you may need to press the reset button on the board after you hit the upload button in the Arduino environment.  Try different intervals of time between the two, up to 10 seconds or more.
+<p class='vspace'></p></li><li>If you get this error:  <code>[VP 1] Device is not responding correctly.</code>  try uploading again (i.e. reset the board and press the download button a second time).
+</li></ul><p class='vspace'></p><p><em>Bootloader</em>
+</p>
+<p class='vspace'></p><ul><li>Make sure there's a bootloader burned on your Arduino board.  To check, reset the board.  The built-in L LED (which is connected to pin 13) should blink.  If it doesn't, there may not be a bootloader on your board.
+</li></ul><p class='vspace'></p><p><br clear='all' />
+</p>
+<p class='vspace'></p><p>If it still doesn't work, you can ask for help <a class='urllink' href='http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?board=troubleshoot' rel='nofollow'>in the forum</a>.  Please include the following information:
+</p>
+<p class='vspace'></p><ul><li>Your operating system.
+<p class='vspace'></p></li><li>What kind of board you have.  If it's a Mini, <span class='wikiword'>LilyPad</span> or other board that requires extra wiring, include a photo of your circuit, if possible.
+<p class='vspace'></p></li><li>Whether or not you were ever able to upload to the board.  If so, what were you doing with the board before / when it stopped working, and what software have you recently added or removed from your computer?
+<p class='vspace'></p></li><li>The messages displayed when you try to upload with verbose output enabled.  To do this, hold down the shift key while clicking on the upload button in the toolbar.
+</li></ul><p class='vspace'></p><h3><a name='toc2' id='toc2'></a>Why do I get "Build folder disappeared or could not be written" (Mac OS X)?</h3>
+<p>Did you drag the Arduino.app out of the disk image (and into, say, your Applications folder)?  If not, you won't be able to upload the examples.
+</p>
+<p class='vspace'></p><p><a name='macupdate' id='macupdate'></a>
+</p><h3><a name='toc3' id='toc3'></a>Why doesn't the Arduino software run after I updated the Java on my Mac?</h3>
+<p>The latest Java update from Apple attempts to use 64-bit version of native libraries, but the Arduino application comes with a 32 bit version of the RXTX library.  If you launch Arduino, you'll get an error like:
+</p>
+<p class='vspace'></p><p><code>Uncaught exception in main method: java.<span class='wikiword'>lang.UnsatisfiedLinkError</span>: /Applications/arduino-0016/Arduino 16.app/Contents/Resources/Java/librxtxSerial.jnilib: no suitable image found.  Did find: /Applications/arduino-0016/Arduino 16.app/Contents/Resources/Java/librxtxSerial.jnilib: no matching architecture in universal wrapper</code>
+</p>
+<p class='vspace'></p><p>To fix this, click on the Arduino application (e.g. <strong>Arduino 16.app</strong>) in the Finder, and select <strong>Get Info</strong> from the <strong>File</strong> menu.  In the info panel, click the <strong>Open in 32 Bit Mode</strong> checkbox.   You should then be able to launch Arduino normally.
+</p>
+<p class='vspace'></p><p><a name='stackoverflow' id='stackoverflow'></a>
+</p><h3><a name='toc4' id='toc4'></a>Why do I get a java.<span class='wikiword'>lang.StackOverflowError</span> when I try to compile my program?</h3>
+<p>The Arduino environment does some preliminary processing on your sketch by manipulating the code using regular expressions.  This sometimes gets confused by certain strings of text.  If you see an error like:
+</p>
+<p class='vspace'></p><pre>
+java.lang.StackOverflowError
+at java.util.Vector.addElement(Unknown Source)
+at java.util.Stack.push(Unknown Source)
+at com.oroinc.text.regex.Perl5Matcher._pushState(Perl5Matcher.java) 
+</pre>
+<p class='vspace'></p><p>or: 
+</p>
+<p class='vspace'></p><pre>
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java) 
+</pre>
+<p class='vspace'></p><p>this is what's happening.  Look for unusual sequences involving "double-quotes", "single-quotes", \backslashes, comments, etc.  For example, missing quotes can cause problems and so can the sequence '\"' (use '"' instead).
+</p>
+<p class='vspace'></p><p><a name='externalpower' id='externalpower'></a>
+</p>
+<p class='vspace'></p><h3><a name='toc5' id='toc5'></a> What type of power supply should I use with my Arduino board?</h3>
+<p>Typically, the Arduino board can operate satisfactorily on power that is available on the USB port of the computer that it is connected to, depending upon the number and type of optional Shield modules used with the Arduino board and the rated USB power current available from the computer (varies according to computer manufacturer and model). If you find that additional power is required from your Arduino board to operate it properly, or if you need to operate the Arduino board disconnected from a USB port or when using it with one that does not provide power, then you need to acquire a power supply that provides from 7 to 12V (Volts) of DC (Direct Current) power with enough current capacity for your needs. The AC adapters commonly available in retail stores for use with consumer products are often suitable, but make sure that it has the proper connector for plugging into the power socket on your Arduino board: 5.5mm diameter cylindrical plug with 2.1mm pin hole, and that provides Positive voltage on the inside pin hole and Negative (or common/ground) voltage on the outside cylindrical sleeve of the connector plug. For most applications, 1A (Amp) of current supply capacity is sufficient, but you may find that you’ll need more if you have a specific Shield module that needs it, or a stack of several Shield modules that along with the Arduino board draws a higher total current. You should sum the rated Input power current requirement for each Shield you are using along with your Arduino board to get the total needed, and acquire a power adapter/supply that provides a minimum of that total (higher current power supply current capacity has no ill effects).
+You also have to remember that the on-board 5V regulator cannot supply an infinite current (actually 800mA is a good choice in order to not overheat the board) so if one of your project need a large amount of power you can consider to provide the needed 5V (or what ever) selectively to the various equipment (using an appropriate number of power supplies and regulators if needed) and make them working together connecting all the <span class='wikiword'>GNDs</span> in the same point.
+</p>
+<p class='vspace'></p><h3><a name='toc6' id='toc6'></a>Why doesn't my sketch start when I'm powering the board with an external power supply?  (Arduino Diecimila or earlier)</h3>
+<p>Because the RX pin is unconnected, the bootloader on the board may be seeing garbage data coming in, meaning that it never times out and starts your sketch.  Try tying the RX pin to ground with a 10K resistor (or connecting RX directly to the TX pin).
+</p>
+<p class='vspace'></p><h3><a name='toc7' id='toc7'></a>Why does the Arduino software freeze when I try to upload a program?  (on Windows)?</h3>
+<p>This might be caused by a conflict with the Logitech process '<span class='wikiword'>LVPrcSrv</span>.exe'.  Open the Task Manager and see if this program is running, and if so, kill it before attempting the upload.  <a class='urllink' href='http://lists-archives.org/mingw-users/03939-as-exe-hanging-intermittently-solved.html' rel='nofollow'>more information</a>
+</p>
+<p class='vspace'></p><p><a name='power' id='power'></a>
+</p><h3><a name='toc8' id='toc8'></a>What if my board doesn't turn on (the green power LED doesn't light up)?</h3>
+<p>If you're using a Diecimila or older USB board (e.g. NG), make sure that the jumper (little plastic piece near the USB plug) is on the correct pins.  If you're powering the board with an external power supply (plugged into the power plug), the jumper should be on the two pins closest to the power plug.  If you're powering the board through the USB, the jumper should be on the two pins closest to the USB plug.  This picture shows the arrangment for powering the board from the USB port.
+</p>
+<p class='vspace'></p><p><a name='wrongbootloader' id='wrongbootloader'></a>
+</p><h3><a name='toc9' id='toc9'></a>Why does my Diecimila take such a long time (6-8 seconds) to start my sketch?</h3>
+<p>Some of the Arduino Diecimila boards were accidently burned with the Arduino NG bootloader.  It should work fine, but has a longer delay when the board is reset (because the NG doesn't have an automatic reset, so you have to time the uploads manually).  You can recognize the NG bootloader because the LED on pin 13 will blink three times when you reset the board (as compared to once with the Diecimila bootloader).  If your Diecimila has the NG bootloader on it, you may need to physically press the reset button on the board before uploading your sketch.  You can burn the correct bootloader onto your Diecimila, see the <a class='wikilink' href='http://www.arduino.cc/en/Hacking/Bootloader'>bootloader</a> page for details.
+</p>
+<p class='vspace'></p><p><a name='startup' id='startup'></a>
+</p><h3><a name='toc10' id='toc10'></a>What should I do if I get an error when launching arduino.exe on Windows?</h3>
+<p>If you get an error when double-clicking the arduino.exe executable on Windows, for example:
+</p>
+<p class='vspace'></p><p><code>Arduino has encountered a problem and needs to close.</code>
+</p>
+<p class='vspace'></p><p>you'll need to launch Arduino using the run.bat file.  Please be patient, the Arduino environment may take some time to open.
+</p>
+<p class='vspace'></p><h3><a name='toc11' id='toc11'></a>Why won't Arduino run on old versions of Mac OS X?</h3>
+<p>If you get an error like this:
+</p>
+<p class='vspace'></p><pre>Link (dyld) error: 
+
+dyld: /Applications/arduino-0004/Arduino 04.app/Contents/MacOS/Arduino Undefined symbols: 
+/Applications/arduino-0004/librxtxSerial.jnilib undefined reference to _printf$LDBL128 expected to be defined in /usr/lib/libSystem.B.dylib 
+</pre>
+<p class='vspace'></p><p>you probably need to upgrade to Max OS X 10.3.9 or later.  Older versions have incompatible versions of some system libraries.
+</p>
+<p class='vspace'></p><p>Thanks to Gabe462 for the report.
+</p>
+<p class='vspace'></p><h3><a name='toc12' id='toc12'></a>What do I do if I get an <span class='wikiword'>UnsatisfiedLinkError</span> error (about native library librxtxSerial.jnilib) when launching Arduino?</h3>
+<p>If you get an error like this when launching Arduino:
+</p>
+<p class='vspace'></p><p><code>Uncaught exception in main method: java.<span class='wikiword'>lang.UnsatisfiedLinkError</span>: Native Library /Users/anu/Desktop/arduino-0002/librxtxSerial.jnilib already loaded in another classloader</code>
+</p>
+<p class='vspace'></p><p>you probably have an old version of the communications library lying around.  Search for comm.jar or jcl.jar in /System/Library/<span class='wikiword'>Frameworks/JavaVM</span>.framework/ or in directories in your CLASSPATH or PATH environment variables. (reported by Anurag Sehgal)
+</p>
+<p class='vspace'></p><h3><a name='toc13' id='toc13'></a>What about the error "Could not find the main class."?</h3>
+<p>If you get this error when launching Arduino:
+</p>
+<p class='vspace'></p><p><code>Java Virtual Machine Launcher: Could not find the main class. Program will exit.</code>
+</p>
+<p class='vspace'></p><p>make sure that you correctly extracted the contents of the Arduino .zip file - in particular that the <strong>lib</strong> directory is directly inside of the Arduino directory and contains the file <strong>pde.jar</strong>.
+</p>
+<p class='vspace'></p><h3><a name='toc14' id='toc14'></a>What can I do about cygwin conflicts on Windows?</h3>
+<p>If you already have cygwin installed on your machine, you might get an error like this when you try to compile a sketch in Arduino:
+</p>
+<p class='vspace'></p><p><code> 6 [main] ? (3512) C:\Dev\arduino-0006\tools\avr\bin\avr-gcc.exe: *** fatal error - C:\Dev\arduino-0006\tools\avr\bin\avr-gcc.exe: *** system shared memory version mismatch detected - 0x75BE0084/0x75BE009C.</code>
+</p>
+<p class='vspace'></p><p><code>This problem is probably due to using incompatible versions of the cygwin DLL.</code>
+</p>
+<p class='vspace'></p><p><code>Search for cygwin1.dll using the Windows Start-&gt;Find/Search facility and delete all but the most recent version.  The most recent version *should* reside in x:\cygwin\bin, where 'x' is the drive on which you have installed the cygwin distribution.  Rebooting is also suggested if you are unable to find another cygwin DLL.</code>
+</p>
+<p class='vspace'></p><p>If so, first make sure that you don't have cygwin running when you use Arduino.  If that doesn't help, you can try deleting cygwin1.dll from the Arduino directory and replacing it with the cygwin1.dll from your existing cygwin install (probably in c:\cygwin\bin).  
+</p>
+<p class='vspace'></p><p><em>Thanks to karlcswanson for the suggestion.</em>
+</p>
+<p class='vspace'></p><h3><a name='toc15' id='toc15'></a>Why does do the Arduino software and the Tools menu take a long time to open (on Windows)?</h3>
+<p>If the Arduino software takes a long time to start up and appears to freeze when you try to open the Tools menu, there by a conflict with another device on your system.  The Arduino software, on startup and when you open the Tools menu, tries to get a list of all the COM ports on your computer.  It's possible that a COM port created by one of the devices on your computer slows down this process.  Take a look in the Device Manager.  Try disabling the devices that provide COM ports (e.g. Bluetooth devices).
+</p>
+<p class='vspace'></p><p><a name='serialport' id='serialport'></a>
+</p><h3><a name='toc16' id='toc16'></a>Why doesn't my board show in the Tools | Serial Port menu ?</h3>
+<p>If you're using a USB Arduino board, make sure you installed the FTDI drivers (see the <a class='wikilink' href='http://www.arduino.cc/en/Guide/Howto'>Howto</a> for directions).  If you're using a USB-to-Serial adapter with a serial board, make sure you installed its drivers.
+</p>
+<p class='vspace'></p><p>Make sure that the board is plugged in: the serial port menu refreshes whenever you open the <strong>Tools</strong> menu, so if you just unplugged the board, it won't be in the menu.
+</p>
+<p class='vspace'></p><p>Check that you're not running any programs that scan all serial ports, like PDA sync applications, Bluetooth-USB drivers (e.g. <span class='wikiword'>BlueSoleil</span>), virtual daemon tools, etc.
+</p>
+<p class='vspace'></p><p>On Windows, the COM port assigned to the board may be too high.  From zeveland:
+</p>
+<p class='vspace'></p><p>"One little note if you aren't able to export and your USB board is trying to use a high COM port number: try changing the FTDI chip's COM port assignment to a lower one.   
+</p>
+<p class='vspace'></p><p>"I had a bunch of virtual COM ports set up for Bluetooth so the board was set to use <span class='wikiword'>COM17</span>.  The IDE wasn't able to find the board so I deleted the other virtual ports in Control Panel (on XP) and moved the FTDI's assignment down to <span class='wikiword'>COM2</span>.  Make sure to set Arduino to use the new port and good luck."
+</p>
+<p class='vspace'></p><p>On the Mac, if you have an old version of the FTDI drivers, you may need to remove them and reinstall the latest version.  See <a class='urllink' href='http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1143197735' rel='nofollow'>this forum thread for directions</a> (thanks to gck).
+</p>
+<p class='vspace'></p><h3><a name='toc17' id='toc17'></a>What if I get a gnu.<span class='wikiword'>io.PortInUseException</span> when uploading code or using the serial monitor (on the Mac)?</h3>
+<pre>
+Error inside Serial.&lt;init&gt;() 
+gnu.io.PortInUseException: Unknown Application 
+     at gnu.io.CommPortIdentifier.open(CommPortIdentifier.java:354) 
+     at processing.app.Serial.&lt;init&gt;(Serial.java:127) 
+     at processing.app.Serial.&lt;init&gt;(Serial.java:72) 
+
+</pre>
+<p class='vspace'></p><p>This probably means that the port is actually in use by another application.  Please make sure that you're not running other programs that access serial or USB ports, like PDA sync application, bluetooth device managers, certain firewalls, etc.  Also, note that some programs (e.g. Max/MSP) keep the serial port open even when not using it - you may to need to close any patches that use the serial port or quit the application entirely.
+</p>
+<p class='vspace'></p><p>If you get this error with Arduino 0004 or earlier, or with Processing, you'll need to run the <code>macosx_setup.command</code>, and then restart your computer.  Arduino 0004 includes a modified version of this script that all users need to run (even those who ran the one that came with Arduino 0003).  You may also need to delete the contents of the <strong>/var/spool/uucp</strong> directory.
+</p>
+<p class='vspace'></p><h3><a name='toc18' id='toc18'></a>I'm having trouble with the FTDI USB drivers.</h3>
+<p>Try installing the <a class='urllink' href='http://www.ftdichip.com/Drivers/VCP.htm' rel='nofollow'>latest drivers</a> from FTDI or contacting their support at <a class='urllink' href='mailto:support1@ftdichip.com' rel='nofollow'>support1@ftdichip.com</a>.
+</p>
+<p class='vspace'></p><p><a name='sketchstart' id='sketchstart'></a>
+</p><h3><a name='toc19' id='toc19'></a>Why doesn't my sketch start when I power up or reset the Arduino board?</h3>
+<p>Most likely because you are sending serial data to the board when it firsts turns on.  During the first few seconds, the bootloader (a program pre-burned onto the chip on the board) listens for the computer to send it a new sketch to be uploaded to the board.  After a few seconds without communication, the bootloader will time out and start the sketch that's already on the board.  If you continue to send data to the bootloader, it will never time out and your sketch will never start.  You'll either need to find a way to stop serial data from arriving for the first few seconds when the board powers (e.g. by enabling the chip that sends the data from within your setup() function) or burn your sketch onto the board with an <a class='wikilink' href='http://www.arduino.cc/en/Hacking/Programmer'>external programmer</a>, replacing the bootloader.
+</p>
+<p class='vspace'></p><h3><a name='toc20' id='toc20'></a>Why does my sketch appear to upload successfully but not do anything?</h3>
+<p>You have selected the wrong item from the Tools &gt; Microcontroller menu.  Make sure the selected microcontroller corresponds to the one on your board (either <span class='wikiword'>ATmega8</span> or <span class='wikiword'>ATmega168</span>) - the name will be written on the largest chip on the board.
+</p>
+<p class='vspace'></p><p>Check for a noisy power supply.  It's possible this could cause the chip to lose its sketch.  
+</p>
+<p class='vspace'></p><p>Alternatively, the sketch may be too big for the board.  When uploading your sketch, Arduino 0004 checks if it's too big for the <span class='wikiword'>ATmega8</span>, but it bases its calculation on a 1 Kb bootloader.  You may have a older bootloader that takes up 2 Kb of the 8 Kb of program space (flash) on the <span class='wikiword'>ATmega8</span> instead of the 1 Kb used by the current bootloader.  If yours is bigger, only part of the sketch will be uploaded, but the software won't know, and your board will continually reset, pause, reset.
+</p>
+<p class='vspace'></p><p>If you have access to an AVR-ISP or parallel port programmer, you can burn the latest version of the bootloader to your board with the <strong>Tools | Burn Bootloader</strong> menu item.  Otherwise, you can tell the Arduino environment the amount of space available for sketches by editing the upload.maximum_size variable in your preferences file (see: <a class='wikilink' href='http://www.arduino.cc/en/Hacking/Preferences'>instructions on finding the file</a>).  Change 7168 to 6144, and the environment should correctly warn you when your sketch is too big.   
+</p>
+<p class='vspace'></p><p><a name='size' id='size'></a>
+</p><h3><a name='toc21' id='toc21'></a>How can I reduce the size of my sketch?</h3>
+<p>The <span class='wikiword'>ATmega168</span> chip on the Arduino board is cheap, but it has only 16 Kb of program code, which isn't very much (and 2 Kb is used by the bootloader).
+</p>
+<p class='vspace'></p><p>If you're using floating point, try to rewrite your code with integer math, which should save you about 2 Kb.  Delete any <strong>#include</strong> statements at the top of your sketch for libraries that you're not using.
+</p>
+<p class='vspace'></p><p>Otherwise, see if you can make your program shorter.  
+</p>
+<p class='vspace'></p><p>We're always working to reduce the size of the Arduino core to leave more room for your sketches.
+</p>
+<p class='vspace'></p><h3><a name='toc22' id='toc22'></a>Why don't I get a PWM (an analog output) when I call analogWrite() on pins other than 3, 5, 6, 9, 10, or 11?</h3>
+<p>The microcontroller on the Arduino board (the <span class='wikiword'>ATmega168</span>) only supports PWM/analogWrite() on certain pins.  Calling analogWrite() on any other pins will give high (5 volts) for values greater than 128 and low (0 volts) for values less than 128.  (Older Arduino boards with an <span class='wikiword'>ATmega8</span> only support PWM output on pins 9, 10, and 11.)
+</p>
+<p class='vspace'></p><h3><a name='toc23' id='toc23'></a>Why do I get errors about undeclared functions or undeclared types?</h3>
+<p>The Arduino environment attempts to automatically generate prototypes for your functions, so that you can order them as you like in your sketch.  This process, however, isn't perfect, and sometimes leads to obscure error messages.
+</p>
+<p class='vspace'></p><p>If you declare a custom type in your code and create a function that accepts or returns a value of that type, you'll get an error when you try to compile the sketch.  This is because the automatically-generated prototype for that function will appear above the type definition.  
+</p>
+<p class='vspace'></p><p>If you declare a function with a two-word return type (e.g. "unsigned int") the environment will not realize it's a function and will not create a prototype for it.  That means you need to provide your own, or place the definition of the function above any calls to it.
+</p>
+<p class='vspace'></p><h3><a name='toc24' id='toc24'></a>Why do I get errors about an invalid device signature when trying to upload a sketch?</h3>
+<p>If you get an error like:
+</p>
+<p class='vspace'></p><pre>
+avrdude: Yikes!  Invalid device signature.
+       Double check connections and try again, or use -F to override
+       this check.
+
+</pre>
+<p class='vspace'></p><p>it can mean one of two things.  Either you have the wrong board selected from the Tools &gt; Board menu or you're not using the right version of avrdude.  Arduino uses a slightly modified version of avrdude to upload sketches to the Arduino board.  The standard version queries for the board's device signature in a way not understood by the bootloader, resulting in this error.  Make sure you're using the version of avrdude that comes with Arduino (<a class='urllink' href='http://svn.berlios.de/wsvn/arduino/avrdude-5.4-arduino/#_avrdude-5.4-arduino_' rel='nofollow'>source code</a>).
+</p>
+<p class='vspace'></p><p><a class='urllink' href='http://www.arduino.cc/en/Guide/HomePage' rel='nofollow'>Guide Home</a>
+The text of the Arduino getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+				
+				<!-- AddThis Button Style BEGIN -->
+<style>
+  .addthis_toolbox {
+    margin: 2em 0 1em;
+  }
+  .addthis_toolbox img {
+    float: left;
+    height: 25px;
+    margin-right: 10px;
+    width: auto;
+  }
+  .addthis_toolbox .social-container {
+    float: left;
+    height: 27px; 
+    width: auto; 
+  }
+  .addthis_toolbox .social-container .social-content {
+    float: left;
+    margin-top: 2px;
+    max-width: 0;
+    overflow: hidden;
+    -moz-transition: max-width .3s ease-out;
+    -webkit-transition: max-width .3s ease-out;
+    -o-transition: max-width .3s ease-out;
+    transition: max-width .3s ease-out;
+  }
+  .addthis_toolbox .social-container:hover .social-content {
+    max-width: 100px;
+    -moz-transition: max-width .2s ease-in;
+    -webkit-transition: max-width .2s ease-in;
+    -o-transition: max-width .2s ease-in;
+    transition: max-width .2s ease-in;
+  }
+  .addthis_toolbox .social-container .social-content a {
+    float: left;
+    margin-right: 5px;
+  }
+
+  .addthis_toolbox h3 {
+    font-size: 24px;
+    text-align: left;
+  }
+</style>
+<!-- AddThis Button Style END -->
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style">
+  <h3>Share</h3>
+  <!-- FACEBOOK -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/facebook.png" />
+    <div class="social-content">
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    </div>
+  </div>
+  <!-- TWITTER -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/twitter.png">
+    <div class="social-content">
+      <a class="addthis_button_tweet"></a>
+    </div>
+  </div>
+  <!-- PINTEREST -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/pinterest.png">
+    <div class="social-content">
+      <a class="addthis_button_pinterest_pinit" pi:pinit:url="//www.addthis.com/features/pinterest" pi:pinit:media="//www.addthis.com/cms-content/images/features/pinterest-lg.png"></a>
+    </div>
+  </div>
+  <!-- G+ -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/gplus.png">
+    <div class="social-content">
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    </div>
+  </div>
+
+  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50573fab238b0d34"></script>
+</div>
+<!-- AddThis Button END -->
+
+		</div> <!-- eof pagetext -->
+	
+	</div> <!-- eof page -->
+		
+	<!--PageFooterFmt-->
+	<div id="pagefooter">
+		<div id="newsletterModal" class="reveal-modal small">
+  <form action="http://www.arduino.cc/subscribe.php" method="post" name="sendy-subscribe-form" id="sendy-subscribe-form" class="form-popup">
+    <div class="modalHeader">
+      <h3 style="line-height: 1.8rem;" class="modal-header-alt">This link has expired. <br>Please re-subscribe to our Newsletters.</h3>
+      <h3 class="modal-header-main">Subscribe to our Newsletters</h3>
+    </div>
+    <div class="modalBody" id="newsletterModalBody">
+        <div id="newsletterEmailField" class="row" style="padding-left: 0">
+          <div class="large-2 columns">
+            <label for="email" class="newsletter-form-label inline">Email</label>
+          </div>
+          <div class="large-10 columns" style="padding-left: 0">
+            <input placeholder="Enter your email address" type="email" name="email" class="subscribe-form-input" />
+            <p id="emailMissing" class="newsletterPopupError">Please enter a valid email to subscribe</p>
+          </div>
+        </div>
+        <div style="margin-left:20px">
+          <div style="margin-bottom:0.3em">
+            <input style="display:none" type="checkbox" checked name="list[]" value="arduino_newsletter_id" id="worldwide" class="newsletter-form-checkbox" />
+            <label for="worldwide"></label>
+            <div style="display:inline-block" class="newsletter-form-label">Arduino Newsletter</div>
+          </div>
+          <div>
+            <input style="display:none" type="checkbox" checked name="list[]" value="arduino_store_newsletter_id" id="store" class="newsletter-form-checkbox" />
+            <label for="store"></label>
+            <div style="display:inline-block" class="newsletter-form-label">Arduino Store Newsletter</div>
+          </div>
+        </div>
+        <div>
+          <p class="newsletterPopupError2" id="newsletterSubscribeStatus"></p>
+        </div>
+    </div>
+    <div class="row modalFooter">
+      <div class="form-buttons-row">
+        
+          <button type="button" value="Cancel" class="popup-form-button white cancel-modal close-reveal-modal">Cancel</button>
+          <button type="submit" name="Subscribe" id="subscribe-submit-btn" class="popup-form-button">Next</button>
+        
+      </div>
+    </div>
+  </form>
+
+  <!-- step 2, confirm popup -->
+  <div class="confirm-popup" style="margin-bottom:1em">
+    <div class="modalHeader">
+      <h3>Confirm your email address</h3>
+    </div>
+    <div class="modalBody" id="newsletterModalBody" style="padding-right:1em;margin-bottom:0">
+        <p style="margin-bottom:1em;font-size:15px">
+          We need to confirm your email address.<br>
+          To complete the subscription, please click the link in the
+          email we just sent you.
+        </p>
+        <p style="margin-bottom:1em;font-size:15px">
+          Thank you for subscribing!
+        </p>
+        <p style="margin-bottom:1em;font-size:15px">
+          Arduino<br>
+          via Egeo 16<br>
+          Torino, 10131<br>
+          Italy<br>
+        </p>
+    </div>
+    <div class="row modalFooter">
+      <div class="form-buttons-row">
+        
+          <button name="Ok" class="popup-form-button" id="close-confirm-popup">Ok</button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="pagefooter" class="pagefooter">
+  <div class="row">
+    <div class="large-8 eight columns">
+      <div class="large-4 four columns newsletter-box">
+        <!-- Begin Sendy Signup Form -->
+        <h6>Newsletter</h6>
+        <div>
+          <input type="email" name="email" class="email" id="sendy-EMAIL" placeholder="Enter your email to sign up">
+          <i class="icon-right-small"></i>
+          <input value="Subscribe" name="subscribe" id="sendy-subscribe" class="newsletter-button">
+        </div>
+        <!--End sendy_embed_signup-->
+      </div>
+      <div class="clearfix"></div>
+      <ul class="inline-list">
+        <li class="monospace">&copy;2015 Arduino</li>
+        <li><a href="http://www.arduino.cc/en/Main/CopyrightNotice">Copyright Notice</a></li>
+        <li><a href='http://www.arduino.cc/en/Main/ContactUs'>Contact us</a></li>
+        <li><a href='http://www.arduino.cc/en/Main/AboutUs'>About us</a></li>
+        <li><a href='http://www.arduino.cc/Careers'>Careers</a></li>
+      </ul>
+    </div>
+    <div class="large-4 four columns">
+      <ul id="arduinoSocialLinks" class="arduino-social-links">
+        <li>
+          <a href="https://twitter.com/arduino">
+            <img src="../../img/twitter.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/official.arduino">
+            <img src="../../img/facebook.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/+Arduino">
+            <img src="../../img/gplus.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://www.flickr.com/photos/arduino_cc">
+            <img src="../../img/flickr.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://youtube.com/arduinoteam">
+            <img src="../../img/youtube.png" />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+	</div>
+	<!--/PageFooterFmt-->
+	
+	<!--[if gte IE 9]><!-->
+	<script src="http://arduino.cc/js/foundation.min.js"></script>
+	<script src="http://arduino.cc/js/foundation.topbar.custom.js"></script>
+	<script>
+	  $(document).foundation();
+	</script>
+	<!--<![endif]-->
+	<!--[if IE 8]>
+	<script src="//arduino.cc/js/foundation_ie8.min.js"></script>
+	<script src="//arduino.cc/js/ie8/jquery.foundation.orbit.js"></script>
+	<script src="//arduino.cc/js/ie8/jquery.foundation.alerts.js"></script>
+	<script src="//arduino.cc/js/app.js"></script>
+	
+	<script>
+	$(window).load(function(){
+	  $("#featured").orbit();
+	});
+	</script>
+	<![endif]-->
+	
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-22581631-3']);
+	  _gaq.push(['_setDomainName', 'arduino.cc']);
+	  _gaq.push(['_trackPageview']);
+	
+	    (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+	<script>
+	  $(window).load(function(){
+	    $('a').each (function () {
+	      href = $(this).attr ('href');
+	      if (href !== undefined && href.substring (0, 4) == 'http' && href.indexOf ('https://www.arduino.cc/en/Guide/arduino.cc') == -1)
+	        $(this).attr ('target', '_blank');
+	    });
+
+	    // js for language dropdown
+	    $('.language-dropdown .current').on('click', function(e){
+          e.stopPropagation();
+          $('.language-dropdown ul').toggle();
+        });
+
+        $('.language-dropdown .selector').on('click', function(e){
+          e.stopPropagation();
+          $('.language-dropdown ul').toggle();
+        });
+
+        $(document).on('click', function(){
+          $('.language-dropdown ul:visible').hide();  
+        });
+
+        $('.language-dropdown li a').on('click', function(e){
+        	$('.language-dropdown .current').text($(this).text());
+        });
+
+        //js for product pages navbar
+        var menu = $(".product-page-nav");
+	    var menuItems = menu.find("a");
+	    var timeoutId = null;
+	    var limitTop = 600;
+
+	    var menuOffset = $('.product-page-nav li').first().offset();
+	    if(menuOffset) {
+	    	limitTop = menuOffset.top;
+	    }
+	    var limitBottom = $('.addthis_toolbox').offset().top;
+
+	    var activateSection = function($sectionToActivate) {
+	      var label=$sectionToActivate.attr('label');
+
+	      $(".product-page-nav").find('li').removeClass('active');
+	      $sectionToActivate.addClass('active');
+	    };
+
+	    menuItems.click(function(e){
+
+	     e.preventDefault();
+	      var href = $(this).attr("href"),
+	          offsetTop = href === "#" ? 0 : $(href).offset().top,
+	          adjust = 0;
+	      if($(this).parent('li').hasClass('active') === false) {
+
+	          adjust = 80;
+
+	          $('html, body').animate({
+	                scrollTop: offsetTop - adjust
+	            }, 1500, 'easeOutExpo');
+
+	      }
+	    });
+
+	    $(window).scroll(function () {
+
+	      var windscroll = $(window).scrollTop();
+
+	      if(windscroll < limitTop) {
+	        $('.menu').removeClass('sticky');
+	        $('.menu').removeClass('fixed');
+	      }  else {
+	        $('.menu').addClass('sticky');
+	      }
+
+	      var menuEdgeBottomOffset = $('.menu.columns').offset();
+	      var menuEdgeBottom = 0;
+	      if(menuEdgeBottomOffset) {
+	      	menuEdgeBottom = menuEdgeBottomOffset.top + $('.menu.columns').height();
+	      }
+	      if(menuEdgeBottom > limitBottom) {
+	        $('.menu').fadeOut();
+	      } else {
+	        $('.menu').fadeIn();
+	      }
+	      menuItems.each(function(i) {
+	        var href = $(this).attr("href");
+	        if ($(href).offset().top <= windscroll + 150) {
+	          if(timeoutId) {
+	            clearTimeout(timeoutId);
+	          }
+	          timeoutId = setTimeout(activateSection, 60, $(".product-page-nav").find('li').eq(i));
+	        }
+	      });
+
+	    });
+
+	  });
+	</script>
+</body>
+
+<!-- Mirrored from www.arduino.cc/en/Guide/Troubleshooting by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 26 Oct 2015 14:00:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+</html>

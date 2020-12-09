@@ -1,0 +1,89 @@
+# default language
+language: generic
+
+env:
+  global:
+    - CLI_VERSION=latest
+
+matrix:
+  include:
+    # compile example sketches for the following boards
+    - env:
+        - BOARD='arduino:avr:mega:cpu=atmega2560'
+      install:
+        - arduino-cli core install arduino:avr
+
+    - env:
+        - BOARD='arduino:samd:mkrzero'
+      install:
+        - arduino-cli core install arduino:samd
+
+    - env:
+        - BOARD='arduino:megaavr:uno2018:mode=on'
+      install:
+        - arduino-cli core install arduino:megaavr
+
+    - env:
+        - BOARD='arduino:sam:arduino_due_x'
+      install:
+        - arduino-cli core install arduino:sam
+
+    # check all code files for compliance with the Arduino code formatting style
+    - env:
+        - NAME='Code Formatting Check'
+      language: minimal
+      before_install:
+        # install Artistic Style code formatter tool: http://astyle.sourceforge.net
+        - |
+          mkdir "${HOME}/astyle";
+          wget --no-verbose --output-document="${HOME}/astyle/astyle.tar.gz" "https://iweb.dl.sourceforge.net/project/astyle/astyle/astyle%203.1/astyle_3.1_linux.tar.gz";
+          tar --extract --file="${HOME}/astyle/astyle.tar.gz" --directory="${HOME}/astyle";
+          cd "${HOME}/astyle/astyle/build/gcc";
+          make;
+          export PATH="$PWD/bin:$PATH";
+          cd "$TRAVIS_BUILD_DIR"
+        # download Arduino's Artistic Style configuration file
+        - wget --directory-prefix="${HOME}/astyle" https://raw.githubusercontent.com/arduino/Arduino/master/build/shared/examples_formatter.conf
+      script:
+        # check code formatting
+        - find . -regextype posix-extended -path './.git' -prune -or \( -iregex '.*\.((ino)|(h)|(hpp)|(hh)|(hxx)|(h\+\+)|(cpp)|(cc)|(cxx)|(c\+\+)|(cp)|(c)|(ipp)|(ii)|(ixx)|(inl)|(tpp)|(txx)|(tpl))$' -and -type f \) -print0 | xargs -0 -L1 bash -c 'if ! diff "$0" <(astyle --options=${HOME}/astyle/examples_formatter.conf --dry-run < "$0"); then echo "Non-compliant code formatting in $0"; false; fi'
+
+    # check all files for commonly misspelled words
+    - env:
+        - NAME='Spell Check'
+      language: python
+      python: 3.6
+      before_install:
+        # https://github.com/codespell-project/codespell
+        - pip install codespell
+      script:
+        # codespell will ignore any words in extras/codespell-ignore-words-list.txt, which may be used to fix false positives
+        - codespell --skip="${TRAVIS_BUILD_DIR}/.git" --ignore-words="${TRAVIS_BUILD_DIR}/extras/codespell-ignore-words-list.txt" "${TRAVIS_BUILD_DIR}"
+
+# default phases shared by the compilation tests
+before_install:
+  - wget http://downloads.arduino.cc/arduino-cli/arduino-cli-$CLI_VERSION-linux64.tar.bz2
+  - tar xf arduino-cli-$CLI_VERSION-linux64.tar.bz2
+  - mkdir -p "$HOME/bin"
+  - mv arduino-cli "$HOME/bin"
+  - export PATH="$PATH:$HOME/bin"
+  - arduino-cli core update-index
+  - buildExampleSketch() { arduino-cli compile --verbose --warnings all --fqbn $BOARD "$PWD/examples/$1"; }
+  - mkdir -p "$HOME/Arduino/libraries"
+  - ln -s "$PWD" "$HOME/Arduino/libraries/."
+
+script:
+  - buildExampleSketch CardInfo
+  - buildExampleSketch Datalogger
+  - buildExampleSketch DumpFile
+  - buildExampleSketch Files
+  - buildExampleSketch listfiles
+  - buildExampleSketch ReadWrite
+
+notifications:
+  webhooks:
+    # use TravisBuddy to comment on any pull request that results in a failed CI build
+    urls:
+      - https://www.travisbuddy.com/
+    on_success: never
+    on_failure: always
