@@ -24,6 +24,8 @@ public class EditorProject extends JPanel {
 
   private ProjectToolbar projectToolbar;
 
+  private NavigateDialog navigateDialog;
+
   boolean navigating;
 
 
@@ -121,10 +123,10 @@ public class EditorProject extends JPanel {
     jDialog.setLocationRelativeTo(null);
     jDialog.setVisible(true);*/
     if(!navigating) {
-      NavigateDialog navigateDialog = new NavigateDialog(new File(System.getProperty("user.home")), fileRoot, this);
+      navigateDialog = new NavigateDialog(new File(System.getProperty("user.home")), fileRoot, this);
       navigating = true;
     }else{
-
+      navigateDialog.getDialog().toFront();
     }
   }
 

@@ -126,4 +126,8 @@ public class NavigateDialog extends JExplorerPanel implements ActionListener, Mo
       }
     }
   }
+
+  public JDialog getDialog(){
+    return dialog;
+  }
 }
