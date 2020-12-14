@@ -373,7 +373,7 @@ public class SerialPlotter extends AbstractMonitor {
     sendButton.addActionListener(listener);
   }
 
-  public void appyPreferences() {
+  public void applyPreferences() {
     // Apply line endings.
     if (PreferencesData.get("serial.line_ending") != null) {
       lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
