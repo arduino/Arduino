@@ -66,11 +66,21 @@ public class ContributionIndexTableModel
                                           + platform.getBoards().stream()
                                               .map(ContributedBoard::getName)
                                               .collect(Collectors.joining(" "));
+
+        // Add all the versions of the same core, even if there's no match
+        for (ContributedPlatformReleases contribution : contributions) {
+          if (contribution.shouldContain(platform)) {
+            addContribution(platform);
+            continue;
+          }
+        }
+
         if (!filter.test(platform)) {
           continue;
         }
         if (!stringContainsAll(compoundTargetSearchText, filters))
           continue;
+
         addContribution(platform);
       }
     }
@@ -110,12 +120,16 @@ public class ContributionIndexTableModel
 
   private void addContribution(ContributedPlatform platform) {
     for (ContributedPlatformReleases contribution : contributions) {
-      if (!contribution.shouldContain(platform))
+      if (!contribution.shouldContain(platform)) {
         continue;
+      }
+      if (contribution.contains(platform)) {
+        // no duplicates
+        return;
+      }
       contribution.add(platform);
       return;
     }
-
     contributions.add(new ContributedPlatformReleases(platform));
   }
 
