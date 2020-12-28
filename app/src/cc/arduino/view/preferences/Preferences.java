@@ -135,6 +135,7 @@ public class Preferences extends javax.swing.JDialog {
     checkUpdatesBox = new javax.swing.JCheckBox();
     saveVerifyUploadBox = new javax.swing.JCheckBox();
     accessibleIDEBox = new javax.swing.JCheckBox();
+    loadSketchLibrariesBox = new javax.swing.JCheckBox();
     jLabel1 = new javax.swing.JLabel();
     jLabel2 = new javax.swing.JLabel();
     scaleSpinner = new javax.swing.JSpinner();
@@ -284,6 +285,9 @@ public class Preferences extends javax.swing.JDialog {
 
     accessibleIDEBox.setText(tr("Use accessibility features"));
     checkboxesContainer.add(accessibleIDEBox);
+
+	loadSketchLibrariesBox.setText(tr("Use libraries in sketch folder"));
+	checkboxesContainer.add(loadSketchLibrariesBox);
 
     jLabel1.setText(tr("Interface scale:"));
 
@@ -718,6 +722,7 @@ public class Preferences extends javax.swing.JDialog {
   private javax.swing.JButton browseButton;
   private javax.swing.JCheckBox checkUpdatesBox;
   private javax.swing.JCheckBox accessibleIDEBox;
+  private javax.swing.JCheckBox loadSketchLibrariesBox;
   private javax.swing.JPanel checkboxesContainer;
   private javax.swing.JComboBox comboLanguage;
   private javax.swing.JLabel comboLanguageLabel;
@@ -833,6 +838,8 @@ public class Preferences extends javax.swing.JDialog {
 
     PreferencesData.setBoolean("ide.accessible", accessibleIDEBox.isSelected());
 
+    PreferencesData.setBoolean("build.load_sketch_libraries",loadSketchLibrariesBox.isSelected());
+
     PreferencesData.set("boardsmanager.additional.urls", additionalBoardsManagerField.getText().replace("\r\n", "\n").replace("\r", "\n").replace("\n", ","));
 
     PreferencesData.set(Constants.PREF_PROXY_TYPE, proxyTypeButtonGroup.getSelection().getActionCommand());
@@ -912,6 +919,8 @@ public class Preferences extends javax.swing.JDialog {
     }
 
     accessibleIDEBox.setSelected(PreferencesData.getBoolean("ide.accessible"));
+
+    loadSketchLibrariesBox.setSelected(PreferencesData.getBoolean("build.load_sketch_libraries"));
 
     saveVerifyUploadBox.setSelected(PreferencesData.getBoolean("editor.save_on_verify"));
 
