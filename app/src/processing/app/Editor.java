@@ -22,27 +22,93 @@
 
 package processing.app;
 
-import processing.app.debug.*;
-import processing.app.syntax.*;
-import processing.app.tools.*;
-import processing.core.*;
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
+import static processing.app.Theme.scale;
 
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.event.*;
-import java.awt.print.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.zip.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import javax.swing.undo.*;
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
 
-import gnu.io.*;
+import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
+
+import com.jcraft.jsch.JSchException;
+
+import cc.arduino.CompilerProgressListener;
+import cc.arduino.packages.BoardPort;
+import cc.arduino.packages.MonitorFactory;
+import cc.arduino.packages.Uploader;
+import cc.arduino.packages.uploaders.SerialUploader;
+import cc.arduino.view.GoToLineNumber;
+import cc.arduino.view.StubMenuListener;
+import cc.arduino.view.findreplace.FindReplace;
+import jssc.SerialPortException;
+import processing.app.debug.RunnerException;
+import processing.app.debug.TargetBoard;
+import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.DocumentTextChangeListener;
+import processing.app.helpers.Keys;
+import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.StringReplacer;
+import processing.app.legacy.PApplet;
+import processing.app.syntax.PdeKeywords;
+import processing.app.syntax.SketchTextArea;
+import processing.app.tools.MenuScroller;
+import processing.app.tools.Tool;
 
 /**
  * Main editor panel for the Processing Development Environment.
@@ -50,17 +116,52 @@ import gnu.io.*;
 @SuppressWarnings("serial")
 public class Editor extends JFrame implements RunnerListener {
 
-  Base base;
+  public static final int MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR = 10000;
+
+  final Platform platform;
+  private JMenu recentSketchesMenu;
+  private JMenu programmersMenu;
+  private final Box upper;
+  private ArrayList<EditorTab> tabs = new ArrayList<>();
+  private int currentTabIndex = -1;
+
+  private static class ShouldSaveIfModified
+      implements Predicate<SketchController> {
+
+    @Override
+    public boolean test(SketchController controller) {
+      return PreferencesData.getBoolean("editor.save_on_verify")
+             && controller.getSketch().isModified()
+             && !controller.isReadOnly();
+    }
+  }
+
+  private static class CanExportInSketchFolder
+      implements Predicate<SketchController> {
+
+    @Override
+    public boolean test(SketchController controller) {
+      if (controller.isReadOnly()) {
+        return false;
+      }
+      if (controller.getSketch().isModified()) {
+        return PreferencesData.getBoolean("editor.save_on_verify");
+      }
+      return true;
+    }
+  }
+
+  final Base base;
 
   // otherwise, if the window is resized with the message label
   // set to blank, it's preferredSize() will be fukered
-  static protected final String EMPTY =
+  private static final String EMPTY =
     "                                                                     " +
     "                                                                     " +
     "                                                                     ";
 
   /** Command on Mac OS X, Ctrl on Windows and Linux */
-  static final int SHORTCUT_KEY_MASK =
+  private static final int SHORTCUT_KEY_MASK =
     Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
   /** Command-W on Mac OS X, Ctrl-W on Windows and Linux */
   static final KeyStroke WINDOW_CLOSE_KEYSTROKE =
@@ -74,17 +175,17 @@ public class Editor extends JFrame implements RunnerListener {
    */
   boolean untitled;
 
-  PageFormat pageFormat;
-  PrinterJob printerJob;
+  private PageFormat pageFormat;
 
   // file, sketch, and tools menus for re-inserting items
-  JMenu fileMenu;
-  JMenu sketchMenu;
-  JMenu toolsMenu;
+  private JMenu fileMenu;
+  private JMenu toolsMenu;
 
-  int numTools = 0;
+  private int numTools = 0;
 
-  EditorToolbar toolbar;
+  static public boolean avoidMultipleOperations = false;
+
+  private final EditorToolbar toolbar;
   // these menus are shared so that they needn't be rebuilt for all windows
   // each time a sketch is created, renamed, or moved.
   static JMenu toolbarMenu;
@@ -92,66 +193,56 @@ public class Editor extends JFrame implements RunnerListener {
   static JMenu examplesMenu;
   static JMenu importMenu;
 
-  // these menus are shared so that the board and serial port selections
-  // are the same for all windows (since the board and serial port that are
-  // actually used are determined by the preferences, which are shared)
-  static JMenu boardsMenu;
-  static JMenu serialMenu;
+  private static JMenu portMenu;
 
-  static SerialMenuListener serialMenuListener;
-  static SerialMonitor serialMonitor;
-  
-  EditorHeader header;
+  static volatile AbstractMonitor serialMonitor;
+  static AbstractMonitor serialPlotter;
+
+  final EditorHeader header;
   EditorStatus status;
   EditorConsole console;
 
-  JSplitPane splitPane;
-  JPanel consolePanel;
-
-  JLabel lineNumberComponent;
+  private JSplitPane splitPane;
 
   // currently opened program
+  SketchController sketchController;
   Sketch sketch;
 
   EditorLineStatus lineStatus;
 
   //JEditorPane editorPane;
-  
-  JEditTextArea textarea;
-  EditorListener listener;
 
-  // runtime information and window placement
-  Point sketchWindowLocation;
+  /** Contains all EditorTabs, of which only one will be visible */
+  private JPanel codePanel;
+
   //Runner runtime;
 
-  JMenuItem exportAppItem;
-  JMenuItem saveMenuItem;
-  JMenuItem saveAsMenuItem;
+  private JMenuItem saveMenuItem;
+  private JMenuItem saveAsMenuItem;
 
-  boolean running;
   //boolean presenting;
-  boolean uploading;
+  static private boolean uploading;
 
   // undo fellers
-  JMenuItem undoItem, redoItem;
-  protected UndoAction undoAction;
-  protected RedoAction redoAction;
-  UndoManager undo;
-  // used internally, and only briefly
-  CompoundEdit compoundEdit;
+  private JMenuItem undoItem;
+  private JMenuItem redoItem;
 
-  FindReplace find;
+  private FindReplace find;
 
   Runnable runHandler;
   Runnable presentHandler;
-  Runnable stopHandler;
-  Runnable exportHandler;
-  Runnable exportAppHandler;
+  private Runnable runAndSaveHandler;
+  private Runnable presentAndSaveHandler;
+  private UploadHandler uploadHandler;
+  private UploadHandler uploadUsingProgrammerHandler;
+  private Runnable timeoutUploadHandler;
 
+  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
 
-  public Editor(Base ibase, String path, int[] location) {
+  public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
     this.base = ibase;
+    this.platform = platform;
 
     Base.setIcon(this);
 
@@ -172,47 +263,42 @@ public class Editor extends JFrame implements RunnerListener {
     // When bringing a window to front, let the Base know
     addWindowListener(new WindowAdapter() {
         public void windowActivated(WindowEvent e) {
-//          System.err.println("activate");  // not coming through
           base.handleActivated(Editor.this);
-          // re-add the sub-menus that are shared by all windows
-          fileMenu.insert(sketchbookMenu, 2);
-          fileMenu.insert(examplesMenu, 3);
-          sketchMenu.insert(importMenu, 4);
-          toolsMenu.insert(boardsMenu, numTools);
-          toolsMenu.insert(serialMenu, numTools + 1);
         }
 
         // added for 1.0.5
         // http://dev.processing.org/bugs/show_bug.cgi?id=1260
         public void windowDeactivated(WindowEvent e) {
-//          System.err.println("deactivate");  // not coming through
-          fileMenu.remove(sketchbookMenu);
-          fileMenu.remove(examplesMenu);
-          sketchMenu.remove(importMenu);
-          toolsMenu.remove(boardsMenu);
-          toolsMenu.remove(serialMenu);
+          List<Component> toolsMenuItemsToRemove = new LinkedList<>();
+          for (Component menuItem : toolsMenu.getMenuComponents()) {
+            if (menuItem instanceof JComponent) {
+              Object removeOnWindowDeactivation = ((JComponent) menuItem).getClientProperty("removeOnWindowDeactivation");
+              if (removeOnWindowDeactivation != null && Boolean.valueOf(removeOnWindowDeactivation.toString())) {
+                toolsMenuItemsToRemove.add(menuItem);
+              }
+            }
+          }
+          for (Component menuItem : toolsMenuItemsToRemove) {
+            toolsMenu.remove(menuItem);
+          }
+          toolsMenu.remove(portMenu);
         }
       });
 
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
 
-    if (serialMonitor == null) {
-      serialMonitor = new SerialMonitor(Preferences.get("serial.port"));
-      serialMonitor.setIconImage(getIconImage());
-    }
-    
     buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
     Container contentPain = getContentPane();
     contentPain.setLayout(new BorderLayout());
-    JPanel pain = new JPanel();
-    pain.setLayout(new BorderLayout());
-    contentPain.add(pain, BorderLayout.CENTER);
+    JPanel pane = new JPanel();
+    pane.setLayout(new BorderLayout());
+    contentPain.add(pane, BorderLayout.CENTER);
 
     Box box = Box.createVerticalBox();
-    Box upper = Box.createVerticalBox();
+    upper = Box.createVerticalBox();
 
     if (toolbarMenu == null) {
       toolbarMenu = new JMenu();
@@ -224,30 +310,27 @@ public class Editor extends JFrame implements RunnerListener {
     header = new EditorHeader(this);
     upper.add(header);
 
-    textarea = new JEditTextArea(new PdeTextAreaDefaults());
-    textarea.setRightClickPopup(new TextAreaPopup());
-    textarea.setHorizontalOffset(6);
-
     // assemble console panel, consisting of status area and the console itself
-    consolePanel = new JPanel();
+    JPanel consolePanel = new JPanel();
     consolePanel.setLayout(new BorderLayout());
 
     status = new EditorStatus(this);
     consolePanel.add(status, BorderLayout.NORTH);
 
-    console = new EditorConsole(this);
+    console = new EditorConsole(base);
+    console.setName("console");
     // windows puts an ugly border on this guy
     console.setBorder(null);
     consolePanel.add(console, BorderLayout.CENTER);
 
-    lineStatus = new EditorLineStatus(textarea);
+    lineStatus = new EditorLineStatus();
     consolePanel.add(lineStatus, BorderLayout.SOUTH);
 
-    upper.add(textarea);
-    splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                               upper, consolePanel);
+    codePanel = new JPanel(new BorderLayout());
+    upper.add(codePanel);
 
-    splitPane.setOneTouchExpandable(true);
+    splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper, consolePanel);
+
     // repaint child panes while resizing
     splitPane.setContinuousLayout(true);
     // if window increases in size, give all of increase to
@@ -257,57 +340,47 @@ public class Editor extends JFrame implements RunnerListener {
     // to fix ugliness.. normally macosx java 1.3 puts an
     // ugly white border around this object, so turn it off.
     splitPane.setBorder(null);
+    // By default, the split pane binds Ctrl-Tab and Ctrl-Shift-Tab for changing
+    // focus. Since we do not use that, but want to use these shortcuts for
+    // switching tabs, remove the bindings from the split pane. This allows the
+    // events to bubble up and be handled by the EditorHeader.
+    Keys.killBinding(splitPane, Keys.ctrl(KeyEvent.VK_TAB));
+    Keys.killBinding(splitPane, Keys.ctrlShift(KeyEvent.VK_TAB));
 
-    // the default size on windows is too small and kinda ugly
-    int dividerSize = Preferences.getInteger("editor.divider.size");
-    if (dividerSize != 0) {
-      splitPane.setDividerSize(dividerSize);
-    }
+    splitPane.setDividerSize(scale(splitPane.getDividerSize()));
 
     // the following changed from 600, 400 for netbooks
     // http://code.google.com/p/arduino/issues/detail?id=52
-    splitPane.setMinimumSize(new Dimension(600, 100));
+    splitPane.setMinimumSize(scale(new Dimension(600, 100)));
     box.add(splitPane);
 
     // hopefully these are no longer needed w/ swing
     // (har har har.. that was wishful thinking)
-    listener = new EditorListener(this, textarea);
-    pain.add(box);
+    // listener = new EditorListener(this, textarea);
+    pane.add(box);
 
-    // get shift down/up events so we can show the alt version of toolbar buttons
-    textarea.addKeyListener(toolbar);
-
-    pain.setTransferHandler(new FileDropHandler());
-
-//    System.out.println("t1");
-
-    // Finish preparing Editor (formerly found in Base)
-    pack();
-
-//    System.out.println("t2");
-
-    // Set the window bounds and the divider location before setting it visible
-    setPlacement(location);
-
+    pane.setTransferHandler(new FileDropHandler());
 
     // Set the minimum size for the editor window
-    setMinimumSize(new Dimension(Preferences.getInteger("editor.window.width.min"),
-                                 Preferences.getInteger("editor.window.height.min")));
-//    System.out.println("t3");
+    setMinimumSize(scale(new Dimension(
+        PreferencesData.getInteger("editor.window.width.min"),
+        PreferencesData.getInteger("editor.window.height.min"))));
 
     // Bring back the general options for the editor
     applyPreferences();
 
-//    System.out.println("t4");
+    // Finish preparing Editor (formerly found in Base)
+    pack();
+
+    // Set the window bounds and the divider location before setting it visible
+    setPlacement(storedLocation, defaultLocation);
 
     // Open the document that was passed in
-    boolean loaded = handleOpenInternal(path);
-    if (!loaded) sketch = null;
+    boolean loaded = handleOpenInternal(file);
+    if (!loaded) sketchController = null;
 
-//    System.out.println("t5");
-
-    // All set, now show the window
-    //setVisible(true);
+    // default the console output to the last opened editor
+    EditorConsole.setCurrentEditorConsole(console);
   }
 
 
@@ -316,7 +389,7 @@ public class Editor extends JFrame implements RunnerListener {
    * window. Dragging files into the editor window is the same as using
    * "Sketch &rarr; Add File" for each file.
    */
-  class FileDropHandler extends TransferHandler {
+  private class FileDropHandler extends TransferHandler {
     public boolean canImport(JComponent dest, DataFlavor[] flavors) {
       return true;
     }
@@ -330,11 +403,10 @@ public class Editor extends JFrame implements RunnerListener {
           new DataFlavor("text/uri-list;class=java.lang.String");
 
         if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          java.util.List list = (java.util.List)
+          List<File> list = (List<File>)
             transferable.getTransferData(DataFlavor.javaFileListFlavor);
-          for (int i = 0; i < list.size(); i++) {
-            File file = (File) list.get(i);
-            if (sketch.addFile(file)) {
+          for (File file : list) {
+            if (sketchController.addFile(file)) {
               successful++;
             }
           }
@@ -343,16 +415,16 @@ public class Editor extends JFrame implements RunnerListener {
           // this method of moving files.
           String data = (String)transferable.getTransferData(uriListFlavor);
           String[] pieces = PApplet.splitTokens(data, "\r\n");
-          for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i].startsWith("#")) continue;
+          for (String piece : pieces) {
+            if (piece.startsWith("#")) continue;
 
             String path = null;
-            if (pieces[i].startsWith("file:///")) {
-              path = pieces[i].substring(7);
-            } else if (pieces[i].startsWith("file:/")) {
-              path = pieces[i].substring(5);
+            if (piece.startsWith("file:///")) {
+              path = piece.substring(7);
+            } else if (piece.startsWith("file:/")) {
+              path = piece.substring(5);
             }
-            if (sketch.addFile(new File(path))) {
+            if (sketchController.addFile(new File(path))) {
               successful++;
             }
           }
@@ -363,30 +435,36 @@ public class Editor extends JFrame implements RunnerListener {
       }
 
       if (successful == 0) {
-        statusError(_("No files were added to the sketch."));
+        statusError(tr("No files were added to the sketch."));
 
       } else if (successful == 1) {
-        statusNotice(_("One file added to the sketch."));
+        statusNotice(tr("One file added to the sketch."));
 
       } else {
-        statusNotice(
-	    I18n.format(_("{0} files added to the sketch."), successful));
+        statusNotice(I18n.format(tr("{0} files added to the sketch."), successful));
       }
       return true;
     }
   }
 
+  private void setPlacement(int[] storedLocation, int[] defaultLocation) {
+    if (storedLocation.length > 5 && storedLocation[5] != 0) {
+      setExtendedState(storedLocation[5]);
+      setPlacement(defaultLocation);
+    } else {
+      setPlacement(storedLocation);
+    }
+  }
 
-  protected void setPlacement(int[] location) {
+  private void setPlacement(int[] location) {
     setBounds(location[0], location[1], location[2], location[3]);
     if (location[4] != 0) {
       splitPane.setDividerLocation(location[4]);
     }
   }
 
-
   protected int[] getPlacement() {
-    int[] location = new int[5];
+    int[] location = new int[6];
 
     // Get the dimensions of the Frame
     Rectangle bounds = getBounds();
@@ -397,21 +475,10 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Get the current placement of the divider
     location[4] = splitPane.getDividerLocation();
+    location[5] = getExtendedState() & MAXIMIZED_BOTH;
 
     return location;
   }
-
-
-  /**
-   * Hack for #@#)$(* Mac OS X 10.2.
-   * <p/>
-   * This appears to only be required on OS X 10.2, and is not
-   * even being called on later versions of OS X or Windows.
-   */
-//  public Dimension getMinimumSize() {
-//    //System.out.println("getting minimum size");
-//    return new Dimension(500, 550);
-//  }
 
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -422,305 +489,327 @@ public class Editor extends JFrame implements RunnerListener {
    * the app is just starting up, or the user just finished messing
    * with things in the Preferences window.
    */
-  protected void applyPreferences() {
-
-    // apply the setting for 'use external editor'
-    boolean external = Preferences.getBoolean("editor.external");
-
-    textarea.setEditable(!external);
+  public void applyPreferences() {
+    boolean external = PreferencesData.getBoolean("editor.external");
     saveMenuItem.setEnabled(!external);
     saveAsMenuItem.setEnabled(!external);
-    
-    textarea.setDisplayLineNumbers(Preferences.getBoolean("editor.linenumbers"));
-
-    TextAreaPainter painter = textarea.getPainter();
-    if (external) {
-      // disable line highlight and turn off the caret when disabling
-      Color color = Theme.getColor("editor.external.bgcolor");
-      painter.setBackground(color);
-      painter.setLineHighlightEnabled(false);
-      textarea.setCaretVisible(false);
-
-    } else {
-      Color color = Theme.getColor("editor.bgcolor");
-      painter.setBackground(color);
-      boolean highlight = Preferences.getBoolean("editor.linehighlight");
-      painter.setLineHighlightEnabled(highlight);
-      textarea.setCaretVisible(true);
+    for (EditorTab tab: tabs) {
+      tab.applyPreferences();
     }
-
-    // apply changes to the font size for the editor
-    //TextAreaPainter painter = textarea.getPainter();
-    painter.setFont(Preferences.getFont("editor.font"));
-    //Font font = painter.getFont();
-    //textarea.getPainter().setFont(new Font("Courier", Font.PLAIN, 36));
-
-    // in case tab expansion stuff has changed
-    listener.applyPreferences();
-
-    // in case moved to a new location
-    // For 0125, changing to async version (to be implemented later)
-    //sketchbook.rebuildMenus();
-    // For 0126, moved into Base, which will notify all editors.
-    //base.rebuildMenusAsync();
+    console.applyPreferences();
+    if (serialMonitor != null) {
+      serialMonitor.applyPreferences();
+    }
   }
 
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 
-  protected void buildMenuBar() {
+  private void buildMenuBar() {
     JMenuBar menubar = new JMenuBar();
-    menubar = new JMenuBar();
-    menubar.add(buildFileMenu());
+    final JMenu fileMenu = buildFileMenu();
+    fileMenu.addMenuListener(new StubMenuListener() {
+      @Override
+      public void menuSelected(MenuEvent e) {
+        List<Component> components = Arrays.asList(fileMenu.getMenuComponents());
+        if (!components.contains(sketchbookMenu)) {
+          fileMenu.insert(sketchbookMenu, 3);
+        }
+        if (!components.contains(examplesMenu)) {
+          fileMenu.insert(examplesMenu, 4);
+        }
+        fileMenu.revalidate();
+        validate();
+      }
+    });
+    menubar.add(fileMenu);
+
     menubar.add(buildEditMenu());
-    menubar.add(buildSketchMenu());
-    menubar.add(buildToolsMenu());
+
+    final JMenu sketchMenu = new JMenu(tr("Sketch"));
+    sketchMenu.setMnemonic(KeyEvent.VK_S);
+    sketchMenu.addMenuListener(new StubMenuListener() {
+
+      @Override
+      public void menuSelected(MenuEvent e) {
+        buildSketchMenu(sketchMenu);
+        sketchMenu.revalidate();
+        validate();
+      }
+    });
+    buildSketchMenu(sketchMenu);
+    menubar.add(sketchMenu);
+
+    final JMenu toolsMenu = buildToolsMenu();
+    toolsMenu.addMenuListener(new StubMenuListener() {
+      @Override
+      public void menuSelected(MenuEvent e) {
+        List<Component> components = Arrays.asList(toolsMenu.getMenuComponents());
+        int offset = 0;
+        for (JMenu menu : base.getBoardsCustomMenus()) {
+          if (!components.contains(menu)) {
+            toolsMenu.insert(menu, numTools + offset);
+            offset++;
+          }
+        }
+        if (!components.contains(portMenu)) {
+          toolsMenu.insert(portMenu, numTools + offset);
+        }
+        programmersMenu.removeAll();
+        base.getProgrammerMenus().forEach(programmersMenu::add);
+        toolsMenu.revalidate();
+        validate();
+      }
+    });
+    menubar.add(toolsMenu);
+
     menubar.add(buildHelpMenu());
     setJMenuBar(menubar);
   }
 
 
-  protected JMenu buildFileMenu() {
+  private JMenu buildFileMenu() {
     JMenuItem item;
-    fileMenu = new JMenu(_("File"));
+    fileMenu = new JMenu(tr("File"));
+    fileMenu.setMnemonic(KeyEvent.VK_F);
 
-    item = newJMenuItem(_("New"), 'N');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.handleNew();
-        }
-      });
+    item = newJMenuItem(tr("New"), 'N');
+    item.addActionListener(event -> {
+      try {
+        base.handleNew();
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    });
     fileMenu.add(item);
 
-    item = Editor.newJMenuItem(_("Open..."), 'O');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.handleOpenPrompt();
-        }
-      });
+    item = Editor.newJMenuItem(tr("Open..."), 'O');
+    item.addActionListener(event -> {
+      try {
+        base.handleOpenPrompt();
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    });
     fileMenu.add(item);
+
+    base.rebuildRecentSketchesMenuItems();
+    recentSketchesMenu = new JMenu(tr("Open Recent"));
+    SwingUtilities.invokeLater(() -> rebuildRecentSketchesMenu());
+    fileMenu.add(recentSketchesMenu);
 
     if (sketchbookMenu == null) {
-      sketchbookMenu = new JMenu(_("Sketchbook"));
+      sketchbookMenu = new JMenu(tr("Sketchbook"));
+      MenuScroller.setScrollerFor(sketchbookMenu);
       base.rebuildSketchbookMenu(sketchbookMenu);
     }
     fileMenu.add(sketchbookMenu);
 
     if (examplesMenu == null) {
-      examplesMenu = new JMenu(_("Examples"));
+      examplesMenu = new JMenu(tr("Examples"));
+      MenuScroller.setScrollerFor(examplesMenu);
       base.rebuildExamplesMenu(examplesMenu);
     }
     fileMenu.add(examplesMenu);
 
-    item = Editor.newJMenuItem(_("Close"), 'W');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.handleClose(Editor.this);
-        }
-      });
+    item = Editor.newJMenuItem(tr("Close"), 'W');
+    item.addActionListener(event -> base.handleClose(Editor.this));
     fileMenu.add(item);
 
-    saveMenuItem = newJMenuItem(_("Save"), 'S');
-    saveMenuItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSave(false);
-        }
-      });
+    saveMenuItem = newJMenuItem(tr("Save"), 'S');
+    saveMenuItem.addActionListener(event -> handleSave(false));
     fileMenu.add(saveMenuItem);
 
-    saveAsMenuItem = newJMenuItemShift(_("Save As..."), 'S');
-    saveAsMenuItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSaveAs();
-        }
-      });
+    saveAsMenuItem = newJMenuItemShift(tr("Save As..."), 'S');
+    saveAsMenuItem.addActionListener(event -> handleSaveAs());
     fileMenu.add(saveAsMenuItem);
-
-    item = newJMenuItem(_("Upload"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(false);
-        }
-      });
-    fileMenu.add(item);
-
-    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(true);
-        }
-      });
-    fileMenu.add(item);
 
     fileMenu.addSeparator();
 
-    item = newJMenuItemShift(_("Page Setup"), 'P');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePageSetup();
-        }
-      });
+    item = newJMenuItemShift(tr("Page Setup"), 'P');
+    item.addActionListener(event -> handlePageSetup());
     fileMenu.add(item);
 
-    item = newJMenuItem(_("Print"), 'P');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePrint();
-        }
-      });
+    item = newJMenuItem(tr("Print"), 'P');
+    item.addActionListener(event -> handlePrint());
     fileMenu.add(item);
 
     // macosx already has its own preferences and quit menu
-    if (!Base.isMacOS()) {
+    if (!OSUtils.hasMacOSStyleMenus()) {
       fileMenu.addSeparator();
 
-      item = newJMenuItem(_("Preferences"), ',');
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handlePrefs();
-          }
-        });
+      item = newJMenuItem(tr("Preferences"), ',');
+      item.addActionListener(event -> base.handlePrefs());
       fileMenu.add(item);
 
       fileMenu.addSeparator();
 
-      item = newJMenuItem(_("Quit"), 'Q');
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handleQuit();
-          }
-        });
+      item = newJMenuItem(tr("Quit"), 'Q');
+      item.addActionListener(event -> base.handleQuit());
       fileMenu.add(item);
     }
     return fileMenu;
   }
 
+  public void rebuildRecentSketchesMenu() {
+    recentSketchesMenu.removeAll();
+    for (JMenuItem recentSketchMenuItem  : base.getRecentSketchesMenuItems()) {
+      recentSketchesMenu.add(recentSketchMenuItem);
+    }
+  }
 
-  protected JMenu buildSketchMenu() {
-    JMenuItem item;
-    sketchMenu = new JMenu(_("Sketch"));
+  private void buildSketchMenu(JMenu sketchMenu) {
+    sketchMenu.removeAll();
 
-    item = newJMenuItem(_("Verify / Compile"), 'R');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleRun(false);
-        }
-      });
+    JMenuItem item = newJMenuItem(tr("Verify/Compile"), 'R');
+    item.addActionListener(event -> handleRun(false, presentHandler, runHandler));
     sketchMenu.add(item);
 
-//    item = newJMenuItemShift("Verify / Compile (verbose)", 'R');
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleRun(true);
-//        }
-//      });
-//    sketchMenu.add(item);
+    item = newJMenuItem(tr("Upload"), 'U');
+    item.addActionListener(event -> handleExport(false));
+    sketchMenu.add(item);
+
+    item = newJMenuItemShift(tr("Upload Using Programmer"), 'U');
+    item.addActionListener(event -> handleExport(true));
+    sketchMenu.add(item);
+
+    item = newJMenuItemAlt(tr("Export compiled Binary"), 'S');
+    item.addActionListener(event -> {
+      if (!(new CanExportInSketchFolder().test(sketchController))) {
+        System.out.println(tr("Export canceled, changes must first be saved."));
+        return;
+      }
+      handleRun(false, new CanExportInSketchFolder(), presentAndSaveHandler, runAndSaveHandler);
+
+    });
+    sketchMenu.add(item);
 
 //    item = new JMenuItem("Stop");
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleStop();
-//        }
-//      });
+//    item.addActionListener(event -> handleStop());
 //    sketchMenu.add(item);
 
     sketchMenu.addSeparator();
 
-    if (importMenu == null) {
-      importMenu = new JMenu(_("Import Library..."));
-      base.rebuildImportMenu(importMenu, this);
-    }
-    sketchMenu.add(importMenu);
-
-    item = newJMenuItem(_("Show Sketch Folder"), 'K');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.openFolder(sketch.getFolder());
-        }
-      });
+    item = newJMenuItem(tr("Show Sketch Folder"), 'K');
+    item.addActionListener(event -> Base.openFolder(sketch.getFolder()));
     sketchMenu.add(item);
     item.setEnabled(Base.openFolderAvailable());
 
-    item = new JMenuItem(_("Add File..."));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          sketch.handleAddFile();
-        }
-      });
-    sketchMenu.add(item);
+    if (importMenu == null) {
+      importMenu = new JMenu(tr("Include Library"));
+      MenuScroller.setScrollerFor(importMenu);
+      base.rebuildImportMenu(importMenu);
+    }
+    sketchMenu.add(importMenu);
 
-    return sketchMenu;
+    item = new JMenuItem(tr("Add File..."));
+    item.addActionListener(event -> sketchController.handleAddFile());
+    sketchMenu.add(item);
   }
 
 
-  protected JMenu buildToolsMenu() {
-    toolsMenu = new JMenu(_("Tools"));
-    JMenu menu = toolsMenu;
-    JMenuItem item;
+  private JMenu buildToolsMenu() {
+    toolsMenu = new JMenu(tr("Tools"));
+    toolsMenu.setMnemonic(KeyEvent.VK_T);
 
-    addInternalTools(menu);
-    
-    item = newJMenuItemShift(_("Serial Monitor"), 'M');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSerial();
-        }
-      });
-    menu.add(item);
-    
-    addTools(menu, Base.getToolsFolder());
-    File sketchbookTools = new File(Base.getSketchbookFolder(), "tools");
-    addTools(menu, sketchbookTools);
+    addInternalTools(toolsMenu);
 
-    menu.addSeparator();
-    
-    numTools = menu.getItemCount();
-    
+    JMenuItem item = newJMenuItemShift(tr("Manage Libraries..."), 'I');
+    item.addActionListener(e -> base.openLibraryManager("", ""));
+    toolsMenu.add(item);
+
+    item = newJMenuItemShift(tr("Serial Monitor"), 'M');
+    item.addActionListener(e -> handleSerial());
+    toolsMenu.add(item);
+
+    item = newJMenuItemShift(tr("Serial Plotter"), 'L');
+    item.addActionListener(e -> handlePlotter());
+    toolsMenu.add(item);
+
+    addTools(toolsMenu, BaseNoGui.getToolsFolder());
+    File sketchbookTools = new File(BaseNoGui.getSketchbookFolder(), "tools");
+    addTools(toolsMenu, sketchbookTools);
+
+    toolsMenu.addSeparator();
+
+    numTools = toolsMenu.getItemCount();
+
     // XXX: DAM: these should probably be implemented using the Tools plugin
     // API, if possible (i.e. if it supports custom actions, etc.)
-    
-    if (boardsMenu == null) {
-      boardsMenu = new JMenu(_("Board"));
-      base.rebuildBoardsMenu(boardsMenu, this);
-    }
-    menu.add(boardsMenu);
-    
-    if (serialMenuListener == null)
-      serialMenuListener  = new SerialMenuListener();
-    if (serialMenu == null)
-      serialMenu = new JMenu(_("Serial Port"));
-    populateSerialMenu();
-    menu.add(serialMenu);
-    menu.addSeparator();
-    
-    JMenu programmerMenu = new JMenu(_("Programmer"));
-    base.rebuildProgrammerMenu(programmerMenu);
-    menu.add(programmerMenu);
 
-    item = new JMenuItem(_("Burn Bootloader"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        handleBurnBootloader();
+    base.getBoardsCustomMenus().stream().forEach(toolsMenu::add);
+
+    if (portMenu == null)
+      portMenu = new JMenu(tr("Port"));
+    populatePortMenu();
+    toolsMenu.add(portMenu);
+    MenuScroller.setScrollerFor(portMenu);
+    item = new JMenuItem(tr("Get Board Info"));
+    item.addActionListener(e -> handleBoardInfo());
+    toolsMenu.add(item);
+    toolsMenu.addSeparator();
+
+    base.rebuildProgrammerMenu();
+    programmersMenu = new JMenu(tr("Programmer"));
+    MenuScroller.setScrollerFor(programmersMenu);
+    base.getProgrammerMenus().stream().forEach(programmersMenu::add);
+    toolsMenu.add(programmersMenu);
+
+    item = new JMenuItem(tr("Burn Bootloader"));
+    item.addActionListener(e -> handleBurnBootloader());
+    toolsMenu.add(item);
+
+    toolsMenu.addMenuListener(new StubMenuListener() {
+      public JMenuItem getSelectedItemRecursive(JMenu menu) {
+        int count = menu.getItemCount();
+        for (int i=0; i < count; i++) {
+          JMenuItem item = menu.getItem(i);
+
+          if ((item instanceof JMenu))
+            item = getSelectedItemRecursive((JMenu)item);
+
+          if (item != null && item.isSelected())
+            return item;
+        }
+        return null;
       }
-    });
-    menu.add(item);
-        
-    menu.addMenuListener(new MenuListener() {
-      public void menuCanceled(MenuEvent e) {}
-      public void menuDeselected(MenuEvent e) {}
+
       public void menuSelected(MenuEvent e) {
         //System.out.println("Tools menu selected.");
-        populateSerialMenu();
+        populatePortMenu();
+        for (Component c : toolsMenu.getMenuComponents()) {
+          if ((c instanceof JMenu) && c.isVisible()) {
+            JMenu menu = (JMenu)c;
+            String name = menu.getText();
+            if (name == null) continue;
+            String basename = name;
+            int index = name.indexOf(':');
+            if (index > 0) basename = name.substring(0, index);
+
+            JMenuItem item = getSelectedItemRecursive(menu);
+            String sel = item != null ? item.getText() : null;
+            if (sel == null) {
+              if (!name.equals(basename)) menu.setText(basename);
+            } else {
+              if (sel.length() > 50) sel = sel.substring(0, 50) + "...";
+              String newname = basename + ": \"" + sel + "\"";
+              if (!name.equals(newname)) menu.setText(newname);
+            }
+          }
+        }
       }
     });
 
-    return menu;
+    return toolsMenu;
   }
 
 
-  protected void addTools(JMenu menu, File sourceFolder) {
-    HashMap<String, JMenuItem> toolItems = new HashMap<String, JMenuItem>();
+  private void addTools(JMenu menu, File sourceFolder) {
+    if (sourceFolder == null)
+      return;
+
+    Map<String, JMenuItem> toolItems = new HashMap<>();
 
     File[] folders = sourceFolder.listFiles(new FileFilter() {
       public boolean accept(File folder) {
@@ -737,8 +826,8 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
 
-    for (int i = 0; i < folders.length; i++) {
-      File toolDirectory = new File(folders[i], "tool");
+    for (File folder : folders) {
+      File toolDirectory = new File(folder, "tool");
 
       try {
         // add dir to classpath for .classes
@@ -748,7 +837,7 @@ public class Editor extends JFrame implements RunnerListener {
         File[] archives = toolDirectory.listFiles(new FilenameFilter() {
           public boolean accept(File dir, String name) {
             return (name.toLowerCase().endsWith(".jar") ||
-                    name.toLowerCase().endsWith(".zip"));
+              name.toLowerCase().endsWith(".zip"));
           }
         });
 
@@ -759,8 +848,8 @@ public class Editor extends JFrame implements RunnerListener {
         URLClassLoader loader = new URLClassLoader(urlList);
 
         String className = null;
-        for (int j = 0; j < archives.length; j++) {
-          className = findClassInZipFile(folders[i].getName(), archives[j]);
+        for (File archive : archives) {
+          className = findClassInZipFile(folder.getName(), archive);
           if (className != null) break;
         }
 
@@ -797,11 +886,9 @@ public class Editor extends JFrame implements RunnerListener {
 
         String title = tool.getMenuTitle();
         JMenuItem item = new JMenuItem(title);
-        item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            SwingUtilities.invokeLater(tool);
-            //new Thread(tool).start();
-          }
+        item.addActionListener(event -> {
+          SwingUtilities.invokeLater(tool);
+          //new Thread(tool).start();
         });
         //menu.add(item);
         toolItems.put(title, item);
@@ -810,23 +897,24 @@ public class Editor extends JFrame implements RunnerListener {
         e.printStackTrace();
       }
     }
-    ArrayList<String> toolList = new ArrayList<String>(toolItems.keySet());
+    ArrayList<String> toolList = new ArrayList<>(toolItems.keySet());
     if (toolList.size() == 0) return;
 
     menu.addSeparator();
     Collections.sort(toolList);
     for (String title : toolList) {
-      menu.add((JMenuItem) toolItems.get(title));
+      menu.add(toolItems.get(title));
     }
   }
 
 
-  protected String findClassInZipFile(String base, File file) {
+  private String findClassInZipFile(String base, File file) {
     // Class file to search for
     String classFileName = "/" + base + ".class";
 
+    ZipFile zipFile = null;
     try {
-      ZipFile zipFile = new ZipFile(file);
+      zipFile = new ZipFile(file);
       Enumeration<?> entries = zipFile.entries();
       while (entries.hasMoreElements()) {
         ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -846,25 +934,32 @@ public class Editor extends JFrame implements RunnerListener {
     } catch (IOException e) {
       //System.err.println("Ignoring " + filename + " (" + e.getMessage() + ")");
       e.printStackTrace();
-    }
-    return null;
+    } finally {
+      if (zipFile != null) {
+        try {
+           zipFile.close();
+         } catch (IOException e) {
+           // noop
+         }
+       }
+     }
+     return null;
+   }
+
+  public void updateKeywords(PdeKeywords keywords) {
+    for (EditorTab tab : tabs)
+      tab.updateKeywords(keywords);
   }
 
-
-  protected JMenuItem createToolMenuItem(String className) {
+  JMenuItem createToolMenuItem(String className) {
     try {
-      Class<?> toolClass = Class.forName(className);
-      final Tool tool = (Tool) toolClass.newInstance();
+      final Tool tool = getOrCreateToolInstance(className);
 
       JMenuItem item = new JMenuItem(tool.getMenuTitle());
 
       tool.init(Editor.this);
 
-      item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          SwingUtilities.invokeLater(tool);
-        }
-      });
+      item.addActionListener(event -> SwingUtilities.invokeLater(tool));
       return item;
 
     } catch (Exception e) {
@@ -873,11 +968,29 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
+  private Tool getOrCreateToolInstance(String className) {
+    Tool internalTool = internalToolCache.get(className);
+    if (internalTool == null) {
+      try {
+        Class<?> toolClass = Class.forName(className);
+        internalTool = (Tool) toolClass.newInstance();
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+      internalToolCache.put(className, internalTool);
+    }
+    return internalTool;
+  }
 
-  protected JMenu addInternalTools(JMenu menu) {
+  private void addInternalTools(JMenu menu) {
     JMenuItem item;
 
-    item = createToolMenuItem("processing.app.tools.AutoFormat");
+    item = createToolMenuItem("cc.arduino.packages.formatter.AStyle");
+    if (item == null) {
+      throw new NullPointerException("Tool cc.arduino.packages.formatter.AStyle unavailable");
+    }
+    item.setName("menuToolsAutoFormat");
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     item.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
     menu.add(item);
@@ -886,228 +999,178 @@ public class Editor extends JFrame implements RunnerListener {
     //menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
     menu.add(createToolMenuItem("processing.app.tools.Archiver"));
     menu.add(createToolMenuItem("processing.app.tools.FixEncoding"));
-
-//    // These are temporary entries while Android mode is being worked out.
-//    // The mode will not be in the tools menu, and won't involve a cmd-key
-//    if (!Base.RELEASE) {
-//      item = createToolMenuItem("processing.app.tools.android.AndroidTool");
-//    item.setAccelerator(KeyStroke.getKeyStroke('D', modifiers));
-//    menu.add(item);
-//      menu.add(createToolMenuItem("processing.app.tools.android.Reset"));
-//    }
-
-    return menu;
   }
 
 
-  class SerialMenuListener implements ActionListener {
-    //public SerialMenuListener() { }
-
-    public void actionPerformed(ActionEvent e) {
-      selectSerialPort(((JCheckBoxMenuItem)e.getSource()).getText());
-      base.onBoardOrPortChange();
-    }
-
-    /*
-    public void actionPerformed(ActionEvent e) {
-      System.out.println(e.getSource());
-      String name = e.getActionCommand();
-      PdeBase.properties.put("serial.port", name);
-      System.out.println("set to " + get("serial.port"));
-      //editor.skOpen(path + File.separator + name, name);
-      // need to push "serial.port" into PdeBase.properties
-    }
-    */
-  }
-  
-  protected void selectSerialPort(String name) {
-    if(serialMenu == null) {
-      System.out.println(_("serialMenu is null"));
+  private void selectSerialPort(String name) {
+    if(portMenu == null) {
+      System.out.println(tr("serialMenu is null"));
       return;
     }
     if (name == null) {
-      System.out.println(_("name is null"));
+      System.out.println(tr("name is null"));
       return;
     }
     JCheckBoxMenuItem selection = null;
-    for (int i = 0; i < serialMenu.getItemCount(); i++) {
-      JCheckBoxMenuItem item = ((JCheckBoxMenuItem)serialMenu.getItem(i));
-      if (item == null) {
-        System.out.println(_("name is null"));
+    for (int i = 0; i < portMenu.getItemCount(); i++) {
+      JMenuItem menuItem = portMenu.getItem(i);
+      if (!(menuItem instanceof JCheckBoxMenuItem)) {
         continue;
       }
-      item.setState(false);
-      if (name.equals(item.getText())) selection = item;
+      JCheckBoxMenuItem checkBoxMenuItem = ((JCheckBoxMenuItem) menuItem);
+      checkBoxMenuItem.setState(false);
+      if (name.equals(checkBoxMenuItem.getText())) selection = checkBoxMenuItem;
     }
     if (selection != null) selection.setState(true);
     //System.out.println(item.getLabel());
-    Preferences.set("serial.port", name);
-    serialMonitor.closeSerialPort();
-    serialMonitor.setVisible(false);
-    serialMonitor = new SerialMonitor(Preferences.get("serial.port"));
+
+    BaseNoGui.selectSerialPort(name);
+    try {
+      boolean reopenMonitor = ((serialMonitor != null && serialMonitor.isVisible()) ||
+                                serialPlotter != null && serialPlotter.isVisible());
+      if (serialMonitor != null) {
+        serialMonitor.close();
+      }
+      if (serialPlotter != null) {
+        serialPlotter.close();
+      }
+      if (reopenMonitor) {
+        handleSerial();
+      }
+    } catch (Exception e) {
+      // ignore
+    }
+
+    onBoardOrPortChange();
+    base.onBoardOrPortChange();
+
     //System.out.println("set to " + get("serial.port"));
   }
 
+  class BoardPortJCheckBoxMenuItem extends JCheckBoxMenuItem {
+    private BoardPort port;
 
-  protected void populateSerialMenu() {
-    // getting list of ports
+    public BoardPortJCheckBoxMenuItem(BoardPort port) {
+      super();
+      this.port = port;
+      setText(toString());
+      addActionListener(e -> {
+        selectSerialPort(port.getAddress());
+        base.onBoardOrPortChange();
+      });
+    }
 
-    JMenuItem rbMenuItem;
-    
-    //System.out.println("Clearing serial port menu.");
-	
-    serialMenu.removeAll();
-    boolean empty = true;
+    @Override
+    public String toString() {
+      // This is required for serialPrompt()
+      String label = port.getLabel();
+      if (port.getBoardName() != null && !port.getBoardName().isEmpty()) {
+        label += " (" + port.getBoardName() + ")";
+      }
+      return label;
+    }
+  }
 
-    try
-    {
-      for (Enumeration enumeration = CommPortIdentifier.getPortIdentifiers(); enumeration.hasMoreElements();)
-      {
-        CommPortIdentifier commportidentifier = (CommPortIdentifier)enumeration.nextElement();
-        //System.out.println("Found communication port: " + commportidentifier);
-        if (commportidentifier.getPortType() == CommPortIdentifier.PORT_SERIAL)
-        {
-          //System.out.println("Adding port to serial port menu: " + commportidentifier);
-          String curr_port = commportidentifier.getName();
-          rbMenuItem = new JCheckBoxMenuItem(curr_port, curr_port.equals(Preferences.get("serial.port")));
-          rbMenuItem.addActionListener(serialMenuListener);
-          //serialGroup.add(rbMenuItem);
-          serialMenu.add(rbMenuItem);
-          empty = false;
+  private void populatePortMenu() {
+    final List<String> PROTOCOLS_ORDER = Arrays.asList("serial", "network");
+    final List<String> PROTOCOLS_LABELS = Arrays.asList(tr("Serial ports"), tr("Network ports"));
+
+    portMenu.removeAll();
+
+    String selectedPort = PreferencesData.get("serial.port");
+
+    List<BoardPort> ports = Base.getDiscoveryManager().discovery();
+
+    ports = platform.filterPorts(ports, PreferencesData.getBoolean("serial.ports.showall"));
+
+    ports.stream() //
+        .filter(port -> port.getProtocolLabel() == null || port.getProtocolLabel().isEmpty())
+        .forEach(port -> {
+          int labelIdx = PROTOCOLS_ORDER.indexOf(port.getProtocol());
+          if (labelIdx != -1) {
+            port.setProtocolLabel(PROTOCOLS_LABELS.get(labelIdx));
+          } else {
+            port.setProtocolLabel(port.getProtocol());
+          }
+        });
+
+    Collections.sort(ports, (port1, port2) -> {
+      String pr1 = port1.getProtocol();
+      String pr2 = port2.getProtocol();
+      int prIdx1 = PROTOCOLS_ORDER.contains(pr1) ? PROTOCOLS_ORDER.indexOf(pr1) : 999;
+      int prIdx2 = PROTOCOLS_ORDER.contains(pr2) ? PROTOCOLS_ORDER.indexOf(pr2) : 999;
+      int r = prIdx1 - prIdx2;
+      if (r != 0)
+        return r;
+      r = port1.getProtocolLabel().compareTo(port2.getProtocolLabel());
+      if (r != 0)
+        return r;
+      return port1.getAddress().compareTo(port2.getAddress());
+    });
+
+    String lastProtocol = "";
+    String lastProtocolLabel = "";
+    for (BoardPort port : ports) {
+      if (!port.getProtocol().equals(lastProtocol) || !port.getProtocolLabel().equals(lastProtocolLabel)) {
+        if (!lastProtocol.isEmpty()) {
+          portMenu.addSeparator();
         }
+        lastProtocol = port.getProtocol();
+        lastProtocolLabel = port.getProtocolLabel();
+        JMenuItem item = new JMenuItem(tr(lastProtocolLabel));
+        item.setEnabled(false);
+        portMenu.add(item);
       }
-      if (!empty) {
-        //System.out.println("enabling the serialMenu");
-        serialMenu.setEnabled(true);
-      }
+      String address = port.getAddress();
 
+      BoardPortJCheckBoxMenuItem item = new BoardPortJCheckBoxMenuItem(port);
+      item.setSelected(address.equals(selectedPort));
+      portMenu.add(item);
     }
 
-    catch (Exception exception)
-    {
-      System.out.println(_("error retrieving port list"));
-      exception.printStackTrace();
-    }
-	
-    if (serialMenu.getItemCount() == 0) {
-      serialMenu.setEnabled(false);
-    }
-
-    //serialMenu.addSeparator();
-    //serialMenu.add(item);
+    portMenu.setEnabled(portMenu.getMenuComponentCount() > 0);
   }
 
 
-  protected JMenu buildHelpMenu() {
-    // To deal with a Mac OS X 10.5 bug, add an extra space after the name
-    // so that the OS doesn't try to insert its slow help menu.
-    JMenu menu = new JMenu(_("Help"));
-    JMenuItem item;
+  private JMenu buildHelpMenu() {
+    JMenu menu = new JMenu(tr("Help"));
+    menu.setMnemonic(KeyEvent.VK_H);
 
-    /*
-    // testing internal web server to serve up docs from a zip file
-    item = new JMenuItem("Web Server Test");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          //WebServer ws = new WebServer();
-          SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-              try {
-                int port = WebServer.launch("/Users/fry/coconut/processing/build/shared/reference.zip");
-                Base.openURL("http://127.0.0.1:" + port + "/reference/setup_.html");
-
-              } catch (IOException e1) {
-                e1.printStackTrace();
-              }
-            }
-          });
-        }
-      });
-    menu.add(item);
-    */
-
-    /*
-    item = new JMenuItem("Browser Test");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          //Base.openURL("http://processing.org/learning/gettingstarted/");
-          //JFrame browserFrame = new JFrame("Browser");
-          BrowserStartup bs = new BrowserStartup("jar:file:/Users/fry/coconut/processing/build/shared/reference.zip!/reference/setup_.html");
-          bs.initUI();
-          bs.launch();
-        }
-      });
-    menu.add(item);
-    */
-
-    item = new JMenuItem(_("Getting Started"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showGettingStarted();
-        }
-      });
+    JMenuItem item = new JMenuItem(tr("Getting Started"));
+    item.addActionListener(event -> Base.showArduinoGettingStarted());
     menu.add(item);
 
-    item = new JMenuItem(_("Environment"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showEnvironment();
-        }
-      });
+    item = new JMenuItem(tr("Environment"));
+    item.addActionListener(event -> Base.showEnvironment());
     menu.add(item);
 
-    item = new JMenuItem(_("Troubleshooting"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showTroubleshooting();
-        }
-      });
+    item = new JMenuItem(tr("Troubleshooting"));
+    item.addActionListener(event -> Base.showTroubleshooting());
     menu.add(item);
 
-    item = new JMenuItem(_("Reference"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showReference();
-        }
-      });
+    item = new JMenuItem(tr("Reference"));
+    item.addActionListener(event -> Base.showReference());
     menu.add(item);
 
-    item = newJMenuItemShift(_("Find in Reference"), 'F');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-//          if (textarea.isSelectionActive()) {
-//            handleFindReference();
-//          }
-        	handleFindReference();
-        }
-      });
+    menu.addSeparator();
+
+    item = newJMenuItemShift(tr("Find in Reference"), 'F');
+    item.addActionListener(event -> handleFindReference(event));
     menu.add(item);
 
-    item = new JMenuItem(_("Frequently Asked Questions"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showFAQ();
-        }
-      });
+    item = new JMenuItem(tr("Frequently Asked Questions"));
+    item.addActionListener(event -> Base.showFAQ());
     menu.add(item);
 
-    item = new JMenuItem(_("Visit Arduino.cc"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.openURL(_("http://arduino.cc/"));
-        }
-      });
+    item = new JMenuItem(tr("Visit Arduino.cc"));
+    item.addActionListener(event -> Base.openURL(tr("http://www.arduino.cc/")));
     menu.add(item);
 
     // macosx already has its own about menu
-    if (!Base.isMacOS()) {
+    if (!OSUtils.hasMacOSStyleMenus()) {
       menu.addSeparator();
-      item = new JMenuItem(_("About Arduino"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handleAbout();
-          }
-        });
+      item = new JMenuItem(tr("About Arduino"));
+      item.addActionListener(event -> base.handleAbout());
       menu.add(item);
     }
 
@@ -1115,156 +1178,154 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
-  protected JMenu buildEditMenu() {
-    JMenu menu = new JMenu(_("Edit"));
-    JMenuItem item;
+  private JMenu buildEditMenu() {
+    JMenu menu = new JMenu(tr("Edit"));
+    menu.setName("menuEdit");
+    menu.setMnemonic(KeyEvent.VK_E);
 
-    undoItem = newJMenuItem(_("Undo"), 'Z');
-    undoItem.addActionListener(undoAction = new UndoAction());
+    undoItem = newJMenuItem(tr("Undo"), 'Z');
+    undoItem.setName("menuEditUndo");
+    undoItem.addActionListener(event -> getCurrentTab().handleUndo());
     menu.add(undoItem);
 
-    if (!Base.isMacOS()) {
-        redoItem = newJMenuItem(_("Redo"), 'Y');
+    if (!OSUtils.isMacOS()) {
+        redoItem = newJMenuItem(tr("Redo"), 'Y');
     } else {
-        redoItem = newJMenuItemShift(_("Redo"), 'Z');
+        redoItem = newJMenuItemShift(tr("Redo"), 'Z');
     }
-    redoItem.addActionListener(redoAction = new RedoAction());
+    redoItem.setName("menuEditRedo");
+    redoItem.addActionListener(event -> getCurrentTab().handleRedo());
     menu.add(redoItem);
 
     menu.addSeparator();
 
-    // TODO "cut" and "copy" should really only be enabled
-    // if some text is currently selected
-    item = newJMenuItem(_("Cut"), 'X');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleCut();
-        }
-      });
-    menu.add(item);
+    JMenuItem cutItem = newJMenuItem(tr("Cut"), 'X');
+    cutItem.addActionListener(event -> getCurrentTab().handleCut());
+    menu.add(cutItem);
 
-    item = newJMenuItem(_("Copy"), 'C');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          textarea.copy();
-        }
-      });
-    menu.add(item);
+    JMenuItem copyItem = newJMenuItem(tr("Copy"), 'C');
+    copyItem.addActionListener(event -> getCurrentTab().getTextArea().copy());
+    menu.add(copyItem);
 
-    item = newJMenuItemShift(_("Copy for Forum"), 'C');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
-          new DiscourseFormat(Editor.this, false).show();
-//              }
-//            });
-        }
-      });
-    menu.add(item);
+    JMenuItem copyForumItem = newJMenuItemShift(tr("Copy for Forum"), 'C');
+    copyForumItem.addActionListener(event -> getCurrentTab().handleDiscourseCopy());
+    menu.add(copyForumItem);
 
-    item = newJMenuItemAlt(_("Copy as HTML"), 'C');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
-          new DiscourseFormat(Editor.this, true).show();
-//              }
-//            });
-        }
-      });
-    menu.add(item);
+    JMenuItem copyHTMLItem = newJMenuItemAlt(tr("Copy as HTML"), 'C');
+    copyHTMLItem.addActionListener(event -> getCurrentTab().handleHTMLCopy());
+    menu.add(copyHTMLItem);
 
-    item = newJMenuItem(_("Paste"), 'V');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          textarea.paste();
-          sketch.setModified(true);
-        }
-      });
-    menu.add(item);
+    JMenuItem pasteItem = newJMenuItem(tr("Paste"), 'V');
+    pasteItem.addActionListener(event -> getCurrentTab().handlePaste());
+    menu.add(pasteItem);
 
-    item = newJMenuItem(_("Select All"), 'A');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          textarea.selectAll();
-        }
-      });
-    menu.add(item);
+    JMenuItem selectAllItem = newJMenuItem(tr("Select All"), 'A');
+    selectAllItem.addActionListener(event -> getCurrentTab().handleSelectAll());
+    menu.add(selectAllItem);
+
+    JMenuItem gotoLine = newJMenuItem(tr("Go to line..."), 'L');
+    gotoLine.addActionListener(event -> {
+      GoToLineNumber goToLineNumber = new GoToLineNumber(Editor.this);
+      goToLineNumber.setLocationRelativeTo(Editor.this);
+      goToLineNumber.setVisible(true);
+    });
+    menu.add(gotoLine);
 
     menu.addSeparator();
 
-    item = newJMenuItem(_("Comment/Uncomment"), '/');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleCommentUncomment();
-        }
-    });
-    menu.add(item);
+    JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), PreferencesData.get("editor.keys.shortcut_comment", "/").charAt(0));
+    commentItem.addActionListener(event -> getCurrentTab().handleCommentUncomment());
+    menu.add(commentItem);
 
-    item = newJMenuItem(_("Increase Indent"), ']');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleIndentOutdent(true);
-        }
-    });
-    menu.add(item);
+    JMenuItem increaseIndentItem = new JMenuItem(tr("Increase Indent"));
+    increaseIndentItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
+    increaseIndentItem.addActionListener(event -> getCurrentTab().handleIndentOutdent(true));
+    menu.add(increaseIndentItem);
 
-    item = newJMenuItem(_("Decrease Indent"), '[');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleIndentOutdent(false);
-        }
-    });
-    menu.add(item);
+    JMenuItem decreseIndentItem = new JMenuItem(tr("Decrease Indent"));
+    decreseIndentItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK));
+    decreseIndentItem.setName("menuDecreaseIndent");
+    decreseIndentItem.addActionListener(event -> getCurrentTab().handleIndentOutdent(false));
+    menu.add(decreseIndentItem);
 
     menu.addSeparator();
 
-    item = newJMenuItem(_("Find..."), 'F');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find == null) {
-            find = new FindReplace(Editor.this);
-          }
-          //new FindReplace(Editor.this).show();
-          find.setVisible(true);
-          //find.setVisible(true);
-        }
-      });
-    menu.add(item);
+    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), KeyEvent.VK_PLUS);
+    increaseFontSizeItem.addActionListener(event -> base.handleFontSizeChange(1));
+    menu.add(increaseFontSizeItem);
+    // Many keyboards have '+' and '=' on the same key. Allowing "CTRL +",
+    // "CTRL SHIFT +" and "CTRL =" covers the generally expected behavior.
+    KeyStroke ctrlShiftEq = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK);
+    menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlShiftEq, "IncreaseFontSize");
+    KeyStroke ctrlEq = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, SHORTCUT_KEY_MASK);
+    menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlEq, "IncreaseFontSize");
+    menu.getActionMap().put("IncreaseFontSize", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        base.handleFontSizeChange(1);
+      }
+    });
 
-    // TODO find next should only be enabled after a
-    // search has actually taken place
-    item = newJMenuItem(_("Find Next"), 'G');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find != null) {
-            find.findNext();
-          }
-        }
-      });
-    menu.add(item);
+    JMenuItem decreaseFontSizeItem = newJMenuItem(tr("Decrease Font Size"), KeyEvent.VK_MINUS);
+    decreaseFontSizeItem.addActionListener(event -> base.handleFontSizeChange(-1));
+    menu.add(decreaseFontSizeItem);
 
-    item = newJMenuItemShift(_("Find Previous"), 'G');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find != null) {
-            find.findPrevious();
-          }
-        }
-      });
-    menu.add(item);
+    menu.addSeparator();
 
-    item = newJMenuItem(_("Use Selection For Find"), 'E');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find == null) {
-            find = new FindReplace(Editor.this);
-          }
-          find.setFindText( getSelectedText() );
+    JMenuItem findItem = newJMenuItem(tr("Find..."), 'F');
+    findItem.addActionListener(event -> {
+      if (find == null) {
+        find = new FindReplace(Editor.this, Base.FIND_DIALOG_STATE);
+      }
+      if (!OSUtils.isMacOS()) {
+        find.setFindText(getCurrentTab().getSelectedText());
+      }
+      find.setLocationRelativeTo(Editor.this);
+      find.setVisible(true);
+    });
+    menu.add(findItem);
+
+    JMenuItem findNextItem = newJMenuItem(tr("Find Next"), 'G');
+    findNextItem.addActionListener(event -> {
+      if (find != null) {
+        find.findNext();
+      }
+    });
+    menu.add(findNextItem);
+
+    JMenuItem findPreviousItem = newJMenuItemShift(tr("Find Previous"), 'G');
+    findPreviousItem.addActionListener(event -> {
+      if (find != null) {
+        find.findPrevious();
+      }
+    });
+    menu.add(findPreviousItem);
+
+    if (OSUtils.isMacOS()) {
+      JMenuItem useSelectionForFindItem = newJMenuItem(tr("Use Selection For Find"), 'E');
+      useSelectionForFindItem.addActionListener(event -> {
+        if (find == null) {
+          find = new FindReplace(Editor.this, Base.FIND_DIALOG_STATE);
         }
+        find.setFindText(getCurrentTab().getSelectedText());
       });
-    menu.add(item);
+      menu.add(useSelectionForFindItem);
+    }
+
+    menu.addMenuListener(new MenuListener() {
+      @Override
+      public void menuSelected(MenuEvent e) {
+        boolean enabled = getCurrentTab().getSelectedText() != null;
+        cutItem.setEnabled(enabled);
+        copyItem.setEnabled(enabled);
+      }
+
+      @Override
+      public void menuDeselected(MenuEvent e) {}
+
+      @Override
+      public void menuCanceled(MenuEvent e) {}
+    });
 
     return menu;
   }
@@ -1278,8 +1339,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   static public JMenuItem newJMenuItem(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK));
     return menuItem;
   }
 
@@ -1287,11 +1347,10 @@ public class Editor extends JFrame implements RunnerListener {
   /**
    * Like newJMenuItem() but adds shift as a modifier for the key command.
    */
+  // Control + Shift + K seems to not be working on linux (Xubuntu 17.04, 2017-08-19)
   static public JMenuItem newJMenuItemShift(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    modifiers |= ActionEvent.SHIFT_MASK;
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK));
     return menuItem;
   }
 
@@ -1300,10 +1359,8 @@ public class Editor extends JFrame implements RunnerListener {
    * Same as newJMenuItem(), but adds the ALT (on Linux and Windows)
    * or OPTION (on Mac OS X) key as a modifier.
    */
-  static public JMenuItem newJMenuItemAlt(String title, int what) {
+  private static JMenuItem newJMenuItemAlt(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    //int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    //menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
     menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_ALT_KEY_MASK));
     return menuItem;
   }
@@ -1312,74 +1369,10 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 
-  class UndoAction extends AbstractAction {
-    public UndoAction() {
-      super("Undo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        undo.undo();
-      } catch (CannotUndoException ex) {
-        //System.out.println("Unable to undo: " + ex);
-        //ex.printStackTrace();
-      }
-      updateUndoState();
-      redoAction.updateRedoState();
-    }
-
-    protected void updateUndoState() {
-      if (undo.canUndo()) {
-        this.setEnabled(true);
-        undoItem.setEnabled(true);
-        undoItem.setText(undo.getUndoPresentationName());
-        putValue(Action.NAME, undo.getUndoPresentationName());
-        if (sketch != null) {
-          sketch.setModified(true);  // 0107
-        }
-      } else {
-        this.setEnabled(false);
-        undoItem.setEnabled(false);
-        undoItem.setText(_("Undo"));
-        putValue(Action.NAME, "Undo");
-        if (sketch != null) {
-          sketch.setModified(false);  // 0107
-        }
-      }
-    }
-  }
-
-
-  class RedoAction extends AbstractAction {
-    public RedoAction() {
-      super("Redo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        undo.redo();
-      } catch (CannotRedoException ex) {
-        //System.out.println("Unable to redo: " + ex);
-        //ex.printStackTrace();
-      }
-      updateRedoState();
-      undoAction.updateUndoState();
-    }
-
-    protected void updateRedoState() {
-      if (undo.canRedo()) {
-        redoItem.setEnabled(true);
-        redoItem.setText(undo.getRedoPresentationName());
-        putValue(Action.NAME, undo.getRedoPresentationName());
-      } else {
-        this.setEnabled(false);
-        redoItem.setEnabled(false);
-        redoItem.setText(_("Redo"));
-        putValue(Action.NAME, "Redo");
-      }
-    }
+  protected void updateUndoRedoState() {
+    SketchTextArea textArea = getCurrentTab().getTextArea();
+    undoItem.setEnabled(textArea.canUndo());
+    redoItem.setEnabled(textArea.canRedo());
   }
 
 
@@ -1392,23 +1385,16 @@ public class Editor extends JFrame implements RunnerListener {
   // abstract from the editor in this fashion.
 
 
-  public void setHandlers(Runnable runHandler, Runnable presentHandler,
-                          Runnable stopHandler,
-                          Runnable exportHandler, Runnable exportAppHandler) {
-    this.runHandler = runHandler;
-    this.presentHandler = presentHandler;
-    this.stopHandler = stopHandler;
-    this.exportHandler = exportHandler;
-    this.exportAppHandler = exportAppHandler;
-  }
-
-
-  public void resetHandlers() {
-    runHandler = new DefaultRunHandler();
-    presentHandler = new DefaultPresentHandler();
-    stopHandler = new DefaultStopHandler();
-    exportHandler = new DefaultExportHandler();
-    exportAppHandler = new DefaultExportAppHandler();
+  private void resetHandlers() {
+    runHandler = new BuildHandler();
+    presentHandler = new BuildHandler(true);
+    runAndSaveHandler = new BuildHandler(false, true);
+    presentAndSaveHandler = new BuildHandler(true, true);
+    uploadHandler = new UploadHandler();
+    uploadHandler.setUsingProgrammer(false);
+    uploadUsingProgrammerHandler = new UploadHandler();
+    uploadUsingProgrammerHandler.setUsingProgrammer(true);
+    timeoutUploadHandler = new TimeoutUploadHandler();
   }
 
 
@@ -1416,453 +1402,176 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   /**
-   * Gets the current sketch object.
+   * Gets the current sketch controller.
+   */
+  public SketchController getSketchController() {
+    return sketchController;
+  }
+
+  /**
+   * Gets the current sketch.
    */
   public Sketch getSketch() {
     return sketch;
   }
 
+  /**
+   * Gets the currently displaying tab.
+   */
+  public EditorTab getCurrentTab() {
+    return tabs.get(currentTabIndex);
+  }
 
   /**
-   * Get the JEditTextArea object for use (not recommended). This should only
-   * be used in obscure cases that really need to hack the internals of the
-   * JEditTextArea. Most tools should only interface via the get/set functions
-   * found in this class. This will maintain compatibility with future releases,
-   * which will not use JEditTextArea.
+   * Gets the index of the currently displaying tab.
    */
-  public JEditTextArea getTextArea() {
-    return textarea;
+  public int getCurrentTabIndex() {
+    return currentTabIndex;
   }
-
 
   /**
-   * Get the contents of the current buffer. Used by the Sketch class.
+   * Returns an (unmodifiable) list of currently opened tabs.
    */
-  public String getText() {
-    return textarea.getText();
+  public List<EditorTab> getTabs() {
+    return Collections.unmodifiableList(tabs);
   }
-
-
-  /**
-   * Get a range of text from the current buffer.
-   */
-  public String getText(int start, int stop) {
-    return textarea.getText(start, stop - start);
-  }
-
-
-  /**
-   * Replace the entire contents of the front-most tab.
-   */
-  public void setText(String what) {
-    startCompoundEdit();
-    textarea.setText(what);
-    stopCompoundEdit();
-  }
-
-
-  public void insertText(String what) {
-    startCompoundEdit();
-    int caret = getCaretOffset();
-    setSelection(caret, caret);
-    textarea.setSelectedText(what);
-    stopCompoundEdit();
-  }
-
-
-  /**
-   * Called to update the text but not switch to a different set of code
-   * (which would affect the undo manager).
-   */
-//  public void setText2(String what, int start, int stop) {
-//    beginCompoundEdit();
-//    textarea.setText(what);
-//    endCompoundEdit();
-//
-//    // make sure that a tool isn't asking for a bad location
-//    start = Math.max(0, Math.min(start, textarea.getDocumentLength()));
-//    stop = Math.max(0, Math.min(start, textarea.getDocumentLength()));
-//    textarea.select(start, stop);
-//
-//    textarea.requestFocus();  // get the caret blinking
-//  }
-
-
-  public String getSelectedText() {
-    return textarea.getSelectedText();
-  }
-
-
-  public void setSelectedText(String what) {
-    textarea.setSelectedText(what);
-  }
-
-
-  public void setSelection(int start, int stop) {
-    // make sure that a tool isn't asking for a bad location
-    start = PApplet.constrain(start, 0, textarea.getDocumentLength());
-    stop = PApplet.constrain(stop, 0, textarea.getDocumentLength());
-
-    textarea.select(start, stop);
-  }
-
-
-  /**
-   * Get the position (character offset) of the caret. With text selected,
-   * this will be the last character actually selected, no matter the direction
-   * of the selection. That is, if the user clicks and drags to select lines
-   * 7 up to 4, then the caret position will be somewhere on line four.
-   */
-  public int getCaretOffset() {
-    return textarea.getCaretPosition();
-  }
-
-
-  /**
-   * True if some text is currently selected.
-   */
-  public boolean isSelectionActive() {
-    return textarea.isSelectionActive();
-  }
-
-
-  /**
-   * Get the beginning point of the current selection.
-   */
-  public int getSelectionStart() {
-    return textarea.getSelectionStart();
-  }
-
-
-  /**
-   * Get the end point of the current selection.
-   */
-  public int getSelectionStop() {
-    return textarea.getSelectionStop();
-  }
-
-
-  /**
-   * Get text for a specified line.
-   */
-  public String getLineText(int line) {
-    return textarea.getLineText(line);
-  }
-
-
-  /**
-   * Replace the text on a specified line.
-   */
-  public void setLineText(int line, String what) {
-    startCompoundEdit();
-    textarea.select(getLineStartOffset(line), getLineStopOffset(line));
-    textarea.setSelectedText(what);
-    stopCompoundEdit();
-  }
-
-
-  /**
-   * Get character offset for the start of a given line of text.
-   */
-  public int getLineStartOffset(int line) {
-    return textarea.getLineStartOffset(line);
-  }
-
-
-  /**
-   * Get character offset for end of a given line of text.
-   */
-  public int getLineStopOffset(int line) {
-    return textarea.getLineStopOffset(line);
-  }
-
-
-  /**
-   * Get the number of lines in the currently displayed buffer.
-   */
-  public int getLineCount() {
-    return textarea.getLineCount();
-  }
-
-
-  /**
-   * Use before a manipulating text to group editing operations together as a
-   * single undo. Use stopCompoundEdit() once finished.
-   */
-  public void startCompoundEdit() {
-    compoundEdit = new CompoundEdit();
-  }
-
-
-  /**
-   * Use with startCompoundEdit() to group edit operations in a single undo.
-   */
-  public void stopCompoundEdit() {
-    compoundEdit.end();
-    undo.addEdit(compoundEdit);
-    undoAction.updateUndoState();
-    redoAction.updateRedoState();
-    compoundEdit = null;
-  }
-
-
-  public int getScrollPosition() {
-    return textarea.getScrollPosition();
-  }
-
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  /**
+   * Change the currently displayed tab.
+   * Note that the GUI might not update immediately, since this needs
+   * to run in the Event dispatch thread.
+   * @param index The index of the tab to select
+   */
+  public void selectTab(final int index) {
+    currentTabIndex = index;
+    updateUndoRedoState();
+    updateTitle();
+    header.rebuild();
+    getCurrentTab().activated();
 
+    // This must be run in the GUI thread
+    SwingUtilities.invokeLater(() -> {
+      codePanel.removeAll();
+      codePanel.add(tabs.get(index), BorderLayout.CENTER);
+      tabs.get(index).requestFocusInWindow(); // get the caret blinking
+      // For some reason, these are needed. Revalidate says it should be
+      // automatically called when components are added or removed, but without
+      // it, the component switched to is not displayed. repaint() is needed to
+      // clear the entire text area of any previous text.
+      codePanel.revalidate();
+      codePanel.repaint();
+    });
+  }
+
+  public void selectNextTab() {
+    selectTab((currentTabIndex + 1) % tabs.size());
+  }
+
+  public void selectPrevTab() {
+    selectTab((currentTabIndex - 1 + tabs.size()) % tabs.size());
+  }
+
+  public EditorTab findTab(final SketchFile file) {
+    return tabs.get(findTabIndex(file));
+  }
 
   /**
-   * Switch between tabs, this swaps out the Document object
-   * that's currently being manipulated.
+   * Finds the index of the tab showing the given file. Matches the file against
+   * EditorTab.getSketchFile() using ==.
+   *
+   * @returns The index of the tab for the given file, or -1 if no such tab was
+   *          found.
    */
-  protected void setCode(SketchCode code) {
-    SyntaxDocument document = (SyntaxDocument) code.getDocument();
+  public int findTabIndex(final SketchFile file) {
+    for (int i = 0; i < tabs.size(); ++i) {
+      if (tabs.get(i).getSketchFile() == file)
+        return i;
+    }
+    return -1;
+  }
 
-    if (document == null) {  // this document not yet inited
-      document = new SyntaxDocument();
-      code.setDocument(document);
+  /**
+   * Finds the index of the tab showing the given file. Matches the file against
+   * EditorTab.getSketchFile().getFile() using equals.
+   *
+   * @returns The index of the tab for the given file, or -1 if no such tab was
+   *          found.
+   */
+  public int findTabIndex(final File file) {
+    for (int i = 0; i < tabs.size(); ++i) {
+      if (tabs.get(i).getSketchFile().getFile().equals(file))
+        return i;
+    }
+    return -1;
+  }
 
-      // turn on syntax highlighting
-      document.setTokenMarker(new PdeKeywords());
-
-      // insert the program text into the document object
+  /**
+   * Create tabs for each of the current sketch's files, removing any existing
+   * tabs.
+   */
+  public void createTabs() {
+    tabs.clear();
+    currentTabIndex = -1;
+    tabs.ensureCapacity(sketch.getCodeCount());
+    for (SketchFile file : sketch.getFiles()) {
       try {
-        document.insertString(0, code.getProgram(), null);
-      } catch (BadLocationException bl) {
-        bl.printStackTrace();
+        addTab(file, null);
+      } catch(IOException e) {
+        // TODO: Improve / move error handling
+        System.err.println(e);
       }
-
-      // set up this guy's own undo manager
-//      code.undo = new UndoManager();
-
-      // connect the undo listener to the editor
-      document.addUndoableEditListener(new UndoableEditListener() {
-          public void undoableEditHappened(UndoableEditEvent e) {
-            if (compoundEdit != null) {
-              compoundEdit.addEdit(e.getEdit());
-
-            } else if (undo != null) {
-              undo.addEdit(e.getEdit());
-              undoAction.updateUndoState();
-              redoAction.updateRedoState();
-            }
-          }
-        });
     }
-
-    // update the document object that's in use
-    textarea.setDocument(document,
-                         code.getSelectionStart(), code.getSelectionStop(),
-                         code.getScrollPosition());
-
-    textarea.requestFocus();  // get the caret blinking
-
-    this.undo = code.getUndo();
-    undoAction.updateUndoState();
-    redoAction.updateRedoState();
+    selectTab(0);
   }
 
+  /**
+   * Reorders tabs as per current sketch's files order
+   */
+  public void reorderTabs() {
+    Collections.sort(tabs, (x, y) -> Sketch.CODE_DOCS_COMPARATOR.compare(x.getSketchFile(), y.getSketchFile()));
+  }
+
+  /**
+   * Add a new tab.
+   *
+   * @param file
+   *          The file to show in the tab.
+   * @param contents
+   *          The contents to show in the tab, or null to load the contents from
+   *          the given file.
+   * @throws IOException
+   */
+  protected void addTab(SketchFile file, String contents) throws IOException {
+    EditorTab tab = new EditorTab(this, file, contents);
+    tab.getTextArea().getDocument()
+        .addDocumentListener(new DocumentTextChangeListener(
+            () -> updateUndoRedoState()));
+    tabs.add(tab);
+    reorderTabs();
+  }
+
+  protected void removeTab(SketchFile file) throws IOException {
+    int index = findTabIndex(file);
+    tabs.remove(index);
+  }
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
+  void handleFindReference(ActionEvent e) {
+    String text = getCurrentTab().getCurrentKeyword();
 
-  /**
-   * Implements Edit &rarr; Cut.
-   */
-  public void handleCut() {
-    textarea.cut();
-    sketch.setModified(true);
-  }
-
-
-  /**
-   * Implements Edit &rarr; Copy.
-   */
-  public void handleCopy() {
-    textarea.copy();
-  }
-
-
-  protected void handleDiscourseCopy() {
-    new DiscourseFormat(Editor.this, false).show();
-  }
-
-
-  protected void handleHTMLCopy() {
-    new DiscourseFormat(Editor.this, true).show();
-  }
-
-
-  /**
-   * Implements Edit &rarr; Paste.
-   */
-  public void handlePaste() {
-    textarea.paste();
-    sketch.setModified(true);
-  }
-
-
-  /**
-   * Implements Edit &rarr; Select All.
-   */
-  public void handleSelectAll() {
-    textarea.selectAll();
-  }
-
-
-  protected void handleCommentUncomment() {
-    startCompoundEdit();
-
-    int startLine = textarea.getSelectionStartLine();
-    int stopLine = textarea.getSelectionStopLine();
-
-    int lastLineStart = textarea.getLineStartOffset(stopLine);
-    int selectionStop = textarea.getSelectionStop();
-    // If the selection ends at the beginning of the last line,
-    // then don't (un)comment that line.
-    if (selectionStop == lastLineStart) {
-      // Though if there's no selection, don't do that
-      if (textarea.isSelectionActive()) {
-        stopLine--;
-      }
-    }
-
-    // If the text is empty, ignore the user.
-    // Also ensure that all lines are commented (not just the first)
-    // when determining whether to comment or uncomment.
-    int length = textarea.getDocumentLength();
-    boolean commented = true;
-    for (int i = startLine; commented && (i <= stopLine); i++) {
-      int pos = textarea.getLineStartOffset(i);
-      if (pos + 2 > length) {
-        commented = false;
+    String referenceFile = base.getPdeKeywords().getReference(text);
+    if (referenceFile == null) {
+      statusNotice(I18n.format(tr("No reference available for \"{0}\""), text));
+    } else {
+      if (referenceFile.startsWith("Serial_")) {
+        Base.showReference("Serial/" + referenceFile.substring("Serial_".length()));
       } else {
-        // Check the first two characters to see if it's already a comment.
-        String begin = textarea.getText(pos, 2);
-        //System.out.println("begin is '" + begin + "'");
-        commented = begin.equals("//");
+        Base.showReference("Reference/" + referenceFile);
       }
     }
-
-    for (int line = startLine; line <= stopLine; line++) {
-      int location = textarea.getLineStartOffset(line);
-      if (commented) {
-        // remove a comment
-        textarea.select(location, location+2);
-        if (textarea.getSelectedText().equals("//")) {
-          textarea.setSelectedText("");
-        }
-      } else {
-        // add a comment
-        textarea.select(location, location);
-        textarea.setSelectedText("//");
-      }
-    }
-    // Subtract one from the end, otherwise selects past the current line.
-    // (Which causes subsequent calls to keep expanding the selection)
-    textarea.select(textarea.getLineStartOffset(startLine),
-                    textarea.getLineStopOffset(stopLine) - 1);
-    stopCompoundEdit();
   }
-
-
-  protected void handleIndentOutdent(boolean indent) {
-    int tabSize = Preferences.getInteger("editor.tabs.size");
-    String tabString = Editor.EMPTY.substring(0, tabSize);
-
-    startCompoundEdit();
-
-    int startLine = textarea.getSelectionStartLine();
-    int stopLine = textarea.getSelectionStopLine();
-
-    // If the selection ends at the beginning of the last line,
-    // then don't (un)comment that line.
-    int lastLineStart = textarea.getLineStartOffset(stopLine);
-    int selectionStop = textarea.getSelectionStop();
-    if (selectionStop == lastLineStart) {
-      // Though if there's no selection, don't do that
-      if (textarea.isSelectionActive()) {
-        stopLine--;
-      }
-    }
-
-    for (int line = startLine; line <= stopLine; line++) {
-      int location = textarea.getLineStartOffset(line);
-
-      if (indent) {
-        textarea.select(location, location);
-        textarea.setSelectedText(tabString);
-
-      } else {  // outdent
-        textarea.select(location, location + tabSize);
-        // Don't eat code if it's not indented
-        if (textarea.getSelectedText().equals(tabString)) {
-          textarea.setSelectedText("");
-        }
-      }
-    }
-    // Subtract one from the end, otherwise selects past the current line.
-    // (Which causes subsequent calls to keep expanding the selection)
-    textarea.select(textarea.getLineStartOffset(startLine),
-                    textarea.getLineStopOffset(stopLine) - 1);
-    stopCompoundEdit();
-  }
-
-	protected String getCurrentKeyword() {
-		String text = "";
-		if (textarea.getSelectedText() != null)
-			text = textarea.getSelectedText().trim();
-
-		try {
-			int current = textarea.getCaretPosition();
-			int startOffset = 0;
-			int endIndex = current;
-			String tmp = textarea.getDocument().getText(current, 1);
-			// TODO probably a regexp that matches Arduino lang special chars
-			// already exists.
-			String regexp = "[\\s\\n();\\\\.!='\\[\\]{}]";
-
-			while (!tmp.matches(regexp)) {
-				endIndex++;
-				tmp = textarea.getDocument().getText(endIndex, 1);
-			}
-			// For some reason document index start at 2.
-			// if( current - start < 2 ) return;
-
-			tmp = "";
-			while (!tmp.matches(regexp)) {
-				startOffset++;
-				if (current - startOffset < 0) {
-					tmp = textarea.getDocument().getText(0, 1);
-					break;
-				} else
-					tmp = textarea.getDocument().getText(current - startOffset, 1);
-			}
-			startOffset--;
-
-			int length = endIndex - current + startOffset;
-			text = textarea.getDocument().getText(current - startOffset, length);
-			
-		} catch (BadLocationException bl) {
-			bl.printStackTrace();
-		} finally {
-			return text;
-		}
-	}
-
-	protected void handleFindReference() {
-		String text = getCurrentKeyword();
-		
-		String referenceFile = PdeKeywords.getReference(text);
-		if (referenceFile == null) {
-			statusNotice(I18n.format(_("No reference available for \"{0}\""), text));
-		} else {
-			Base.showReference(I18n.format(_("{0}.html"), referenceFile));
-		}
-	}
 
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -1871,160 +1580,137 @@ public class Editor extends JFrame implements RunnerListener {
   /**
    * Implements Sketch &rarr; Run.
    * @param verbose Set true to run with verbose output.
+   * @param verboseHandler
+   * @param nonVerboseHandler
    */
-  public void handleRun(final boolean verbose) {
-    internalCloseRunner();
-    running = true;
-    toolbar.activate(EditorToolbar.RUN);
-    status.progress(_("Compiling sketch..."));
+  public void handleRun(final boolean verbose, Runnable verboseHandler, Runnable nonVerboseHandler) {
+    handleRun(verbose, new ShouldSaveIfModified(), verboseHandler, nonVerboseHandler);
+  }
+
+  private void handleRun(final boolean verbose, Predicate<SketchController> shouldSavePredicate, Runnable verboseHandler, Runnable nonVerboseHandler) {
+    if (shouldSavePredicate.test(sketchController)) {
+      handleSave(true);
+    }
+    toolbar.activateRun();
+    status.progress(tr("Compiling sketch..."));
 
     // do this to advance/clear the terminal window / dos prompt / etc
     for (int i = 0; i < 10; i++) System.out.println();
 
     // clear the console on each run, unless the user doesn't want to
-    if (Preferences.getBoolean("console.auto_clear")) {
+    if (PreferencesData.getBoolean("console.auto_clear")) {
       console.clear();
     }
 
     // Cannot use invokeLater() here, otherwise it gets
     // placed on the event thread and causes a hang--bad idea all around.
-    new Thread(verbose ? presentHandler : runHandler).start();
+    new Thread(verbose ? verboseHandler : nonVerboseHandler).start();
   }
 
-  // DAM: in Arduino, this is compile
-  class DefaultRunHandler implements Runnable {
+  class BuildHandler implements Runnable {
+
+    private final boolean verbose;
+    private final boolean saveHex;
+
+    public BuildHandler() {
+      this(false);
+    }
+
+    public BuildHandler(boolean verbose) {
+      this(verbose, false);
+    }
+
+    public BuildHandler(boolean verbose, boolean saveHex) {
+      this.verbose = verbose;
+      this.saveHex = saveHex;
+    }
+
+    @Override
     public void run() {
       try {
-        sketch.prepare();
-        sketch.build(false);
-        statusNotice(_("Done compiling."));
+        removeAllLineHighlights();
+        sketchController.build(verbose, saveHex);
+        statusNotice(tr("Done compiling."));
+      } catch (PreferencesMapException e) {
+        statusError(I18n.format(
+                tr("Error while compiling: missing '{0}' configuration parameter"),
+                e.getMessage()));
       } catch (Exception e) {
         status.unprogress();
         statusError(e);
       }
 
       status.unprogress();
-      toolbar.deactivate(EditorToolbar.RUN);
+      toolbar.deactivateRun();
+      avoidMultipleOperations = false;
     }
   }
 
-  // DAM: in Arduino, this is compile (with verbose output)
-  class DefaultPresentHandler implements Runnable {
-    public void run() {
-      try {
-        sketch.prepare();
-        sketch.build(true);
-        statusNotice(_("Done compiling."));
-      } catch (Exception e) {
-        status.unprogress();
-        statusError(e);
-      }
-
-      status.unprogress();
-      toolbar.deactivate(EditorToolbar.RUN);
-    }
+  public void removeAllLineHighlights() {
+    for (EditorTab tab : tabs)
+      tab.getTextArea().removeAllLineHighlights();
   }
 
-  class DefaultStopHandler implements Runnable {
-    public void run() {
-      try {
-        // DAM: we should try to kill the compilation or upload process here.
-      } catch (Exception e) {
-        statusError(e);
+  public void addLineHighlight(int line) throws BadLocationException {
+    SketchTextArea textArea = getCurrentTab().getTextArea();
+    FoldManager foldManager = textArea.getFoldManager();
+    if (foldManager.isLineHidden(line)) {
+      for (int i = 0; i < foldManager.getFoldCount(); i++) {
+        if (foldManager.getFold(i).containsLine(line)) {
+          foldManager.getFold(i).setCollapsed(false);
+        }
       }
     }
-  }
-
-  /**
-   * Set the location of the sketch run window. Used by Runner to update the
-   * Editor about window drag events while the sketch is running.
-   */
-  public void setSketchLocation(Point p) {
-    sketchWindowLocation = p;
-  }
-
-
-  /**
-   * Get the last location of the sketch's run window. Used by Runner to make
-   * the window show up in the same location as when it was last closed.
-   */
-  public Point getSketchLocation() {
-    return sketchWindowLocation;
+    textArea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
+    textArea.setCaretPosition(textArea.getLineStartOffset(line));
   }
 
 
   /**
    * Implements Sketch &rarr; Stop, or pressing Stop on the toolbar.
    */
-  public void handleStop() {  // called by menu or buttons
+  private void handleStop() {  // called by menu or buttons
 //    toolbar.activate(EditorToolbar.STOP);
 
-    internalCloseRunner();
-
-    toolbar.deactivate(EditorToolbar.RUN);
+    toolbar.deactivateRun();
 //    toolbar.deactivate(EditorToolbar.STOP);
 
     // focus the PDE again after quitting presentation mode [toxi 030903]
     toFront();
   }
 
-
-  /**
-   * Deactivate the Run button. This is called by Runner to notify that the
-   * sketch has stopped running, usually in response to an error (or maybe
-   * the sketch completing and exiting?) Tools should not call this function.
-   * To initiate a "stop" action, call handleStop() instead.
-   */
-  public void internalRunnerClosed() {
-    running = false;
-    toolbar.deactivate(EditorToolbar.RUN);
-  }
-
-
-  /**
-   * Handle internal shutdown of the runner.
-   */
-  public void internalCloseRunner() {
-    running = false;
-
-    if (stopHandler != null)
-    try {
-      stopHandler.run();
-    } catch (Exception e) { }
-
-    sketch.cleanup();
-  }
-
-
   /**
    * Check if the sketch is modified and ask user to save changes.
    * @return false if canceling the close/quit operation
    */
   protected boolean checkModified() {
-    if (!sketch.isModified()) return true;
+    if (!sketch.isModified())
+      return true;
 
     // As of Processing 1.0.10, this always happens immediately.
     // http://dev.processing.org/bugs/show_bug.cgi?id=1456
 
-    String prompt = I18n.format(_("Save changes to \"{0}\"?  "), sketch.getName());
+    toFront();
 
-    if (!Base.isMacOS()) {
+    String prompt = I18n.format(tr("Save changes to \"{0}\"?  "),
+                                sketch.getName());
+
+    if (!OSUtils.hasMacOSStyleMenus()) {
       int result =
-        JOptionPane.showConfirmDialog(this, prompt, _("Close"),
+        JOptionPane.showConfirmDialog(this, prompt, tr("Close"),
                                       JOptionPane.YES_NO_CANCEL_OPTION,
                                       JOptionPane.QUESTION_MESSAGE);
 
-      if (result == JOptionPane.YES_OPTION) {
-        return handleSave(true);
-
-      } else if (result == JOptionPane.NO_OPTION) {
-        return true;  // ok to continue
-
-      } else if (result == JOptionPane.CANCEL_OPTION) {
-        return false;
-
-      } else {
-        throw new IllegalStateException();
+      switch (result) {
+        case JOptionPane.YES_OPTION:
+          return handleSave(true);
+        case JOptionPane.NO_OPTION:
+          return true;  // ok to continue
+        case JOptionPane.CANCEL_OPTION:
+        case JOptionPane.CLOSED_OPTION:  // Escape key pressed
+          return false;
+        default:
+          throw new IllegalStateException();
       }
 
     } else {
@@ -2036,10 +1722,8 @@ public class Editor extends JFrame implements RunnerListener {
       // suck--workarounds for the Mac and Apple's snobby attitude about it!
       // I think it's nifty that they treat their developers like dirt.
 
-      // Pane formatting adapted from the quaqua guide
-      // http://www.randelshofer.ch/quaqua/guide/joptionpane.html
       JOptionPane pane =
-        new JOptionPane(_("<html> " +
+        new JOptionPane(tr("<html> " +
                           "<head> <style type=\"text/css\">"+
                           "b { font: 13pt \"Lucida Grande\" }"+
                           "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
@@ -2050,17 +1734,12 @@ public class Editor extends JFrame implements RunnerListener {
                         JOptionPane.QUESTION_MESSAGE);
 
       String[] options = new String[] {
-        _("Save"), _("Cancel"), _("Don't Save")
+        tr("Save"), tr("Cancel"), tr("Don't Save")
       };
       pane.setOptions(options);
 
       // highlight the safest option ala apple hig
       pane.setInitialValue(options[0]);
-
-      // on macosx, setting the destructive property places this option
-      // away from the others at the lefthand side
-      pane.putClientProperty("Quaqua.OptionPane.destructiveOption",
-                             new Integer(2));
 
       JDialog dialog = pane.createDialog(this, null);
       dialog.setVisible(true);
@@ -2068,158 +1747,117 @@ public class Editor extends JFrame implements RunnerListener {
       Object result = pane.getValue();
       if (result == options[0]) {  // save (and close/quit)
         return handleSave(true);
-
-      } else if (result == options[2]) {  // don't save (still close/quit)
-        return true;
-
-      } else {  // cancel?
-        return false;
+      } else {
+        return result == options[2];
       }
     }
   }
-
-
-  /**
-   * Open a sketch from a particular path, but don't check to save changes.
-   * Used by Sketch.saveAs() to re-open a sketch after the "Save As"
-   */
-  protected void handleOpenUnchecked(String path, int codeIndex,
-                                     int selStart, int selStop, int scrollPos) {
-    internalCloseRunner();
-    handleOpenInternal(path);
-    // Replacing a document that may be untitled. If this is an actual
-    // untitled document, then editor.untitled will be set by Base.
-    untitled = false;
-
-    sketch.setCurrentCode(codeIndex);
-    textarea.select(selStart, selStop);
-    textarea.setScrollPosition(scrollPos);
-  }
-
 
   /**
    * Second stage of open, occurs after having checked to see if the
    * modifications (if any) to the previous sketch need to be saved.
    */
-  protected boolean handleOpenInternal(String path) {
+  protected boolean handleOpenInternal(File sketchFile) {
     // check to make sure that this .pde file is
     // in a folder of the same name
-    File file = new File(path);
-    String fileName = file.getName();
-    File parent = file.getParentFile();
-    String parentName = parent.getName();
-    String pdeName = parentName + ".pde";
-    File altPdeFile = new File(parent, pdeName);
-    String inoName = parentName + ".ino";
-    File altInoFile = new File(parent, pdeName);
-    
-    if (pdeName.equals(fileName) || inoName.equals(fileName)) {
-      // no beef with this guy
+    String fileName = sketchFile.getName();
 
-    } else if (altPdeFile.exists()) {
-      // user selected a .java from the same sketch, but open the .pde instead
-      path = altPdeFile.getAbsolutePath();
-    } else if (altInoFile.exists()) {
-      path = altInoFile.getAbsolutePath();
-    } else if (!path.endsWith(".ino") && !path.endsWith(".pde")) {
-      Base.showWarning(_("Bad file selected"),
-                       _("Processing can only open its own sketches\n" +
-                         "and other files ending in .ino or .pde"), null);
-      return false;
+    File file = Sketch.checkSketchFile(sketchFile);
 
-    } else {
-      String properParent =
-        fileName.substring(0, fileName.length() - 4);
+    if (file == null) {
+      if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
 
-      Object[] options = { _("OK"), _("Cancel") };
-      String prompt = I18n.format(
-	_("The file \"{0}\" needs to be inside\n" +
-	  "a sketch folder named \"{1}\".\n" +
-	  "Create this folder, move the file, and continue?"),
-	fileName,
-	properParent
-      );
+        Base.showWarning(tr("Bad file selected"), tr("Arduino can only open its own sketches\n" +
+          "and other files ending in .ino or .pde"), null);
+        return false;
 
-      int result = JOptionPane.showOptionDialog(this,
-                                                prompt,
-                                                _("Moving"),
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE,
-                                                null,
-                                                options,
-                                                options[0]);
+      } else {
+        String properParent = fileName.substring(0, fileName.length() - 4);
 
-      if (result == JOptionPane.YES_OPTION) {
+        Object[] options = {tr("OK"), tr("Cancel")};
+        String prompt = I18n.format(tr("The file \"{0}\" needs to be inside\n" +
+            "a sketch folder named \"{1}\".\n" +
+            "Create this folder, move the file, and continue?"),
+          fileName,
+          properParent);
+
+        int result = JOptionPane.showOptionDialog(this, prompt, tr("Moving"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if (result != JOptionPane.YES_OPTION) {
+          return false;
+        }
+
         // create properly named folder
-        File properFolder = new File(file.getParent(), properParent);
+        File properFolder = new File(sketchFile.getParent(), properParent);
         if (properFolder.exists()) {
-          Base.showWarning(_("Error"),
-                           I18n.format(
-                             _("A folder named \"{0}\" already exists. " +
-                               "Can't open sketch."),
-                             properParent
-                           ),
-			   null);
+          Base.showWarning(tr("Error"), I18n.format(tr("A folder named \"{0}\" already exists. " +
+            "Can't open sketch."), properParent), null);
           return false;
         }
         if (!properFolder.mkdirs()) {
           //throw new IOException("Couldn't create sketch folder");
-          Base.showWarning(_("Error"),
-                           _("Could not create the sketch folder."), null);
+          Base.showWarning(tr("Error"), tr("Could not create the sketch folder."), null);
           return false;
         }
         // copy the sketch inside
-        File properPdeFile = new File(properFolder, file.getName());
-        File origPdeFile = new File(path);
+        File properPdeFile = new File(properFolder, sketchFile.getName());
         try {
-          Base.copyFile(origPdeFile, properPdeFile);
+          Base.copyFile(sketchFile, properPdeFile);
         } catch (IOException e) {
-          Base.showWarning(_("Error"), _("Could not copy to a proper location."), e);
+          Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
           return false;
         }
 
         // remove the original file, so user doesn't get confused
-        origPdeFile.delete();
+        sketchFile.delete();
 
         // update with the new path
-        path = properPdeFile.getAbsolutePath();
+        file = properPdeFile;
 
-      } else if (result == JOptionPane.NO_OPTION) {
-        return false;
       }
     }
 
     try {
-      sketch = new Sketch(this, path);
+      sketch = new Sketch(file);
     } catch (IOException e) {
-      Base.showWarning(_("Error"), _("Could not create the sketch."), e);
+      Base.showWarning(tr("Error"), tr("Could not create the sketch."), e);
       return false;
     }
-    header.rebuild();
-    // Set the title of the window to "sketch_070752a - Processing 0126"
-    setTitle(
-      I18n.format(
-	_("{0} | Arduino {1}"),
-	sketch.getName(),
-	Base.VERSION_NAME
-      )
-    );
+    sketchController = new SketchController(this, sketch);
+    createTabs();
+
     // Disable untitled setting from previous document, if any
     untitled = false;
 
-    // Store information on who's open and running
-    // (in case there's a crash or something that can't be recovered)
-    base.storeSketches();
-    Preferences.save();
-
     // opening was successful
     return true;
+  }
 
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//      statusError(e);
-//      return false;
-//    }
+  public void updateTitle() {
+    if (sketchController == null) {
+      return;
+    }
+    SketchFile current = getCurrentTab().getSketchFile();
+    String customFormat = PreferencesData.get("editor.custom_title_format");
+    if (customFormat != null && !customFormat.trim().isEmpty()) {
+      Map<String, String> titleMap = new HashMap<String, String>();
+      titleMap.put("file", current.getFileName());
+      String path = sketch.getFolder().getAbsolutePath();
+      titleMap.put("folder", path);
+      titleMap.put("path", path);
+      titleMap.put("project", sketch.getName());
+      titleMap.put("version", BaseNoGui.VERSION_NAME_LONG);
+
+      setTitle(StringReplacer.replaceFromMapping(customFormat, titleMap));
+    } else {
+      if (current.isPrimary()) {
+        setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
+                             BaseNoGui.VERSION_NAME_LONG));
+      } else {
+        setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
+                             current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      }
+    }
   }
 
 
@@ -2235,6 +1873,7 @@ public class Editor extends JFrame implements RunnerListener {
   public boolean handleSave(boolean immediately) {
     //stopRunner();
     handleStop();  // 0136
+    removeAllLineHighlights();
 
     if (untitled) {
       return handleSaveAs();
@@ -2254,16 +1893,29 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
-  protected boolean handleSave2() {
-    toolbar.activate(EditorToolbar.SAVE);
-    statusNotice(_("Saving..."));
+  private boolean handleSave2() {
+    toolbar.activateSave();
+    statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
-      saved = sketch.save();
-      if (saved)
-        statusNotice(_("Done Saving."));
-      else
+      if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
+        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
+        formatTool.run();
+      }
+
+      boolean wasReadOnly = sketchController.isReadOnly();
+      String previousMainFilePath = sketch.getMainFilePath();
+      saved = sketchController.save();
+      if (saved) {
+        statusNotice(tr("Done Saving."));
+        if (wasReadOnly) {
+          base.removeRecentSketchPath(previousMainFilePath);
+        }
+        base.storeRecentSketches(sketchController);
+        base.rebuildRecentSketchesMenuItems();
+      } else {
         statusEmpty();
+      }
       // rebuild sketch menu in case a save-as was forced
       // Disabling this for 0125, instead rebuild the menu inside
       // the Save As method of the Sketch object, since that's the
@@ -2281,7 +1933,7 @@ public class Editor extends JFrame implements RunnerListener {
       // this is used when another operation calls a save
     }
     //toolbar.clear();
-    toolbar.deactivate(EditorToolbar.SAVE);
+    toolbar.deactivateSave();
     return saved;
   }
 
@@ -2290,20 +1942,22 @@ public class Editor extends JFrame implements RunnerListener {
     //stopRunner();  // formerly from 0135
     handleStop();
 
-    toolbar.activate(EditorToolbar.SAVE);
+    toolbar.activateSave();
 
     //SwingUtilities.invokeLater(new Runnable() {
     //public void run() {
-    statusNotice(_("Saving..."));
+    statusNotice(tr("Saving..."));
     try {
-      if (sketch.saveAs()) {
-        statusNotice(_("Done Saving."));
+      if (sketchController.saveAs()) {
+        base.storeRecentSketches(sketchController);
+        base.rebuildRecentSketchesMenuItems();
+        statusNotice(tr("Done Saving."));
         // Disabling this for 0125, instead rebuild the menu inside
         // the Save As method of the Sketch object, since that's the
         // only one who knows whether something was renamed.
         //sketchbook.rebuildMenusAsync();
       } else {
-        statusNotice(_("Save Canceled."));
+        statusNotice(tr("Save Canceled."));
         return false;
       }
     } catch (Exception e) {
@@ -2312,38 +1966,41 @@ public class Editor extends JFrame implements RunnerListener {
 
     } finally {
       // make sure the toolbar button deactivates
-      toolbar.deactivate(EditorToolbar.SAVE);
+      toolbar.deactivateSave();
+
+      // Update editor window title in case of "Save as..."
+      updateTitle();
+      header.rebuild();
     }
 
     return true;
   }
-  
-  
-  public boolean serialPrompt() {
-    int count = serialMenu.getItemCount();
-    Object[] names = new Object[count];
-    for (int i = 0; i < count; i++) {
-      names[i] = ((JCheckBoxMenuItem)serialMenu.getItem(i)).getText();
+
+
+  private boolean serialPrompt() {
+    List<BoardPortJCheckBoxMenuItem> items = new ArrayList<>();
+    for (int i = 0; i < portMenu.getItemCount(); i++) {
+      if (portMenu.getItem(i) instanceof BoardPortJCheckBoxMenuItem)
+        items.add((BoardPortJCheckBoxMenuItem) portMenu.getItem(i));
     }
 
-    String result = (String)
-      JOptionPane.showInputDialog(this,
-	I18n.format(
-	  _("Serial port {0} not found.\n" +
-	    "Retry the upload with another serial port?"),
-	  Preferences.get("serial.port")
-	),
-				  "Serial port not found",
-                                  JOptionPane.PLAIN_MESSAGE,
-                                  null,
-                                  names,
-                                  0);
-    if (result == null) return false;
-    selectSerialPort(result);
+    String port = PreferencesData.get("serial.port");
+    String title;
+    if (port == null || port.isEmpty()) {
+      title = tr("Serial port not selected.");
+    } else {
+      title = I18n.format(tr("Serial port {0} not found."), port);
+    }
+    String question = tr("Retry the upload with another serial port?");
+    BoardPortJCheckBoxMenuItem result = (BoardPortJCheckBoxMenuItem) JOptionPane
+        .showInputDialog(this, title + "\n" + question, title,
+                         JOptionPane.PLAIN_MESSAGE, null, items.toArray(), 0);
+    if (result == null)
+      return false;
+    result.doClick();
     base.onBoardOrPortChange();
     return true;
   }
-
 
   /**
    * Called by Sketch &rarr; Export.
@@ -2361,35 +2018,58 @@ public class Editor extends JFrame implements RunnerListener {
    * hitting export twice, quickly, and horking things up.
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
-    //if (!handleExportCheckModified()) return;
-    toolbar.activate(EditorToolbar.EXPORT);
+    if (PreferencesData.getBoolean("editor.save_on_verify")) {
+      if (sketch.isModified() && !sketchController.isReadOnly()) {
+        handleSave(true);
+      }
+    }
+    toolbar.activateExport();
     console.clear();
-    status.progress(_("Uploading to I/O Board..."));
+    status.progress(tr("Uploading to I/O Board..."));
 
-    new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
+    avoidMultipleOperations = true;
+
+    new Thread(timeoutUploadHandler).start();
+    new Thread(usingProgrammer ? uploadUsingProgrammerHandler : uploadHandler).start();
   }
 
-  // DAM: in Arduino, this is upload
-  class DefaultExportHandler implements Runnable {
-    public void run() {
+  class UploadHandler implements Runnable {
+    boolean usingProgrammer = false;
 
+    public void setUsingProgrammer(boolean usingProgrammer) {
+      this.usingProgrammer = usingProgrammer;
+    }
+
+    public void run() {
       try {
-        serialMonitor.closeSerialPort();
-        serialMonitor.setVisible(false);
-            
         uploading = true;
-          
-        boolean success = sketch.exportApplet(false);
+
+        removeAllLineHighlights();
+        if (serialMonitor != null) {
+          serialMonitor.suspend();
+        }
+        if (serialPlotter != null) {
+          serialPlotter.suspend();
+        }
+
+        boolean success = sketchController.exportApplet(usingProgrammer);
         if (success) {
-          statusNotice(_("Done uploading."));
-        } else {
-          // error message will already be visible
+          statusNotice(tr("Done uploading."));
         }
       } catch (SerialNotFoundException e) {
-        populateSerialMenu();
-        if (serialMenu.getItemCount() == 0) statusError(e);
-        else if (serialPrompt()) run();
-        else statusNotice(_("Upload canceled."));
+        if (portMenu.getItemCount() == 0) {
+          statusError(tr("Serial port not selected."));
+        } else {
+          if (serialPrompt()) {
+            run();
+          } else {
+            statusNotice(tr("Upload canceled."));
+          }
+        }
+      } catch (PreferencesMapException e) {
+        statusError(I18n.format(
+                    tr("Error while uploading: missing '{0}' configuration parameter"),
+                    e.getMessage()));
       } catch (RunnerException e) {
         //statusError("Error during upload.");
         //e.printStackTrace();
@@ -2397,167 +2077,421 @@ public class Editor extends JFrame implements RunnerListener {
         statusError(e);
       } catch (Exception e) {
         e.printStackTrace();
+      } finally {
+        populatePortMenu();
+        avoidMultipleOperations = false;
       }
       status.unprogress();
       uploading = false;
       //toolbar.clear();
-      toolbar.deactivate(EditorToolbar.EXPORT);
+      toolbar.deactivateExport();
+
+      resumeOrCloseSerialMonitor();
+      resumeOrCloseSerialPlotter();
+      base.onBoardOrPortChange();
     }
   }
 
-  // DAM: in Arduino, this is upload (with verbose output)
-  class DefaultExportAppHandler implements Runnable {
-    public void run() {
+  static public boolean isUploading() {
+    return uploading;
+  }
 
+  private void resumeOrCloseSerialMonitor() {
+    // Return the serial monitor window to its initial state
+    if (serialMonitor != null) {
       try {
-        serialMonitor.closeSerialPort();
-        serialMonitor.setVisible(false);
-            
-        uploading = true;
-          
-        boolean success = sketch.exportApplet(true);
-        if (success) {
-          statusNotice(_("Done uploading."));
-        } else {
-          // error message will already be visible
-        }
-      } catch (SerialNotFoundException e) {
-        populateSerialMenu();
-        if (serialMenu.getItemCount() == 0) statusError(e);
-        else if (serialPrompt()) run();
-        else statusNotice(_("Upload canceled."));
-      } catch (RunnerException e) {
-        //statusError("Error during upload.");
-        //e.printStackTrace();
-        status.unprogress();
-        statusError(e);
-      } catch (Exception e) {
-        e.printStackTrace();
+        Thread.sleep(200);
+      } catch (InterruptedException e) {
+          // noop
       }
-      status.unprogress();
-      uploading = false;
-      //toolbar.clear();
-      toolbar.deactivate(EditorToolbar.EXPORT);
-    }
+      BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+      long sleptFor = 0;
+      while (boardPort == null && sleptFor < MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR) {
+        try {
+          Thread.sleep(100);
+          sleptFor += 100;
+          boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+        } catch (InterruptedException e) {
+          // noop
+        }
+      }
+      try {
+        if (serialMonitor != null) {
+          serialMonitor.resume(boardPort);
+          if (boardPort == null) {
+            serialMonitor.close();
+            handleSerial();
+          } else {
+            serialMonitor.resume(boardPort);
+          }
+        }
+      } catch (Exception e) {
+        statusError(e);
+      }
+   }
   }
 
-  /**
-   * Checks to see if the sketch has been modified, and if so,
-   * asks the user to save the sketch or cancel the export.
-   * This prevents issues where an incomplete version of the sketch
-   * would be exported, and is a fix for
-   * <A HREF="http://dev.processing.org/bugs/show_bug.cgi?id=157">Bug 157</A>
-   */
-  protected boolean handleExportCheckModified() {
-    if (!sketch.isModified()) return true;
-
-    Object[] options = { _("OK"), _("Cancel") };
-    int result = JOptionPane.showOptionDialog(this,
-                                              _("Save changes before export?"),
-                                              _("Save"),
-                                              JOptionPane.OK_CANCEL_OPTION,
-                                              JOptionPane.QUESTION_MESSAGE,
-                                              null,
-                                              options,
-                                              options[0]);
-
-    if (result == JOptionPane.OK_OPTION) {
-      handleSave(true);
-
-    } else {
-      // why it's not CANCEL_OPTION is beyond me (at least on the mac)
-      // but f-- it.. let's get this shite done..
-      //} else if (result == JOptionPane.CANCEL_OPTION) {
-      statusNotice(_("Export canceled, changes must first be saved."));
-      //toolbar.clear();
-      return false;
-    }
-    return true;
+  private void resumeOrCloseSerialPlotter() {
+    // Return the serial plotter window to its initial state
+    if (serialPlotter != null) {
+      BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+      try {
+        if (serialPlotter != null)
+          serialPlotter.resume(boardPort);
+        if (boardPort == null) {
+          serialPlotter.close();
+          handlePlotter();
+        } else {
+          serialPlotter.resume(boardPort);
+        }
+      } catch (Exception e) {
+        statusError(e);
+      }
+   }
   }
 
+  class TimeoutUploadHandler implements Runnable {
+
+    public void run() {
+      try {
+        //10 seconds, than reactivate upload functionality and let the programmer pid being killed
+        Thread.sleep(1000 * 10);
+        if (uploading) {
+          avoidMultipleOperations = false;
+        }
+      } catch (InterruptedException e) {
+          // noop
+      }
+    }
+  }
 
   public void handleSerial() {
-    if (uploading) return;
-    
-    try {
-      serialMonitor.openSerialPort();
-      serialMonitor.setVisible(true);
-    } catch (SerialException e) {
-      statusError(e);
+    if(serialPlotter != null) {
+      if(serialPlotter.isClosed()) {
+        serialPlotter = null;
+      } else {
+        statusError(tr("Serial monitor not available while plotter is open"));
+        return;
+      }
     }
-  }
 
+    if (serialMonitor != null) {
+      // The serial monitor already exists
 
-  protected void handleBurnBootloader() {
-    console.clear();
-    statusNotice(_("Burning bootloader to I/O Board (this may take a minute)..."));
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
+      if (serialMonitor.isClosed()) {
+        serialMonitor.dispose();
+        // If it's closed, clear the refrence to the existing
+        // monitor and create a new one
+        serialMonitor = null;
+      }
+      else {
+        // If it's not closed, give it the focus
         try {
-          Uploader uploader = new AvrdudeUploader();
-          if (uploader.burnBootloader()) {
-            statusNotice(_("Done burning bootloader."));
-          } else {
-            statusError(_("Error while burning bootloader."));
-            // error message will already be visible
-          }
-        } catch (RunnerException e) {
-          statusError(_("Error while burning bootloader."));
-          e.printStackTrace();
-          //statusError(e);
+          serialMonitor.toFront();
+          serialMonitor.requestFocus();
+          return;
         } catch (Exception e) {
-          statusError(_("Error while burning bootloader."));
-          e.printStackTrace();
+          // noop
         }
-      }});
+      }
+    }
+
+    BoardPort port = Base.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+
+    if (port == null) {
+      statusError(I18n.format(tr("Board at {0} is not available"), PreferencesData.get("serial.port")));
+      return;
+    }
+
+    serialMonitor = new MonitorFactory().newMonitor(port);
+
+    if (serialMonitor == null) {
+      String board = port.getPrefs().get("board");
+      String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
+      statusError(I18n.format(tr("Serial monitor is not supported on network ports such as {0} for the {1} in this release"), PreferencesData.get("serial.port"), boardName));
+      return;
+    }
+
+    base.addEditorFontResizeListeners(serialMonitor);
+    Base.setIcon(serialMonitor);
+
+    // If currently uploading, disable the monitor (it will be later
+    // enabled when done uploading)
+    if (uploading || avoidMultipleOperations) {
+      try {
+        serialMonitor.suspend();
+      } catch (Exception e) {
+        statusError(e);
+      }
+    }
+
+    boolean success = false;
+    do {
+      if (serialMonitor.requiresAuthorization() && !PreferencesData.has(serialMonitor.getAuthorizationKey())) {
+        PasswordAuthorizationDialog dialog = new PasswordAuthorizationDialog(this, tr("Type board password to access its console"));
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+        if (dialog.isCancelled()) {
+          statusNotice(tr("Unable to open serial monitor"));
+          return;
+        }
+
+        PreferencesData.set(serialMonitor.getAuthorizationKey(), dialog.getPassword());
+      }
+
+      try {
+        if (!avoidMultipleOperations) {
+          serialMonitor.open();
+        }
+        serialMonitor.setVisible(true);
+        success = true;
+        statusEmpty();
+      } catch (ConnectException e) {
+        statusError(tr("Unable to connect: is the sketch using the bridge?"));
+      } catch (JSchException e) {
+        statusError(tr("Unable to connect: wrong password?"));
+      } catch (SerialException e) {
+        String errorMessage = e.getMessage();
+        if (e.getCause() != null && e.getCause() instanceof SerialPortException) {
+          errorMessage += " (" + ((SerialPortException) e.getCause()).getExceptionType() + ")";
+        }
+        serialMonitor = null;
+        statusError(errorMessage);
+        try {
+          serialMonitor.close();
+        } catch (Exception e1) {
+          // noop
+        }
+      } catch (Exception e) {
+        statusError(e);
+      } finally {
+        if (serialMonitor != null && serialMonitor.requiresAuthorization() && !success) {
+          PreferencesData.remove(serialMonitor.getAuthorizationKey());
+        }
+      }
+
+    } while (serialMonitor != null && serialMonitor.requiresAuthorization() && !success);
+
   }
 
+  public void handlePlotter() {
+    if(serialMonitor != null) {
+      if(serialMonitor.isClosed()) {
+        serialMonitor = null;
+      } else {
+        statusError(tr("Plotter not available while serial monitor is open"));
+        return;
+      }
+    }
+
+    if (serialPlotter != null) {
+      // The serial plotter already exists
+
+      if (serialPlotter.isClosed()) {
+        // If it's closed, clear the refrence to the existing
+        // plotter and create a new one
+        serialPlotter.dispose();
+        serialPlotter = null;
+      }
+      else {
+        // If it's not closed, give it the focus
+        try {
+          serialPlotter.toFront();
+          serialPlotter.requestFocus();
+          return;
+        } catch (Exception e) {
+          // noop
+        }
+      }
+    }
+
+    BoardPort port = Base.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+
+    if (port == null) {
+      statusError(I18n.format(tr("Board at {0} is not available"), PreferencesData.get("serial.port")));
+      return;
+    }
+
+    serialPlotter = new SerialPlotter(port);
+    Base.setIcon(serialPlotter);
+
+    // If currently uploading, disable the plotter (it will be later
+    // enabled when done uploading)
+    if (uploading) {
+      try {
+        serialPlotter.suspend();
+      } catch (Exception e) {
+        statusError(e);
+      }
+    }
+
+    boolean success = false;
+    do {
+      if (serialPlotter.requiresAuthorization() && !PreferencesData.has(serialPlotter.getAuthorizationKey())) {
+        PasswordAuthorizationDialog dialog = new PasswordAuthorizationDialog(this, tr("Type board password to access its console"));
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+        if (dialog.isCancelled()) {
+          statusNotice(tr("Unable to open serial plotter"));
+          return;
+        }
+
+        PreferencesData.set(serialPlotter.getAuthorizationKey(), dialog.getPassword());
+      }
+
+      try {
+        serialPlotter.open();
+        serialPlotter.setVisible(true);
+        success = true;
+        statusEmpty();
+      } catch (ConnectException e) {
+        statusError(tr("Unable to connect: is the sketch using the bridge?"));
+      } catch (JSchException e) {
+        statusError(tr("Unable to connect: wrong password?"));
+      } catch (SerialException e) {
+        String errorMessage = e.getMessage();
+        if (e.getCause() != null && e.getCause() instanceof SerialPortException) {
+          errorMessage += " (" + ((SerialPortException) e.getCause()).getExceptionType() + ")";
+        }
+        statusError(errorMessage);
+        serialPlotter = null;
+      } catch (Exception e) {
+        statusError(e);
+      } finally {
+        if (serialPlotter != null && serialPlotter.requiresAuthorization() && !success) {
+          PreferencesData.remove(serialPlotter.getAuthorizationKey());
+        }
+      }
+
+    } while (serialPlotter != null && serialPlotter.requiresAuthorization() && !success);
+
+  }
+
+  private void handleBurnBootloader() {
+    console.clear();
+    EditorConsole.setCurrentEditorConsole(this.console);
+    statusNotice(tr("Burning bootloader to I/O Board (this may take a minute)..."));
+    new Thread(() -> {
+      try {
+        Uploader uploader = new SerialUploader();
+        if (uploader.burnBootloader()) {
+          SwingUtilities.invokeLater(() -> statusNotice(tr("Done burning bootloader.")));
+        } else {
+          SwingUtilities.invokeLater(() -> statusError(tr("Error while burning bootloader.")));
+          // error message will already be visible
+        }
+      } catch (SerialNotFoundException e) {
+        SwingUtilities.invokeLater(() -> statusError(tr("Error while burning bootloader: please select a serial port.")));
+      } catch (PreferencesMapException e) {
+        SwingUtilities.invokeLater(() -> {
+          statusError(I18n.format(
+            tr("Error while burning bootloader: missing '{0}' configuration parameter"),
+            e.getMessage()));
+        });
+      } catch (RunnerException e) {
+        SwingUtilities.invokeLater(() -> statusError(e.getMessage()));
+      } catch (Exception e) {
+        SwingUtilities.invokeLater(() -> statusError(tr("Error while burning bootloader.")));
+        e.printStackTrace();
+      }
+    }).start();
+  }
+
+  private void handleBoardInfo() {
+    console.clear();
+
+    String selectedPort = PreferencesData.get("serial.port");
+    List<BoardPort> ports = Base.getDiscoveryManager().discovery();
+
+    String label = "";
+    String vid = "";
+    String pid = "";
+    String iserial = "";
+    String protocol = "";
+    boolean found = false;
+
+    for (BoardPort port : ports) {
+      if (port.getAddress().equals(selectedPort)) {
+        label = port.getBoardName();
+        vid = port.getPrefs().get("vid");
+        pid = port.getPrefs().get("pid");
+        iserial = port.getPrefs().get("iserial");
+        protocol = port.getProtocol();
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      statusNotice(tr("Please select a port to obtain board info"));
+      return;
+    }
+
+    if (protocol.equals("network")) {
+      statusNotice(tr("Network port, can't obtain info"));
+      return;
+    }
+
+    if (vid == null || vid.equals("") || vid.equals("0000")) {
+      statusNotice(tr("Native serial port, can't obtain info"));
+      return;
+    }
+
+    if (iserial == null || iserial.equals("")) {
+      iserial = tr("Upload any sketch to obtain it");
+    }
+
+    if (label == null) {
+      label = tr("Unknown board");
+    }
+
+    String infos = I18n.format("BN: {0}\nVID: {1}\nPID: {2}\nSN: {3}", label, vid, pid, iserial);
+    JTextArea textArea = new JTextArea(infos);
+
+    JOptionPane.showMessageDialog(this, textArea, tr("Board Info"), JOptionPane.PLAIN_MESSAGE);
+  }
 
   /**
    * Handler for File &rarr; Page Setup.
    */
-  public void handlePageSetup() {
-    //printerJob = null;
-    if (printerJob == null) {
-      printerJob = PrinterJob.getPrinterJob();
-    }
+  private void handlePageSetup() {
+    PrinterJob printerJob = PrinterJob.getPrinterJob();
     if (pageFormat == null) {
       pageFormat = printerJob.defaultPage();
     }
     pageFormat = printerJob.pageDialog(pageFormat);
-    //System.out.println("page format is " + pageFormat);
   }
 
 
   /**
    * Handler for File &rarr; Print.
    */
-  public void handlePrint() {
-    statusNotice(_("Printing..."));
+  private void handlePrint() {
+    statusNotice(tr("Printing..."));
     //printerJob = null;
-    if (printerJob == null) {
-      printerJob = PrinterJob.getPrinterJob();
-    }
+    PrinterJob printerJob = PrinterJob.getPrinterJob();
     if (pageFormat != null) {
       //System.out.println("setting page format " + pageFormat);
-      printerJob.setPrintable(textarea.getPainter(), pageFormat);
+      printerJob.setPrintable(getCurrentTab().getTextArea(), pageFormat);
     } else {
-      printerJob.setPrintable(textarea.getPainter());
+      printerJob.setPrintable(getCurrentTab().getTextArea());
     }
     // set the name of the job to the code name
-    printerJob.setJobName(sketch.getCurrentCode().getPrettyName());
+    printerJob.setJobName(getCurrentTab().getSketchFile().getPrettyName());
 
     if (printerJob.printDialog()) {
       try {
         printerJob.print();
-        statusNotice(_("Done printing."));
+        statusNotice(tr("Done printing."));
 
       } catch (PrinterException pe) {
-        statusError(_("Error while printing."));
+        statusError(tr("Error while printing."));
         pe.printStackTrace();
       }
     } else {
-      statusNotice(_("Printing canceled."));
+      statusNotice(tr("Printing canceled."));
     }
     //printerJob = null;  // clear this out?
   }
@@ -2570,9 +2504,10 @@ public class Editor extends JFrame implements RunnerListener {
    * Show an error int the status bar.
    */
   public void statusError(String what) {
+    System.err.println(what);
     status.error(what);
     //new Exception("deactivating RUN").printStackTrace();
-    toolbar.deactivate(EditorToolbar.RUN);
+    toolbar.deactivateRun();
   }
 
 
@@ -2588,27 +2523,30 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (e instanceof RunnerException) {
       RunnerException re = (RunnerException) e;
-      if (re.hasCodeIndex()) {
-        sketch.setCurrentCode(re.getCodeIndex());
+      if (re.hasCodeFile()) {
+        selectTab(findTabIndex(re.getCodeFile()));
       }
       if (re.hasCodeLine()) {
         int line = re.getCodeLine();
         // subtract one from the end so that the \n ain't included
-        if (line >= textarea.getLineCount()) {
+        if (line >= getCurrentTab().getTextArea().getLineCount()) {
           // The error is at the end of this current chunk of code,
           // so the last line needs to be selected.
-          line = textarea.getLineCount() - 1;
-          if (textarea.getLineText(line).length() == 0) {
+          line = getCurrentTab().getTextArea().getLineCount() - 1;
+          if (getCurrentTab().getLineText(line).length() == 0) {
             // The last line may be zero length, meaning nothing to select.
             // If so, back up one more line.
             line--;
           }
         }
-        if (line < 0 || line >= textarea.getLineCount()) {
-          System.err.println(I18n.format(_("Bad error line: {0}"), line));
+        if (line < 0 || line >= getCurrentTab().getTextArea().getLineCount()) {
+          System.err.println(I18n.format(tr("Bad error line: {0}"), line));
         } else {
-          textarea.select(textarea.getLineStartOffset(line),
-                          textarea.getLineStopOffset(line) - 1);
+          try {
+            addLineHighlight(line);
+          } catch (BadLocationException e1) {
+            e1.printStackTrace();
+          }
         }
       }
     }
@@ -2642,163 +2580,24 @@ public class Editor extends JFrame implements RunnerListener {
   /**
    * Clear the status area.
    */
-  public void statusEmpty() {
+  private void statusEmpty() {
     statusNotice(EMPTY);
   }
-
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
   protected void onBoardOrPortChange() {
-    Map<String, String> boardPreferences =  Base.getBoardPreferences();
-    lineStatus.setBoardName(boardPreferences.get("name"));
-    lineStatus.setSerialPort(Preferences.get("serial.port"));
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    if (board != null)
+      lineStatus.setBoardName(board.getName());
+    else
+      lineStatus.setBoardName("-");
+    lineStatus.setPort(PreferencesData.get("serial.port"));
     lineStatus.repaint();
   }
 
-  
-  /**
-   * Returns the edit popup menu.
-   */
-  class TextAreaPopup extends JPopupMenu {
-    //private String currentDir = System.getProperty("user.dir");
-    private String referenceFile = null;
-
-    private JMenuItem cutItem;
-    private JMenuItem copyItem;
-    private JMenuItem discourseItem;
-    private JMenuItem referenceItem;
-    private JMenuItem openURLItem;
-    private JSeparator openURLItemSeparator;
-
-    private String clickedURL;
-
-    public TextAreaPopup() {
-      openURLItem = new JMenuItem(_("Open URL"));
-      openURLItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.openURL(clickedURL);
-        }
-      });
-      add(openURLItem);
-      
-      openURLItemSeparator = new JSeparator();
-      add(openURLItemSeparator);
-      
-      cutItem = new JMenuItem(_("Cut"));
-      cutItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleCut();
-          }
-      });
-      add(cutItem);
-
-      copyItem = new JMenuItem(_("Copy"));
-      copyItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleCopy();
-          }
-        });
-      add(copyItem);
-
-      discourseItem = new JMenuItem(_("Copy for Forum"));
-      discourseItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleDiscourseCopy();
-          }
-        });
-      add(discourseItem);
-
-      discourseItem = new JMenuItem(_("Copy as HTML"));
-      discourseItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleHTMLCopy();
-          }
-        });
-      add(discourseItem);
-
-      JMenuItem item = new JMenuItem(_("Paste"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handlePaste();
-          }
-        });
-      add(item);
-
-      item = new JMenuItem(_("Select All"));
-      item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSelectAll();
-        }
-      });
-      add(item);
-
-      addSeparator();
-
-      item = new JMenuItem(_("Comment/Uncomment"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleCommentUncomment();
-          }
-      });
-      add(item);
-
-      item = new JMenuItem(_("Increase Indent"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleIndentOutdent(true);
-          }
-      });
-      add(item);
-
-      item = new JMenuItem(_("Decrease Indent"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleIndentOutdent(false);
-          }
-      });
-      add(item);
-
-      addSeparator();
-
-      referenceItem = new JMenuItem(_("Find in Reference"));
-      referenceItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleFindReference();
-          }
-        });
-      add(referenceItem);
-    }
-
-    // if no text is selected, disable copy and cut menu items
-    public void show(Component component, int x, int y) {
-      int lineNo = textarea.getLineOfOffset(textarea.xyToOffset(x, y));
-      int offset = textarea.xToOffset(lineNo, x);
-      String line = textarea.getLineText(lineNo);
-      clickedURL = textarea.checkClickedURL(line, offset);
-      if (clickedURL != null) {
-        openURLItem.setVisible(true);
-        openURLItemSeparator.setVisible(true);
-      } else {
-        openURLItem.setVisible(false);
-        openURLItemSeparator.setVisible(false);
-      }
-      
-      if (textarea.isSelectionActive()) {
-        cutItem.setEnabled(true);
-        copyItem.setEnabled(true);
-        discourseItem.setEnabled(true);
-
-      } else {
-        cutItem.setEnabled(false);
-        copyItem.setEnabled(false);
-        discourseItem.setEnabled(false);
-      }
-      
-      referenceFile = PdeKeywords.getReference(getCurrentKeyword());
-      referenceItem.setEnabled(referenceFile != null);
-      
-      super.show(component, x, y);
-    }
+  public void addCompilerProgressListener(CompilerProgressListener listener){
+    this.status.addCompilerProgressListener(listener);
   }
+
 }

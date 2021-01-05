@@ -1,16 +1,33 @@
 <?xml version="1.0"?>
-<project name="Arduino PDE" default="build">
-  
+<project name="Arduino PDE" xmlns:if="ant:if" xmlns:unless="ant:unless" default="build">
+
+  <path id="class.path">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${env.JAVA_HOME}/lib/tools.jar"/>
+    <pathelement path="../arduino-core/arduino-core.jar"/>
+  </path>
+
+  <path id="class.path.test">
+    <path refid="class.path"/>
+    <pathelement location="bin/"/>
+    <fileset dir="test-lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
   <target name="clean" description="Clean the build directories">
     <delete dir="bin" />
+    <delete dir="test-bin" />
     <delete file="pde.jar" />
   </target>
 
   <target name="compile" description="Compile sources">
     <condition property="core-built">
-      <available file="../core/core.jar" />
+      <available file="../arduino-core/arduino-core.jar" />
     </condition>
-    <fail unless="core-built" message="Please build the core library first and make sure it sits in ../core/core.jar" />
+    <fail unless="core-built" message="Please build the Arduino-core library first and make sure it sits in ../arduino-core/arduino-core.jar" />
 
     <mkdir dir="bin" />
 
@@ -24,12 +41,31 @@
     <property name="java_home" value="${env.JAVA_HOME}" />
 
     <condition property="linux"><os family="unix" /></condition>
-    <fail if="linux" unless="java_home" 
+    <fail if="linux" unless="java_home"
 	  message="The JAVA_HOME variable must be set to the location of a full JDK. For instance, on Ubuntu Linux, this might be /usr/lib/jvm/java-6-sun." />
 
     <condition property="windows"><os family="windows" /></condition>
-    <fail if="windows" unless="java_home" 
+    <fail if="windows" unless="java_home"
 	  message="The JAVA_HOME variable must be set to the location of a full JDK. For instance, on Windows, this might be c:\jdk1.6.0_18." />
+
+    <condition property="work.dir" value="../build/macosx/work/Arduino.app/Contents/Java/">
+      <os family="mac"/>
+    </condition>
+    <condition property="java.additional.library.path" value=".">
+      <os family="mac"/>
+    </condition>
+    <condition property="work.dir" value="../build/windows/work/">
+      <os family="windows"/>
+    </condition>
+    <condition property="java.additional.library.path" value=".">
+      <os family="windows"/>
+    </condition>
+    <condition property="work.dir" value="../build/linux/work/">
+      <os family="unix"/>
+    </condition>
+    <condition property="java.additional.library.path" value="lib">
+      <os family="unix"/>
+    </condition>
 
 <!--
     <dirname property="blah" file="${java.home}" />
@@ -37,19 +73,109 @@
     <echo message="override ${env.JAVA_HOME}/lib/tools.jar" />
     <fail />
 -->
-    <javac target="1.5" 
-	   srcdir="src" 
-	   destdir="bin" 
-	   excludes="**/tools/format/**" 
+    <javac source="1.8" target="1.8"
+	   srcdir="src"
+	   destdir="bin"
 	   encoding="UTF-8"
 	   includeAntRuntime="false"
 	   debug="true"
-	   classpath="../core/core.jar; ${env.JAVA_HOME}/lib/tools.jar; lib/ant.jar; lib/ant-launcher.jar; lib/apple.jar; lib/ecj.jar; lib/jna.jar; lib/RXTXcomm.jar" />
+	   classpathref="class.path" />
+    <!-- If you want to add files in the jars -->
     <copy todir="bin" overwrite="true" verbose="true">
-      <fileset dir="src" includes="**/*.properties" />
+      <fileset dir="src" includes="log4j2.xml" />
     </copy>
   </target>
-  
+
+  <target name="test" depends="compile" description="Runs the test">
+    <mkdir dir="test-bin"/>
+
+    <javac source="1.8" target="1.8"
+           srcdir="test"
+           destdir="test-bin"
+           encoding="UTF-8"
+           includeAntRuntime="false"
+           debug="true"
+           classpathref="class.path.test">
+    </javac>
+
+    <copy todir="test-bin" overwrite="true" verbose="true">
+      <fileset dir="test" includes="**/*.zip" />
+      <fileset dir="test" includes="**/*.txt" />
+      <fileset dir="test" includes="**/*.properties" />
+      <fileset dir="test" includes="**/*.ino" />
+      <fileset dir="test" includes="**/*.json*" />
+      <fileset dir="test" includes="**/*.key" />
+      <fileset dir="test" includes="**/*.hex" />
+      <fileset dir="test" includes="**/*.pac" />
+    </copy>
+
+    <!-- XML and TXT reports will be written here -->
+    <property name="test.reportdir" value="test-bin/results"/>
+    <!-- Summary HTML report will be written here -->
+    <property name="test.htmldir" value="test-bin/results/html"/>
+
+    <!-- Remove the reportdir, so the HTML report only includes tests from this run -->
+    <delete dir="${test.reportdir}" />
+    <mkdir dir="${test.reportdir}"/>
+    <mkdir dir="${test.htmldir}"/>
+
+    <!-- Sanity check: when single-test-methods is set, but single-test-class is not, raise an error -->
+    <fail message="Need single-test-class if single-test-methods is set" if="single-test-methods" unless="single-test-class"/>
+
+    <junit printsummary="yes" dir="${work.dir}" fork="true" showoutput="no" failureproperty="test.failed">
+      <jvmarg value="-Djava.library.path=${java.additional.library.path}"/>
+      <jvmarg value="-DWORK_DIR=."/>
+      <jvmarg value="-ea"/>
+      <classpath>
+        <pathelement location="bin"/>
+        <pathelement location="test-bin"/>
+        <pathelement location="${work.dir}/lib/jna-4.2.2.jar"/>
+        <pathelement location="${work.dir}/lib/jna-platform-4.2.2.jar"/>
+        <path refid="class.path.test"/>
+      </classpath>
+
+      <!-- Write XML files (for report-generation) and TXT files (for manual review) for every test class -->
+      <formatter type="plain" />
+      <formatter type="xml"/>
+      <!-- Print full details to stdout when running a single test -->
+      <formatter type="plain" usefile="false" if="single-test-class"/>
+      <!-- When running all tests, print details for failing tests and a summary for each test class (printsummary=yes above) -->
+      <formatter type="brief" usefile="false" unless="single-test-class"/>
+
+      <!-- When both single-test-class and single-test-methods are specified, pass both to unit -->
+      <test name="${single-test-class}" methods="${single-test-methods}" todir="${test.reportdir}" if="single-test-methods"/>
+      <!-- When just single-test-class is specified, omit methods to run the entire class -->
+      <test name="${single-test-class}" todir="${test.reportdir}" if="single-test-class" unless="single-test-methods"/>
+      <!-- When neither are specified, run *all* testcases -->
+      <batchtest fork="yes" todir="${test.reportdir}" unless="single-test-class">
+        <fileset dir="test">
+          <include name="**/*Test.java"/>
+          <exclude name="**/Abstract*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+
+    <!-- Convert generated XML reports to browsable HTML -->
+    <junitreport todir="${test.reportdir}">
+      <fileset dir="${test.reportdir}">
+	<include name="TEST-*.xml" />
+      </fileset>
+      <!-- Create a browsable frame-based HTML -->
+      <report format="frames" todir="${test.htmldir}" />
+      <!-- Also create a single-page version, to use as CI test result -->
+      <report format="noframes" todir="${test.htmldir}" />
+    </junitreport>
+
+    <!-- Make these paths relative to user.dir, which is the current directory when invoking ant (so the resulting paths are relative to the environment of the user. -->
+    <property name="test.htmldir.display" location="${test.htmldir}" relative="true" basedir="${user.dir}"/>
+    <property name="test.reportdir.display" location="${test.reportdir}" relative="true" basedir="${user.dir}"/>
+    <echo unless:set="running-from-github-action" message="Detailed test results can be found in ${test.reportdir.display}"/>
+    <echo unless:set="running-from-github-action" message="A browsable HTML summary is generated in ${test.htmldir.display}/index.html"/>
+    <echo if:set="running-from-github-action" message="Detailed test results can be downloaded as an asset from this github action. Easiest to view is the single-file version in junit-noframes.html. Alternatively, the multi-file version can be viewed from index.html and includes full stdout/stderr output of tests."/>
+
+    <fail if="test.failed"/>
+  </target>
+
   <target name="build" depends="compile" description="Build PDE">
     <jar basedir="bin" destfile="pde.jar" />
   </target>

@@ -1,0 +1,2817 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Cristian Maglie <c.maglie@arduino.cc>, 2016
+# Jihoon Hyun <ryrhkqn@naver.com>, 2015
+# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2018
+# Ki-hyeok Park <khpark@ateamventures.com>, 2015
+# shibaboy <shibaboy@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Arduino IDE 1.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-29 10:24-0400\n"
+"PO-Revision-Date: 2018-11-27 05:46+0000\n"
+"Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
+"Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: Preferences.java:358 Preferences.java:374
+msgid "  (requires restart of Arduino)"
+msgstr "  (아두이노를 재시작해야 함)"
+
+#: ../../../processing/app/debug/Compiler.java:529
+#, java-format
+msgid " Not used: {0}"
+msgstr "사용되지 않음: {0}"
+
+#: ../../../processing/app/debug/Compiler.java:525
+#, java-format
+msgid " Used: {0}"
+msgstr " 사용됨: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr "'Keyboard' 가 없습니다. 스케치에서 '#include <Keyboard.h>' 를 포함했나요?"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr "'Mouse' 가 없습니다. 스케치에서 '#include < Mouse.h>' 를 포함했나요?"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
+msgid ""
+"'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
+"information"
+msgstr "'arch' 폴더는 더 이상 지원되지 않습니다! 자세한 내용은 http://goo.gl/gfFJzU 를 참조하십시오"
+
+#: Preferences.java:478
+msgid "(edit only when Arduino is not running)"
+msgstr "(아두이노가 실행되지 않는 경우에만 수정 가능)"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+msgid "(legacy)"
+msgstr "(레거시)"
+
+#: ../../../processing/app/helpers/CommandlineParser.java:149
+msgid "--curdir no longer supported"
+msgstr "--curdir 는 더이상 지원하지 않습니다"
+
+#: ../../../processing/app/Base.java:468
+msgid ""
+"--verbose, --verbose-upload and --verbose-build can only be used together "
+"with --verify or --upload"
+msgstr "--verbose, --verbose-upload 와 --verbose-build 는 --verify 나 --upload와 함께 써야만 합니다."
+
+#: Sketch.java:746
+msgid ".pde -> .ino"
+msgstr ".pde -> .ino"
+
+#: Editor.java:2053
+msgid ""
+"<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
+" font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
+"want to save changes to this sketch<BR> before closing?</b><p>If you don't "
+"save, your changes will be lost."
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b> <BR> 닫기전에 변경사항을 저장하시겠습니까 ?</b><p>만약 저장하지 않으면 변경된 사항은 손실됩니다."
+
+#: Editor.java:2169
+#, java-format
+msgid "A folder named \"{0}\" already exists. Can't open sketch."
+msgstr " \"{0}\" 폴더 이름이 존재합니다. 스케치를 열수 없습니다."
+
+#: Base.java:2690
+#, java-format
+msgid "A library named {0} already exists"
+msgstr "라이브러리 이름 {0}이 이미 존재합니다"
+
+#: UpdateCheck.java:103
+msgid ""
+"A new version of Arduino is available,\n"
+"would you like to visit the Arduino download page?"
+msgstr "새로운 버젼의 아두이노가 다운로드 가능합니다,\n아두이노 다운로드 페이지를 방문할까요?"
+
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid "A newer {0} package is available"
+msgstr "새로운 {0} 패키지가 사용가능합니다"
+
+#: ../../../../../app/src/processing/app/Base.java:2307
+msgid "A subfolder of your sketchbook is not a valid library"
+msgstr "스케치북의 하위 폴더가 유효한 라이브러리가 아닙니다"
+
+#: Editor.java:1116
+msgid "About Arduino"
+msgstr "아두이노 정보"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr "Acoli"
+
+#: ../../../../../app/src/processing/app/Base.java:1177
+msgid "Add .ZIP Library..."
+msgstr ".ZIP 라이브러리 추가..."
+
+#: Editor.java:650
+msgid "Add File..."
+msgstr "파일 추가…"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
+msgid "Additional Boards Manager URLs"
+msgstr "추가적인 보드 매니저 URLs"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
+msgid "Additional Boards Manager URLs: "
+msgstr "추가적인 보드 매니저 URLs"
+
+#: ../../../../../app/src/processing/app/Preferences.java:161
+msgid "Afrikaans"
+msgstr "아프리칸스어"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Aggressively cache compiled core"
+
+#: ../../../processing/app/Preferences.java:96
+msgid "Albanian"
+msgstr "알바니아어"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
+msgid "All"
+msgstr "All"
+
+#: tools/FixEncoding.java:77
+msgid ""
+"An error occurred while trying to fix the file encoding.\n"
+"Do not attempt to save this sketch as it may overwrite\n"
+"the old version. Use Open to re-open the sketch and try again.\n"
+msgstr "파일 인코딩 문제를 해결하는 동안 오류가 발생했습니다.\n이전 버젼을 덮어쓸 수 있으므로 이 스케치 저장하지 마십시요.\n열기 메뉴를 사용하여 스케치를 다시 열고 다시 시도하십시요.\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr "라이브러리 인덱스를 업데이트 하는 동안 에러가 발생하였습니다!"
+
+#: ../../../processing/app/BaseNoGui.java:528
+msgid "An error occurred while uploading the sketch"
+msgstr "스케치를 업로드 하는 동안 에러가 발생하였습니다."
+
+#: ../../../processing/app/BaseNoGui.java:506
+#: ../../../processing/app/BaseNoGui.java:551
+#: ../../../processing/app/BaseNoGui.java:554
+msgid "An error occurred while verifying the sketch"
+msgstr "스케치를 검증 하는 동안 에러가 발생하였습니다"
+
+#: ../../../processing/app/BaseNoGui.java:521
+msgid "An error occurred while verifying/uploading the sketch"
+msgstr "스케치를 검증/업로드 하는 동안 에러가 발생 하였습니다"
+
+#: Base.java:228
+msgid ""
+"An unknown error occurred while trying to load\n"
+"platform-specific code for your machine."
+msgstr "플랫폼 종속저인 코드를 로드하는 동안\n알수 없는 에러가 발생했습니니다."
+
+#: Preferences.java:85
+msgid "Arabic"
+msgstr "아랍어"
+
+#: Preferences.java:86
+msgid "Aragonese"
+msgstr "아라곤어"
+
+#: tools/Archiver.java:48
+msgid "Archive Sketch"
+msgstr "스케치 보관하기"
+
+#: tools/Archiver.java:109
+msgid "Archive sketch as:"
+msgstr "스케치를 보관:"
+
+#: tools/Archiver.java:139
+msgid "Archive sketch canceled."
+msgstr "스케치 보관 취소"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "Archiving built core (caching) in: {0}"
+
+#: tools/Archiver.java:75
+msgid ""
+"Archiving the sketch has been canceled because\n"
+"the sketch couldn't save properly."
+msgstr "스케치가 제대로 저장되지 않아서 스케치를 보관하는 것이\n취소되었습니다."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr "아두이노"
+
+#: ../../../processing/app/I18n.java:83
+msgid "Arduino ARM (32-bits) Boards"
+msgstr "아두이노 ARM (32-비트) 보드"
+
+#: ../../../processing/app/I18n.java:82
+msgid "Arduino AVR Boards"
+msgstr "아두이노 AVR 보드"
+
+#: Editor.java:2137
+msgid ""
+"Arduino can only open its own sketches\n"
+"and other files ending in .ino or .pde"
+msgstr "아두이노는 자체의 스케치와 .ino 또는 .pde로 끝나는 파일만 열 수 있습니다."
+
+#: Base.java:1682
+msgid ""
+"Arduino cannot run because it could not\n"
+"create a folder to store your settings."
+msgstr "설정을 저장하기 위한 폴더를 생성하지 못해서\n아두이노를 실행할 수 없습니다."
+
+#: Base.java:1889
+msgid ""
+"Arduino cannot run because it could not\n"
+"create a folder to store your sketchbook."
+msgstr "스케치를  저장하기 위한 폴더를 생성하지 못해서\n아두이노를 실행할 수 없습니다."
+
+#: ../../../processing/app/EditorStatus.java:471
+msgid "Arduino: "
+msgstr "아두이노:"
+
+#: Sketch.java:588
+#, java-format
+msgid "Are you sure you want to delete \"{0}\"?"
+msgstr "정말로 \"{0}\"를 삭제하시겠습니까?"
+
+#: Sketch.java:587
+msgid "Are you sure you want to delete this sketch?"
+msgstr "정말로 스케치를 삭제하시겠습니까?"
+
+#: ../../../processing/app/Base.java:356
+msgid "Argument required for --board"
+msgstr "--board 에 인수가 필요함"
+
+#: ../../../processing/app/Base.java:363
+msgid "Argument required for --port"
+msgstr "--port 에 인수가 필요함"
+
+#: ../../../processing/app/Base.java:377
+msgid "Argument required for --pref"
+msgstr "--pref 에 인수가 필요함"
+
+#: ../../../processing/app/Base.java:384
+msgid "Argument required for --preferences-file"
+msgstr "--preferences-file 에 인수가 필요함"
+
+#: ../../../processing/app/helpers/CommandlineParser.java:76
+#: ../../../processing/app/helpers/CommandlineParser.java:83
+#, java-format
+msgid "Argument required for {0}"
+msgstr "{0} 에 인수가 필요함"
+
+#: ../../../processing/app/Preferences.java:137
+msgid "Armenian"
+msgstr "아르메니안"
+
+#: ../../../processing/app/Preferences.java:138
+msgid "Asturian"
+msgstr "오스트리아어"
+
+#: ../../../processing/app/debug/Compiler.java:145
+msgid "Authorization required"
+msgstr "권한이 요구 됨"
+
+#: tools/AutoFormat.java:91
+msgid "Auto Format"
+msgstr "자동 포맷"
+
+#: tools/AutoFormat.java:944
+msgid "Auto Format finished."
+msgstr "자동 포맷 완료"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr "프록시 설정을 자동 감지"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr "자동"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr "자동 프록시 설정 URL:"
+
+#: SerialMonitor.java:110
+msgid "Autoscroll"
+msgstr "자동 스크롤"
+
+#: Editor.java:2619
+#, java-format
+msgid "Bad error line: {0}"
+msgstr "잘못된 오류 라인: {0}"
+
+#: Editor.java:2136
+msgid "Bad file selected"
+msgstr "잘못된 파일이 선택됐습니다"
+
+#: ../../../processing/app/Preferences.java:149
+msgid "Basque"
+msgstr "바스크어"
+
+#: ../../../processing/app/Preferences.java:139
+msgid "Belarusian"
+msgstr "벨로루시어"
+
+#: ../../../processing/app/Base.java:1433
+#: ../../../processing/app/Editor.java:707
+msgid "Board"
+msgstr "보드"
+
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr "보드 정보"
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr "{0} 에 있는 보드를 사용할 수 없음"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
+#, java-format
+msgid "Board {0} (platform {1}, package {2}) is unknown"
+msgstr "알수없는 보드 {0} (플랫폼 {1}, 패키지 {2})"
+
+#: ../../../processing/app/debug/TargetBoard.java:42
+#, java-format
+msgid ""
+"Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
+" {3}"
+msgstr "보드 {0}:{1}:{2} 이 ''build.board'' 설정에서 정의되지 않음. 자동 설정 : {3}"
+
+#: ../../../processing/app/EditorStatus.java:472
+msgid "Board: "
+msgstr "보드:"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Boards Manager"
+msgstr "보드 매니저"
+
+#: ../../../../../app/src/processing/app/Base.java:1320
+msgid "Boards Manager..."
+msgstr "보드 매니저..."
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
+msgid "Boards included in this package:"
+msgstr "보드는 이 패키지에 포함:"
+
+#: ../../../processing/app/debug/Compiler.java:1273
+#, java-format
+msgid "Bootloader file specified but missing: {0}"
+msgstr "부트로더 파일이 지정되었으나 누락됨: {0}"
+
+#: ../../../processing/app/Preferences.java:140
+msgid "Bosnian"
+msgstr "보스니아어"
+
+#: SerialMonitor.java:112
+msgid "Both NL & CR"
+msgstr "Both NL & CR"
+
+#: Preferences.java:81
+msgid "Browse"
+msgstr "찾아보기"
+
+#: ../../../processing/app/Sketch.java:1530
+msgid "Build options changed, rebuilding all"
+msgstr "빌드 선택사항 변경됨, 모두 다시 빌드합니다. "
+
+#: ../../../../../app/src/processing/app/Base.java:1210
+msgid "Built-in Examples"
+msgstr "내장된 예제"
+
+#: ../../../processing/app/Preferences.java:80
+msgid "Bulgarian"
+msgstr "불가리어"
+
+#: ../../../processing/app/Preferences.java:141
+msgid "Burmese (Myanmar)"
+msgstr "버마어(미얀마)"
+
+#: Editor.java:708
+msgid "Burn Bootloader"
+msgstr "부트로더 굽기"
+
+#: Editor.java:2504
+msgid "Burning bootloader to I/O Board (this may take a minute)..."
+msgstr "I/O 보드에 부트로더 굽기 (이것은 시간이 걸릴 수 있습니다)…"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr "CRC가 일치하지 않습니다. 파일이 손상되었습니다. 일시적인 문제 일 수 있으니 나중에 다시 시도하십시오."
+
+#: ../../../processing/app/Base.java:379
+#, java-format
+msgid "Can only pass one of: {0}"
+msgstr "Can only pass one of: {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr "외부 편집기를 활성화 할 수 없습니다."
+
+#: ../../../processing/app/BaseNoGui.java:504
+#: ../../../processing/app/BaseNoGui.java:549
+msgid "Can't find the sketch in the specified path"
+msgstr "지정한 경로에서 스케치를 찾을 수 없음"
+
+#: ../../../processing/app/Preferences.java:92
+msgid "Canadian French"
+msgstr "캐나다 프랑스어"
+
+#: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
+#: Editor.java:2064 Editor.java:2145 Editor.java:2465
+msgid "Cancel"
+msgstr "취소"
+
+#: ../../../processing/app/Base.java:465
+msgid "Cannot specify any sketch files"
+msgstr "어떠한 스케치 파일도 선택 할 수 없음"
+
+#: SerialMonitor.java:112
+msgid "Carriage return"
+msgstr "캐리지 리턴"
+
+#: Preferences.java:87
+msgid "Catalan"
+msgstr "카탈로니아어"
+
+#: Preferences.java:419
+msgid "Check for updates on startup"
+msgstr "시작시 업데이트 확인"
+
+#: ../../../processing/app/Preferences.java:142
+msgid "Chinese (China)"
+msgstr "중국어(중국)"
+
+#: ../../../processing/app/Preferences.java:144
+msgid "Chinese (Taiwan)"
+msgstr "중국어(대만)"
+
+#: ../../../processing/app/Preferences.java:143
+msgid "Chinese (Taiwan) (Big5)"
+msgstr "중국어(대만)(Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr "출력 지우기"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
+msgid "Click for a list of unofficial boards support URLs"
+msgstr "비공식 보드 지원 URL 목록을 보려면 클릭하세요"
+
+#: Editor.java:521 Editor.java:2024
+msgid "Close"
+msgstr "닫기"
+
+#: Editor.java:1208 Editor.java:2749
+msgid "Comment/Uncomment"
+msgstr "주석추가/주석삭제"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr "통신"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
+msgid "Compiler warnings: "
+msgstr "컴파일러 경고:"
+
+#: Sketch.java:1608 Editor.java:1890
+msgid "Compiling sketch..."
+msgstr "스케치를 컴파일 중…"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr "Contributed"
+
+#: Editor.java:1157 Editor.java:2707
+msgid "Copy"
+msgstr "복사"
+
+#: Editor.java:1177 Editor.java:2723
+msgid "Copy as HTML"
+msgstr "HTML로 복사"
+
+#: ../../../processing/app/EditorStatus.java:455
+msgid "Copy error messages"
+msgstr "오류 메시지 복사"
+
+#: Editor.java:1165 Editor.java:2715
+msgid "Copy for Forum"
+msgstr "포럼용으로 복사"
+
+#: Sketch.java:1089
+#, java-format
+msgid "Could not add ''{0}'' to the sketch."
+msgstr "''{0}''를 스케치에 추가할 수 없습니다."
+
+#: Editor.java:2188
+msgid "Could not copy to a proper location."
+msgstr "지정한 위치로 파일을 복사할 수 없습니다."
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr "\"{0}\" 디렉토리를 생성할 수 없습니다."
+
+#: Editor.java:2179
+msgid "Could not create the sketch folder."
+msgstr "스케치 폴더를 생성할 수 없습니다."
+
+#: Editor.java:2206
+msgid "Could not create the sketch."
+msgstr "스케치를 생성할 수 없습니다."
+
+#: Sketch.java:617
+#, java-format
+msgid "Could not delete \"{0}\"."
+msgstr "\"{0}\"를 삭제할 수 없습니다."
+
+#: Sketch.java:1066
+#, java-format
+msgid "Could not delete the existing ''{0}'' file."
+msgstr "''{0}'' 파일을 삭제할 수 없습니다."
+
+#: ../../../processing/app/debug/TargetPlatform.java:74
+#, java-format
+msgid "Could not find boards.txt in {0}. Is it pre-1.5?"
+msgstr "{0}에서 boards.txt 파일을 찾을 수 없음. pre-1.5 인가요?"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
+#, java-format
+msgid "Could not find tool {0}"
+msgstr "툴 {0}을 찾을 수 없음"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:278
+#, java-format
+msgid "Could not find tool {0} from package {1}"
+msgstr "패키지 {1}에서 툴 {0}를 찾을 수 없음"
+
+#: Base.java:1934
+#, java-format
+msgid ""
+"Could not open the URL\n"
+"{0}"
+msgstr "URL {0}를\n열 수 없습니다."
+
+#: Base.java:1958
+#, java-format
+msgid ""
+"Could not open the folder\n"
+"{0}"
+msgstr "폴더 {0}를\n열 수 없습니다."
+
+#: Sketch.java:1769
+msgid ""
+"Could not properly re-save the sketch. You may be in trouble at this point,\n"
+"and it might be time to copy and paste your code to another text editor."
+msgstr "스케치를 제대로 다시 저장할 수 없습니다. 다른 텍스트 에디터에,\n 복사하여 붙여넣을 수 있습니다."
+
+#: Sketch.java:1768
+msgid "Could not re-save sketch"
+msgstr "재 저장을 할 수 없습니다"
+
+#: Theme.java:52
+msgid ""
+"Could not read color theme settings.\n"
+"You'll need to reinstall Arduino."
+msgstr "컬러 테마를 읽을 수 없습니다.\n아두이노를 다시 설치해야 합니다."
+
+#: Preferences.java:219
+msgid ""
+"Could not read default settings.\n"
+"You'll need to reinstall Arduino."
+msgstr "기본 설정을 읽을 수 없습니다.\n아두이노를 다시 설치해야 합니다."
+
+#: Base.java:2482
+#, java-format
+msgid "Could not remove old version of {0}"
+msgstr "{0}의 이전 버젼을 삭제할 수 없습니다"
+
+#: Base.java:2492
+#, java-format
+msgid "Could not replace {0}"
+msgstr "{0}를 바꿀 수 없습니다"
+
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr "설정 파일을 쓸 수 없습니다: {0}"
+
+#: tools/Archiver.java:74
+msgid "Couldn't archive sketch"
+msgstr "스케치를 보관 할 수 없습니다"
+
+#: Sketch.java:1647
+msgid "Couldn't determine program size: {0}"
+msgstr "프로그램의 사이즈를 결정할 수 없습니다: {0}"
+
+#: Sketch.java:616
+msgid "Couldn't do it"
+msgstr "할 수 없습니다."
+
+#: debug/BasicUploader.java:209
+msgid ""
+"Couldn't find a Board on the selected port. Check that you have the correct "
+"port selected.  If it is correct, try pressing the board's reset button "
+"after initiating the upload."
+msgstr "선택한 포트에 보드를 찾을 수 없습니다. 올바른 포트를 선택했는지 확인하세요. 만약 맞다면 보드에 업로드를 개시하고 리셋버튼을 누르세요."
+
+#: ../../../processing/app/Preferences.java:82
+msgid "Croatian"
+msgstr "크로아티아어"
+
+#: Editor.java:1149 Editor.java:2699
+msgid "Cut"
+msgstr "잘라내기"
+
+#: ../../../../../app/src/processing/app/Preferences.java:119
+msgid "Czech (Czech Republic)"
+msgstr "Czech (체코)"
+
+#: ../../../../../app/src/processing/app/Preferences.java:120
+msgid "Danish (Denmark)"
+msgstr "Danish (덴마크)"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr "데이터 처리"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr "데이터 저장"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "폰트 크기 줄이기"
+
+#: Editor.java:1224 Editor.java:2765
+msgid "Decrease Indent"
+msgstr "들여쓰기 줄이기"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
+msgid "Default"
+msgstr "디폴트"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr "디폴트 테마"
+
+#: EditorHeader.java:314 Sketch.java:591
+msgid "Delete"
+msgstr "삭제"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr "디바이스 컨트롤"
+
+#: debug/Uploader.java:199
+msgid ""
+"Device is not responding, check the right serial port is selected or RESET "
+"the board right before exporting"
+msgstr "디바이스가 응답하지 않습니다. 올바른 시리얼 포트가 선택이 되었는지 확인하거나 데이터를 내보내기 전에 보드를 리셋하기 바랍니다."
+
+#: tools/FixEncoding.java:57
+msgid "Discard all changes and reload sketch?"
+msgstr "모든 변경을 취소하고 스케치를 다시 로드하나요?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr "디스플레이"
+
+#: ../../../processing/app/Preferences.java:438
+msgid "Display line numbers"
+msgstr "줄 번호 표시"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+#, java-format
+msgid ""
+"Do you want to remove {0}?\n"
+"If you do so you won't be able to use {0} any more."
+msgstr "{0}를 제거 할까요?\n만약 제거하면 {0}를 더이상 사용할 수 없습니다."
+
+#: Editor.java:2064
+msgid "Don't Save"
+msgstr "저장하지 않습니다"
+
+#: Editor.java:2275 Editor.java:2311
+msgid "Done Saving."
+msgstr "저장 완료."
+
+#: Editor.java:2510
+msgid "Done burning bootloader."
+msgstr "부트로더 굽기 완료"
+
+#: ../../../processing/app/BaseNoGui.java:507
+#: ../../../processing/app/BaseNoGui.java:552
+msgid "Done compiling"
+msgstr "컴파일 완료"
+
+#: Editor.java:1911 Editor.java:1928
+msgid "Done compiling."
+msgstr "컴파일 완료."
+
+#: Editor.java:2564
+msgid "Done printing."
+msgstr "인쇄 완료."
+
+#: ../../../processing/app/BaseNoGui.java:514
+msgid "Done uploading"
+msgstr "업로드 완료"
+
+#: Editor.java:2395 Editor.java:2431
+msgid "Done uploading."
+msgstr "업로드 완료."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
+#, java-format
+msgid "Downloaded {0}kb of {1}kb."
+msgstr "{1}kb 중 {0}kb 가 다운로드됨."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
+msgid "Downloading boards definitions."
+msgstr "보드 정의파일 다운로딩."
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
+msgid "Downloading libraries index..."
+msgstr "라이브러리 인덱스 다운로딩..."
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
+#, java-format
+msgid "Downloading library: {0}"
+msgstr "라이브러리 다운로딩: {0}"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
+msgid "Downloading platforms index..."
+msgstr "플랫폼 인덱스 다운로딩..."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
+#, java-format
+msgid "Downloading tools ({0}/{1})."
+msgstr "툴 ({0}/{1}) 다운로딩."
+
+#: Preferences.java:91
+msgid "Dutch"
+msgstr "네델란드어"
+
+#: ../../../processing/app/Preferences.java:144
+msgid "Dutch (Netherlands)"
+msgstr "네덜란드어(네덜란드)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr "에디슨 도움말"
+
+#: Editor.java:1130
+msgid "Edit"
+msgstr "편집"
+
+#: Preferences.java:370
+msgid "Editor font size: "
+msgstr "에디터 글꼴 크기: "
+
+#: Preferences.java:353
+msgid "Editor language: "
+msgstr "에디터 언어: "
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
+msgid "Enable Code Folding"
+msgstr "코드 폴딩 사용하기"
+
+#: Preferences.java:92
+msgid "English"
+msgstr "영어"
+
+#: ../../../processing/app/Preferences.java:145
+msgid "English (United Kingdom)"
+msgstr "영어(영국)"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
+msgid "Enter a comma separated list of urls"
+msgstr "쉼표로 구분된 URL 목록을 입력하세요"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
+msgid "Enter additional URLs, one for each row"
+msgstr "각 행에 하나의 추가적인 URL을 입력하세요"
+
+#: Editor.java:1062
+msgid "Environment"
+msgstr "환경"
+
+#: Base.java:2147 Preferences.java:256 Sketch.java:475 Sketch.java:481
+#: Sketch.java:496 Sketch.java:503 Sketch.java:526 Sketch.java:543
+#: Editor.java:2167 Editor.java:2178 Editor.java:2188 Editor.java:2206
+msgid "Error"
+msgstr "에러"
+
+#: Sketch.java:1065 Sketch.java:1088
+msgid "Error adding file"
+msgstr "파일 추가 오류"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr "보드 {0} 컴파일 에러."
+
+#: debug/Compiler.java:369
+msgid "Error compiling."
+msgstr "컴파일 오류 발생."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
+#, java-format
+msgid "Error downloading {0}"
+msgstr "다운로딩 에러 {0}"
+
+#: Base.java:1674
+msgid "Error getting the Arduino data folder."
+msgstr "아두이노 데이터 폴더를 가져올 때 에러 발생"
+
+#: Serial.java:593
+#, java-format
+msgid "Error inside Serial.{0}()"
+msgstr "시리얼 내부 에러.{0}()"
+
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr "테마 {0}를 로딩하는 중 에러: {1}"
+
+#: ../../../processing/app/debug/TargetPlatform.java:95
+#: ../../../processing/app/debug/TargetPlatform.java:106
+#: ../../../processing/app/debug/TargetPlatform.java:117
+#, java-format
+msgid "Error loading {0}"
+msgstr "{0} 불러오기 에러"
+
+#: Serial.java:181
+#, java-format
+msgid "Error opening serial port ''{0}''."
+msgstr "시리얼 포트  ''{0}'' 를 여는데 에러 발생"
+
+#: ../../../processing/app/Serial.java:119
+#, java-format
+msgid ""
+"Error opening serial port ''{0}''. Try consulting the documentation at "
+"http://playground.arduino.cc/Linux/All#Permission"
+msgstr "시리얼 포트''{0}' 열기 에러'. 다음의 문서를 참고하세요 http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr "라이브러리 색인 구문 분석 오류 : {0}\n라이브러리 관리자를 열어 라이브러리 색인을 업데이트하십시오."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr "라이브러리 색인 불러오기 에러: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr "패키지 색인 폴더를 읽는 중 오류가 발생했습니다 : {0}\n(권한 문제입니까?)"
+
+#: Preferences.java:277
+msgid "Error reading preferences"
+msgstr "환경설정을 읽는 중 오류"
+
+#: Preferences.java:279
+#, java-format
+msgid ""
+"Error reading the preferences file. Please delete (or move)\n"
+"{0} and restart Arduino."
+msgstr "환경설정을 읽는 중 오류. {0}을 삭제(또는 이동)하고\n아두이노를 다시 시작합니다."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
+msgid "Error running post install script"
+msgstr "이전 설치 스크립트 실행시 에러"
+
+#: ../../../cc/arduino/packages/DiscoveryManager.java:25
+msgid "Error starting discovery method: "
+msgstr "디스커버리 방법을 시작할때 오류:"
+
+#: Serial.java:125
+#, java-format
+msgid "Error touching serial port ''{0}''."
+msgstr "시리얼 포트  ''{0}''  동작중 에러 발생."
+
+#: Editor.java:2512 Editor.java:2516 Editor.java:2520
+msgid "Error while burning bootloader."
+msgstr "부트로더 굽는중 에러발생"
+
+#: ../../../processing/app/Editor.java:2555
+msgid "Error while burning bootloader: missing '{0}' configuration parameter"
+msgstr "부트로더를 구울때 오류: 설정 값'{0}' 이 없음"
+
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr "부트로더 굽는중 에러발생: 시리얼 포트를 선택하세요."
+
+#: ../../../../../app/src/processing/app/Editor.java:1940
+msgid "Error while compiling: missing '{0}' configuration parameter"
+msgstr "컴파일 오류: 설정 값'{0}' 이 없음"
+
+#: Editor.java:2567
+msgid "Error while printing."
+msgstr "인홰하는 중에 오류 발생했습니다."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr "시리얼 포트 파라미터 설정중 에러: {0} {1} {2} {3}"
+
+#: ../../../processing/app/BaseNoGui.java:528
+msgid "Error while uploading"
+msgstr "업로드 오류"
+
+#: ../../../processing/app/Editor.java:2409
+#: ../../../processing/app/Editor.java:2449
+msgid "Error while uploading: missing '{0}' configuration parameter"
+msgstr "업로드 오류: 설정 값'{0}' 이 없음"
+
+#: ../../../processing/app/BaseNoGui.java:506
+#: ../../../processing/app/BaseNoGui.java:551
+#: ../../../processing/app/BaseNoGui.java:554
+msgid "Error while verifying"
+msgstr "검증 오류"
+
+#: ../../../processing/app/BaseNoGui.java:521
+msgid "Error while verifying/uploading"
+msgstr "검증/업로드 오류"
+
+#: Preferences.java:93
+msgid "Estonian"
+msgstr "에스토니아어"
+
+#: Editor.java:516
+msgid "Examples"
+msgstr "예제"
+
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr "모든 보드의 예제"
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
+msgstr " {0} 의 예제"
+
+#: ../../../../../app/src/processing/app/Base.java:1244
+msgid "Examples from Custom Libraries"
+msgstr "사용자 지정 라이브러리의 예제"
+
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr "다른 라이브러리 예제"
+
+#: ../../../../../app/src/processing/app/Editor.java:753
+msgid "Export canceled, changes must first be saved."
+msgstr "내보내기 취소, 변경은 먼저 저장해야합니다. "
+
+#: ../../../../../app/src/processing/app/Editor.java:750
+msgid "Export compiled Binary"
+msgstr "컴파일된 바이너리 내보내기"
+
+#: ../../../processing/app/Base.java:416
+#, java-format
+msgid "Failed to open sketch: \"{0}\""
+msgstr "스케치: \"{0}\" 열기 실패"
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr "\"{0}\" 를 \"{1}\"로 이름 바꾸기 실패"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr "스케치 폴더의 이름 바꾸기 실패"
+
+#: Editor.java:491
+msgid "File"
+msgstr "파일"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr "파일명 {0} 는 유효하지 않음: 무시됨"
+
+#: Preferences.java:94
+msgid "Filipino"
+msgstr "필리핀어"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
+msgid "Filter your search..."
+msgstr "검색에 필터하기..."
+
+#: FindReplace.java:124 FindReplace.java:127
+msgid "Find"
+msgstr "찾기"
+
+#: Editor.java:1249
+msgid "Find Next"
+msgstr "다음 찾기"
+
+#: Editor.java:1259
+msgid "Find Previous"
+msgstr "이전 찾기"
+
+#: Editor.java:1086 Editor.java:2775
+msgid "Find in Reference"
+msgstr "참조에서 찾기"
+
+#: Editor.java:1234
+msgid "Find..."
+msgstr "찾기…"
+
+#: FindReplace.java:80
+msgid "Find:"
+msgstr "찾기:"
+
+#: ../../../processing/app/Preferences.java:147
+msgid "Finnish"
+msgstr "종료"
+
+#: tools/FixEncoding.java:41 tools/FixEncoding.java:58
+#: tools/FixEncoding.java:79
+msgid "Fix Encoding & Reload"
+msgstr "인코딩 수정 & 새로 고침"
+
+#: ../../../processing/app/BaseNoGui.java:318
+msgid ""
+"For information on installing libraries, see: "
+"http://www.arduino.cc/en/Guide/Libraries\n"
+msgstr "라이브러리 설치에 대한 정보는 다음을 참고하세요: http://www.arduino.cc/en/Guide/Libraries\n"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
+#, java-format
+msgid "Forcing reset using 1200bps open/close on port {0}"
+msgstr "포트 {0} 에서 1200bps를 사용하여 강제로 리셋"
+
+#: Preferences.java:95
+msgid "French"
+msgstr "프랑스어"
+
+#: Editor.java:1097
+msgid "Frequently Asked Questions"
+msgstr "자주 묻는 질문"
+
+#: Preferences.java:96
+msgid "Galician"
+msgstr "갈리시아어"
+
+#: ../../../../../app/src/processing/app/Preferences.java:176
+msgid "Galician (Spain)"
+msgstr "Galician (스페인)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr "갈릴레오 도움말"
+
+#: ../../../processing/app/Preferences.java:94
+msgid "Georgian"
+msgstr "조지안어"
+
+#: Preferences.java:97
+msgid "German"
+msgstr "독일어"
+
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr "보드 정보 얻기"
+
+#: Editor.java:1054
+msgid "Getting Started"
+msgstr "시작하기"
+
+#: ../../../processing/app/Sketch.java:1646
+#, java-format
+msgid ""
+"Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
+"for local variables. Maximum is {1} bytes."
+msgstr "전역 변수는 동적 메모리 {0}바이트({2}%%)를 사용, {3}바이트의 지역변수가 남음.  최대는 {1} 바이트. "
+
+#: ../../../processing/app/Sketch.java:1651
+#, java-format
+msgid "Global variables use {0} bytes of dynamic memory."
+msgstr "전역 변수는 {0} 바이트의 동적 메모리를 사용."
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr "Go to line"
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr "Go to line..."
+
+#: Preferences.java:98
+msgid "Greek"
+msgstr "그리스어"
+
+#: ../../../processing/app/Preferences.java:95
+msgid "Hebrew"
+msgstr "히브리어"
+
+#: Editor.java:1015
+msgid "Help"
+msgstr "도움말"
+
+#: Preferences.java:99
+msgid "Hindi"
+msgstr "힌디어"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr "호스트 이름:"
+
+#: Sketch.java:295
+msgid ""
+"How about saving the sketch first \n"
+"before trying to rename it?"
+msgstr "스케치를 다른 이름으로 바꾸기 전에 \n저장하는 것은 어떤가요?"
+
+#: Sketch.java:882
+msgid "How very Borges of you"
+msgstr "How very Borges of you"
+
+#: Preferences.java:100
+msgid "Hungarian"
+msgstr "헝가리어"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr "호환되지 않음"
+
+#: FindReplace.java:96
+msgid "Ignore Case"
+msgstr "대소문자 무시"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr "잘못된 이름의 라이브러리를 무시함"
+
+#: Base.java:1436
+msgid "Ignoring sketch with bad name"
+msgstr "잘못된 이름의 스케치를 무시함"
+
+#: ../../../processing/app/Sketch.java:736
+msgid ""
+"In Arduino 1.0, the default file extension has changed\n"
+"from .pde to .ino.  New sketches (including those created\n"
+"by \"Save-As\") will use the new extension.  The extension\n"
+"of existing sketches will be updated on save, but you can\n"
+"disable this in the Preferences dialog.\n"
+"\n"
+"Save sketch and update its extension?"
+msgstr "아두이노 1.0에서 기본 파일 확장자가 .pde에서 .ino로 바뀌었습니다. \n새로운 스케치 (다른 이름으로 저장하는 것을 포함해서)는 새로운 확장자를 \n사용합니다. 기존의 확장자는 저장이 될때 업데이트되지만 설정에서 이것을 \n바꿀 수 있습니다. \n\n스케치를 저장하고 파일 확장자를 바꾸겠습니까?"
+
+#: ../../../../../app/src/processing/app/Editor.java:778
+msgid "Include Library"
+msgstr "라이브러리 포함하기"
+
+#: ../../../processing/app/BaseNoGui.java:768
+#: ../../../processing/app/BaseNoGui.java:771
+msgid "Incorrect IDE installation folder"
+msgstr "잘못된 IDE 설치 폴더"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "폰트 크기 늘리기"
+
+#: Editor.java:1216 Editor.java:2757
+msgid "Increase Indent"
+msgstr "들여쓰기 추가"
+
+#: Preferences.java:101
+msgid "Indonesian"
+msgstr "인도네시아어"
+
+#: ../../../../../app/src/processing/app/Base.java:295
+msgid "Initializing packages..."
+msgstr "패키지 초기화..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:75
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:81
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:289
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:78
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
+msgid "Install"
+msgstr "설치"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
+msgid "Installation completed!"
+msgstr "설치 완료"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
+msgid "Installed"
+msgstr "설치됨"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
+msgid "Installing boards..."
+msgstr "보드 설치..."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
+#, java-format
+msgid "Installing library: {0}:{1}"
+msgstr "라이브러리 설치: {0}:{1}"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
+#, java-format
+msgid "Installing tools ({0}/{1})..."
+msgstr "툴 설치 ({0}/{1})..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
+msgid "Installing..."
+msgstr "설치..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr "Interface scale:"
+
+#: ../../../processing/app/Base.java:1204
+#, java-format
+msgid "Invalid library found in {0}: {1}"
+msgstr "잘못된 라이브러리가 {0}에서 발견: {1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
+#, java-format
+msgid "Invalid quoting: no closing [{0}] char found."
+msgstr "잘못된 인용구 : 닫는 문자 [{0}] 가 없습니다."
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr "라이브러리의 {1}에 잘못된 버전 '{0}'이 있습니다."
+
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
+#, java-format
+msgid "Invalid version {0}"
+msgstr "잘못된 버전 {0}"
+
+#: Preferences.java:102
+msgid "Italian"
+msgstr "이탈리아어"
+
+#: Preferences.java:103
+msgid "Japanese"
+msgstr "일본어"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr "Kazakh"
+
+#: Preferences.java:104
+msgid "Korean"
+msgstr "한국어"
+
+#: Preferences.java:105
+msgid "Latvian"
+msgstr "라트비아어"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
+msgid "Library Manager"
+msgstr "라이브러리 매니저"
+
+#: ../../../../../app/src/processing/app/Base.java:2349
+msgid "Library added to your libraries. Check \"Include library\" menu"
+msgstr "라이브러리가 추가되었습니다. \"라이브러리 포함하기\" 메뉴를 확인하세요"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr "라이브러리는 'src' 와 'utility' 폴더에 동시에 사용될 수 없습니다. 확인 {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
+#, java-format
+msgid "Library is already installed: {0}:{1}"
+msgstr "라이브러리가 이미 설치됐습니다: {0}:{1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr "Line number:"
+
+#: Preferences.java:106
+msgid "Lithuaninan"
+msgstr "리투아니아어"
+
+#: ../../../../../app/src/processing/app/Base.java:132
+msgid "Loading configuration..."
+msgstr "설정파일 로딩..."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+#, java-format
+msgid "Looking for recipes like {0}*{1}"
+msgstr "{0}*{1} 같은 레시피 찾기"
+
+#: ../../../processing/app/Sketch.java:1684
+msgid "Low memory available, stability problems may occur."
+msgstr "사용 가능한 메모리 부족, 안정성에 문제가 생길 수 있습니다."
+
+#: ../../../../../app/src/processing/app/Base.java:1168
+msgid "Manage Libraries..."
+msgstr "라이브러리 관리..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr "수동 프록시 설정"
+
+#: Preferences.java:107
+msgid "Marathi"
+msgstr "마라티어"
+
+#: Base.java:2112
+msgid "Message"
+msgstr "메시지"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
+#, java-format
+msgid "Missing '{0}' from library in {1}"
+msgstr "라이브러리 {1}에서 '{0}'가 없음"
+
+#: ../../../processing/app/BaseNoGui.java:455
+msgid "Mode not supported"
+msgstr "지원하지 않는 모드"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
+msgid "More"
+msgstr "More"
+
+#: Preferences.java:449
+msgid "More preferences can be edited directly in the file"
+msgstr "추가적인 환경 설정은 파일에서 직접 편집할 수 있습니다"
+
+#: Editor.java:2156
+msgid "Moving"
+msgstr "이동"
+
+#: ../../../processing/app/BaseNoGui.java:484
+msgid "Multiple files not supported"
+msgstr "복수의 파일은 지원하지 않음"
+
+#: ../../../processing/app/debug/Compiler.java:520
+#, java-format
+msgid "Multiple libraries were found for \"{0}\""
+msgstr "\"{0}\"를 위한 복수개의 라이브러리가 발견되었습니다"
+
+#: ../../../processing/app/Base.java:395
+msgid "Must specify exactly one sketch file"
+msgstr "단 1개의 스케치 파일을 선택해야 합니다. "
+
+#: Sketch.java:282
+msgid "Name for new file:"
+msgstr "새로운 파일을 위한 이름:"
+
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr "시리얼 포트에서 정보를 얻을 수 없음"
+
+#: ../../../processing/app/Preferences.java:149
+msgid "Nepali"
+msgstr "네팔어"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr "네트워크"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr "네트워크 포트에서 정보를 얻을 수 없음"
+
+#: ../../../../../app/src/processing/app/Editor.java:65
+msgid "Network ports"
+msgstr "네트워크 포트"
+
+#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
+msgid "Network upload using programmer not supported"
+msgstr "프로그래머를 사용한 네트워크 업로드는 지원하지 않음"
+
+#: EditorToolbar.java:41 Editor.java:493
+msgid "New"
+msgstr "새 파일"
+
+#: EditorHeader.java:292
+msgid "New Tab"
+msgstr "새 탭"
+
+#: SerialMonitor.java:112
+msgid "Newline"
+msgstr "새 줄"
+
+#: EditorHeader.java:340
+msgid "Next Tab"
+msgstr "다음 탭"
+
+#: Preferences.java:78 UpdateCheck.java:108
+msgid "No"
+msgstr "아니요"
+
+#: ../../../processing/app/debug/Compiler.java:158
+msgid "No authorization data found"
+msgstr "권한데이터를 찾을 수 없음"
+
+#: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
+msgid "No changes necessary for Auto Format."
+msgstr "자동 포맷을 위해 변경이 필요없습니다."
+
+#: ../../../processing/app/BaseNoGui.java:665
+msgid "No command line parameters found"
+msgstr "커맨드 라인 파라미터를 찾을 수 없음"
+
+#: ../../../processing/app/debug/Compiler.java:200
+msgid "No compiled sketch found"
+msgstr "컴파일된 스케치가 발견되지 않았습니다"
+
+#: Editor.java:373
+msgid "No files were added to the sketch."
+msgstr "스케치에 파일이 추가되지 않았습니다."
+
+#: Platform.java:167
+msgid "No launcher available"
+msgstr "런처를 사용할 수 없습니다"
+
+#: SerialMonitor.java:112
+msgid "No line ending"
+msgstr "line ending 없음"
+
+#: ../../../processing/app/BaseNoGui.java:665
+msgid "No parameters"
+msgstr "파라미터 없음"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr "프록시 없음"
+
+#: Base.java:541
+msgid "No really, time for some fresh air for you."
+msgstr "당신의 신선한 공기를 위한 시간입니다."
+
+#: Editor.java:1872
+#, java-format
+msgid "No reference available for \"{0}\""
+msgstr "\"{0}\" 가 잠조에 존재하지 않습니다."
+
+#: ../../../processing/app/BaseNoGui.java:504
+#: ../../../processing/app/BaseNoGui.java:549
+msgid "No sketch"
+msgstr "스케치 없음"
+
+#: ../../../processing/app/BaseNoGui.java:428
+msgid "No sketchbook"
+msgstr "스케치북 없음"
+
+#: ../../../processing/app/Sketch.java:204
+msgid "No valid code files found"
+msgstr "유효한 코드 파일을 찾지 못하였습니다. "
+
+#: ../../../processing/app/debug/TargetPackage.java:63
+#, java-format
+msgid "No valid hardware definitions found in folder {0}."
+msgstr "폴더 {0}에 유효한 하드웨어 정의가 발견되지 않음."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
+msgid "None"
+msgstr "None"
+
+#: ../../../processing/app/Preferences.java:108
+msgid "Norwegian Bokmål"
+msgstr "노르웨이 브크몰어"
+
+#: ../../../processing/app/Sketch.java:1656
+msgid ""
+"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
+"for tips on reducing your footprint."
+msgstr "메모리가 충분하지 않음; 메모리를 줄이기 위한 팁을 위해 다음 링크를 참고하세요http://www.arduino.cc/en/Guide/Troubleshooting#size"
+
+#: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
+#: Editor.java:2145 Editor.java:2465
+msgid "OK"
+msgstr "확인"
+
+#: Sketch.java:992 Editor.java:376
+msgid "One file added to the sketch."
+msgstr "파일이 스케치에 추가됐습니다."
+
+#: ../../../processing/app/BaseNoGui.java:455
+msgid "Only --verify, --upload or --get-pref are supported"
+msgstr " --verify, --upload 또는 --get-pref 만 지원 됨"
+
+#: EditorToolbar.java:41
+msgid "Open"
+msgstr "열기"
+
+#: ../../../../../app/src/processing/app/Editor.java:625
+msgid "Open Recent"
+msgstr "최근 파일 열기"
+
+#: Editor.java:2688
+msgid "Open URL"
+msgstr "URL 열기"
+
+#: Base.java:636
+msgid "Open an Arduino sketch..."
+msgstr "아두이노 스케치를 여세요…"
+
+#: Base.java:903 Editor.java:501
+msgid "Open..."
+msgstr "열기…"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr "Other"
+
+#: Editor.java:563
+msgid "Page Setup"
+msgstr "페이지 설정"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr "파트너"
+
+#: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
+msgid "Password:"
+msgstr "패스워드:"
+
+#: Editor.java:1189 Editor.java:2731
+msgid "Paste"
+msgstr "붙여넣기"
+
+#: Preferences.java:109
+msgid "Persian"
+msgstr "페르시아어"
+
+#: ../../../processing/app/Preferences.java:161
+msgid "Persian (Iran)"
+msgstr "Persian (이란)"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
+#, java-format
+msgid "Platform {0} (package {1}) is unknown"
+msgstr "알 수 없는 플랫폼 {0} (패키지 {1})"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+msgid "Please confirm boards deletion"
+msgstr "보드 삭제를 확인하시기 바랍니다"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
+msgid "Please confirm library deletion"
+msgstr "라이브러리 삭제를 확인하시기 바랍니다"
+
+#: debug/Compiler.java:408
+msgid "Please import the SPI library from the Sketch > Import Library menu."
+msgstr "스케치 > 라이브러리 가져오기 메뉴에서 SPI 라이브러리를 가져오시기 바랍니다."
+
+#: ../../../processing/app/debug/Compiler.java:529
+msgid "Please import the Wire library from the Sketch > Import Library menu."
+msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 가겨오기하십시오. "
+
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr "보드 정보를 얻기위해 포트를 선택하세요"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
+msgid "Please select a programmer from Tools->Programmer menu"
+msgstr "도구->프로그래머 메뉴에서 프로그래머를 선택해주세요"
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr "시리얼 모니터가 열려있으면 플로터를 사용할 수 없습니다"
+
+#: Preferences.java:110
+msgid "Polish"
+msgstr "폴란드어"
+
+#: ../../../processing/app/Editor.java:718
+msgid "Port"
+msgstr "포트"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr "포트 번호:"
+
+#: ../../../processing/app/Preferences.java:151
+msgid "Portugese"
+msgstr "포루투칼어"
+
+#: ../../../processing/app/Preferences.java:127
+msgid "Portuguese (Brazil)"
+msgstr "포루투칼어(브라질)"
+
+#: ../../../processing/app/Preferences.java:128
+msgid "Portuguese (Portugal)"
+msgstr "포루투칼어(포루투칼)"
+
+#: Preferences.java:295 Editor.java:583
+msgid "Preferences"
+msgstr "환경설정"
+
+#: ../../../../../app/src/processing/app/Base.java:297
+msgid "Preparing boards..."
+msgstr "보드 준비..."
+
+#: FindReplace.java:123 FindReplace.java:128
+msgid "Previous"
+msgstr "이전"
+
+#: EditorHeader.java:326
+msgid "Previous Tab"
+msgstr "이전 탭"
+
+#: Editor.java:571
+msgid "Print"
+msgstr "인쇄"
+
+#: Editor.java:2571
+msgid "Printing canceled."
+msgstr "인쇄가 취소되었습니다."
+
+#: Editor.java:2547
+msgid "Printing..."
+msgstr "인쇄…"
+
+#: Base.java:1957
+msgid "Problem Opening Folder"
+msgstr "폴더를 열때 문제 발생"
+
+#: Base.java:1933
+msgid "Problem Opening URL"
+msgstr "URL을 열때 문제 발생"
+
+#: Base.java:227
+msgid "Problem Setting the Platform"
+msgstr "플랫폼 설정 문제"
+
+#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
+msgid "Problem accessing board folder /www/sd"
+msgstr "보드 폴더 /www/sd 접근시 문제"
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "\"{0}\" 폴더내 파일 접근시 문제"
+
+#: Base.java:1673
+msgid "Problem getting data folder"
+msgstr "데이터 폴더를 가져오는데 문제 발생"
+
+#: debug/Uploader.java:209
+msgid ""
+"Problem uploading to board.  See "
+"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
+msgstr "보드에 업로딩중에 문제 발생. 다음을  참고하세요. http://www.arduino.cc/en/Guide/Troubleshooting#upload"
+
+#: Sketch.java:355 Sketch.java:362 Sketch.java:373
+msgid "Problem with rename"
+msgstr "이름 바꾸기 문제"
+
+#: ../../../processing/app/I18n.java:86
+msgid "Processor"
+msgstr "프로세서"
+
+#: Editor.java:704
+msgid "Programmer"
+msgstr "프로그래머"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
+#, java-format
+msgid "Progress {0}"
+msgstr "진행 {0}"
+
+#: Base.java:783 Editor.java:593
+msgid "Quit"
+msgstr "종료"
+
+#: ../../../../../app/src/processing/app/Base.java:1233
+msgid "RETIRED"
+msgstr "RETIRED"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr "추천"
+
+#: Editor.java:1138 Editor.java:1140 Editor.java:1390
+msgid "Redo"
+msgstr "다시 실행"
+
+#: Editor.java:1078
+msgid "Reference"
+msgstr "참조"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
+msgid "Remove"
+msgstr "제거"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
+#, java-format
+msgid "Removing library: {0}:{1}"
+msgstr "라이브러리 제거: {0}:{1}"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
+msgid "Removing..."
+msgstr "제거중..."
+
+#: EditorHeader.java:300
+msgid "Rename"
+msgstr "이름 바꾸기"
+
+#: FindReplace.java:121 FindReplace.java:130 Sketch.java:1046
+msgid "Replace"
+msgstr "바꾸기"
+
+#: FindReplace.java:122 FindReplace.java:129
+msgid "Replace & Find"
+msgstr "바꾸기 & 찾기"
+
+#: FindReplace.java:120 FindReplace.java:131
+msgid "Replace All"
+msgstr "전부 바꾸기"
+
+#: Sketch.java:1043
+#, java-format
+msgid "Replace the existing version of {0}?"
+msgstr "{0}의 기존 버전을 교체하시겠습니까?"
+
+#: FindReplace.java:81
+msgid "Replace with:"
+msgstr "다음 내용으로 바꾸기:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "Retired"
+
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr "다른 시리얼 포트로 업로드 하시겠습니까?"
+
+#: Preferences.java:113
+msgid "Romanian"
+msgstr "루마니아어"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
+#, java-format
+msgid "Running recipe: {0}"
+msgstr "레시피 실행: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
+#, java-format
+msgid "Running: {0}"
+msgstr "실행: {0}"
+
+#: Preferences.java:114
+msgid "Russian"
+msgstr "러시아어"
+
+#: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:529
+#: Editor.java:2064 Editor.java:2468
+msgid "Save"
+msgstr "저장"
+
+#: Editor.java:537
+msgid "Save As..."
+msgstr "다른 이름으로 저장…"
+
+#: Editor.java:2317
+msgid "Save Canceled."
+msgstr "저장 취소."
+
+#: Editor.java:2020
+#, java-format
+msgid "Save changes to \"{0}\"?  "
+msgstr "변경 사항을 \"{0}\"? 에 저장하시겠습니까? "
+
+#: Sketch.java:825
+msgid "Save sketch folder as..."
+msgstr "스케치 폴더를 다른 이름으로 저장…"
+
+#: ../../../../../app/src/processing/app/Preferences.java:425
+msgid "Save when verifying or uploading"
+msgstr "검증 또는 업로드 할 때 저장하기"
+
+#: Editor.java:2270 Editor.java:2308
+msgid "Saving..."
+msgstr "저장…"
+
+#: ../../../processing/app/FindReplace.java:131
+msgid "Search all Sketch Tabs"
+msgstr "모든 스케치 탭에서 검색"
+
+#: Base.java:1909
+msgid "Select (or create new) folder for sketches..."
+msgstr "스케치를 위한 폴더를 선택(또는 새로 만들기)…"
+
+#: Editor.java:1198 Editor.java:2739
+msgid "Select All"
+msgstr "모두 선택"
+
+#: Base.java:2636
+msgid "Select a zip file or a folder containing the library you'd like to add"
+msgstr "추가하려는 zip 파일 또는 라이브러리를 포함하는 폴더를 선택하세요"
+
+#: Sketch.java:975
+msgid "Select an image or other data file to copy to your sketch"
+msgstr "스케치에 복사하기 위해 이미지 또는 다른 데이터 파일을 선택"
+
+#: Preferences.java:330
+msgid "Select new sketchbook location"
+msgstr "새로운 스케치북 위치를 선택하세요"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
+msgid "Select version"
+msgstr "버전 선택"
+
+#: ../../../processing/app/debug/Compiler.java:146
+msgid "Selected board depends on '{0}' core (not installed)."
+msgstr "선택된 보드가 '{0}' 코어(인스톨 되지 않은)를 의존합니다"
+
+#: ../../../../../app/src/processing/app/Base.java:374
+msgid "Selected board is not available"
+msgstr "선택된 보드는 사용할 수 없습니다"
+
+#: ../../../../../app/src/processing/app/Base.java:423
+msgid "Selected library is not available"
+msgstr "선택된 라이브러리는 사용할 수 없습니다"
+
+#: SerialMonitor.java:93
+msgid "Send"
+msgstr "전송"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr "센서"
+
+#: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
+msgid "Serial Monitor"
+msgstr "시리얼 모니터"
+
+#: ../../../../../app/src/processing/app/Editor.java:804
+msgid "Serial Plotter"
+msgstr "시리얼 플로터"
+
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr "이 릴리스의 {1}에 대한 {0}과 같은 네트워크 포트에서 시리얼 모니터가 지원되지 않습니다."
+
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr "플로터가 열려있으면 시리얼 모니터를 사용할 수 없습니다"
+
+#: Serial.java:194
+#, java-format
+msgid ""
+"Serial port ''{0}'' not found. Did you select the right one from the Tools >"
+" Serial Port menu?"
+msgstr "시리얼 포트 ''{0}''를 찾을 수 없습니다. 툴 > 시리얼 포트 메뉴에서 올바른 포트를선택했나요?"
+
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr "시리얼 포트가 선택되지 않았습니다."
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
+#, java-format
+msgid "Serial port {0} not found."
+msgstr "시리얼 포트 {0}를 찾을 수 없습니다."
+
+#: ../../../../../app/src/processing/app/Editor.java:65
+msgid "Serial ports"
+msgstr "시리얼 포트"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
+#, java-format
+msgid "Setting build path to {0}"
+msgstr "빌드 경로를 {0}에 설정"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr "설정"
+
+#: Base.java:1681
+msgid "Settings issues"
+msgstr "설정 문제"
+
+#: Editor.java:641
+msgid "Show Sketch Folder"
+msgstr "스케치 폴더 보이기"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr "타임스탬프 표시"
+
+#: Preferences.java:387
+msgid "Show verbose output during: "
+msgstr "다음 동작중 자세한  출력 보이기: "
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr "시그널 입력/출력"
+
+#: Editor.java:607
+msgid "Sketch"
+msgstr "스케치"
+
+#: Sketch.java:1754
+msgid "Sketch Disappeared"
+msgstr "스케치가 사라졌습니다"
+
+#: Base.java:1411
+msgid "Sketch Does Not Exist"
+msgstr "스케치가 존재하지 않습니다"
+
+#: Sketch.java:274 Sketch.java:303 Sketch.java:577 Sketch.java:966
+msgid "Sketch is Read-Only"
+msgstr "스케치가 읽기 전용입니다"
+
+#: Sketch.java:294
+msgid "Sketch is Untitled"
+msgstr "스케치가 제목이 없습니다"
+
+#: Sketch.java:720
+msgid "Sketch is read-only"
+msgstr "스케치는 읽기전용입니다"
+
+#: Sketch.java:1653
+msgid ""
+"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
+"tips on reducing it."
+msgstr "스케치가 너무 큼; 이것을 줄이기 위해 다음을 참고하세요. http://www.arduino.cc/en/Guide/Troubleshooting#size"
+
+#: ../../../processing/app/Sketch.java:1639
+#, java-format
+msgid ""
+"Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
+"bytes."
+msgstr "스케치는 프로그램 저장 공간 {0} 바이트({2}%%)를 사용. 최대 {1} 바이트."
+
+#: Editor.java:510
+msgid "Sketchbook"
+msgstr "스케치북"
+
+#: Base.java:258
+msgid "Sketchbook folder disappeared"
+msgstr "스케치북 폴더가 사라졌습니니다."
+
+#: Preferences.java:315
+msgid "Sketchbook location:"
+msgstr "스케치북 위치: "
+
+#: ../../../processing/app/BaseNoGui.java:428
+msgid "Sketchbook path not defined"
+msgstr "스케치북 경로가 지정되지 않음"
+
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr "인덱스 파일 {0}을 건너 뜀, 구문 분석 오류가 발생했습니다:"
+
+#: ../../../../../app/src/processing/app/Preferences.java:185
+msgid "Slovak"
+msgstr "슬로바키아어"
+
+#: ../../../processing/app/Preferences.java:152
+msgid "Slovenian"
+msgstr "슬로베니아어"
+
+#: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
+msgid ""
+"Some files are marked \"read-only\", so you'll\n"
+"need to re-save the sketch in another location,\n"
+"and try again."
+msgstr "파일이 \"읽기 전용\" 으로 표시됩니다. 따라서 \n다른 장소에 스케치를 다시 저장을 하고\n다시 시도하십시요."
+
+#: Sketch.java:721
+msgid ""
+"Some files are marked \"read-only\", so you'll\n"
+"need to re-save this sketch to another location."
+msgstr "파일이 \"읽기 전용\" 으로 표시됩니다.\n다른 장소에 스케치를 다시 저장을 해야 합니다."
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
+#, java-format
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr "죄송합니다, 폴더 \"{0}\"가 이미 존재합니다."
+
+#: Preferences.java:115
+msgid "Spanish"
+msgstr "스페인어"
+
+#: ../../../../../app/src/processing/app/Base.java:2333
+msgid "Specified folder/zip file does not contain a valid library"
+msgstr "지정된 폴더/zip 파일은 유효한 라이브러리가 포함되어 있지 않습니다"
+
+#: ../../../../../app/src/processing/app/Base.java:466
+msgid "Starting..."
+msgstr "개시..."
+
+#: Base.java:540
+msgid "Sunshine"
+msgstr "햇살"
+
+#: ../../../processing/app/Preferences.java:153
+msgid "Swedish"
+msgstr "스웨덴어"
+
+#: Preferences.java:84
+msgid "System Default"
+msgstr "시스템 기본설정"
+
+#: ../../../../../app/src/processing/app/Preferences.java:188
+msgid "Talossan"
+msgstr "탈로사어"
+
+#: Preferences.java:116
+msgid "Tamil"
+msgstr "타밀어"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr "Telugu"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "Thai"
+
+#: debug/Compiler.java:414
+msgid "The 'BYTE' keyword is no longer supported."
+msgstr "'BYTE' 키워드는 더 이상 지원되지 않습니니다."
+
+#: ../../../processing/app/BaseNoGui.java:484
+msgid "The --upload option supports only one file at a time"
+msgstr "--upload 옵션은 한번에 한 파일에서만 지원 됨"
+
+#: debug/Compiler.java:426
+msgid "The Client class has been renamed EthernetClient."
+msgstr "Client 클래스는 EthernetClient로 이름이 변경되었습니다."
+
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid ""
+"The IDE includes an updated {0} package, but you're using an older one.\n"
+"Do you want to upgrade {0}?"
+msgstr "IDE는 업데이트 된 {0} 패키지를 포함하고 있지만 당신은 오래된 버전을 사용하고 있습니다.\n{0}을 업그레이드 하시겠습니까?"
+
+#: debug/Compiler.java:420
+msgid "The Server class has been renamed EthernetServer."
+msgstr "Server 클래스는 EthernetServer로 이름이 변경되었습니다."
+
+#: debug/Compiler.java:432
+msgid "The Udp class has been renamed EthernetUdp."
+msgstr "Udp 클래스는 EthernetUdp로 이름이 변경되었습니다."
+
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr "현재 선택한 보드에 설치되지 않은 코어 '{0}'이 필요합니다."
+
+#: Editor.java:2147
+#, java-format
+msgid ""
+"The file \"{0}\" needs to be inside\n"
+"a sketch folder named \"{1}\".\n"
+"Create this folder, move the file, and continue?"
+msgstr "\"{0}\" 파일은 스케치 폴더 \"{1}\" 에 있어야 합니다.\n이 폴더를 생성하고 파일을 이동하고 계속하시겠습니까?"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "\"{0}\"라이브러리를 사용할 수 없습니다.\n라이브러리 폴더 이름은 문자 또는 숫자로 시작해야하며 다음에 문자,\n숫자, 대시, 점 및 밑줄이 옵니다. 최대 길이는 63자 입니다."
+
+#: Base.java:1054 Base.java:2674
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library names must contain only basic letters and numbers.\n"
+"(ASCII only and no spaces, and it cannot start with a number)"
+msgstr "라이브러리 \"{0}\"를 사용할 수 없습니다.\n라이브러리 이름은 기본 문자와 숫자를 포함해야 합니다\n(숫자로 시작하지 않는 스페이스 없는 아스키문자를 사용해야합니다)"
+
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr "메인 파일은 확장자를 사용할 수 없습니다."
+
+#: Sketch.java:356
+msgid "The name cannot start with a period."
+msgstr "이름은 마침표로 시작할 수 없습니다."
+
+#: Base.java:1412
+msgid ""
+"The selected sketch no longer exists.\n"
+"You may need to restart Arduino to update\n"
+"the sketchbook menu."
+msgstr "선택한 스케치가 더 이상 존재하지 않습니니다.\n스케체북 메뉴를 업데이트하기 위해 아두이노를\n다시 시작해야 할 수도 있습니다."
+
+#: Base.java:1430
+#, java-format
+msgid ""
+"The sketch \"{0}\" cannot be used.\n"
+"Sketch names must contain only basic letters and numbers\n"
+"(ASCII-only with no spaces, and it cannot start with a number).\n"
+"To get rid of this message, remove the sketch from\n"
+"{1}"
+msgstr "스케치 \"{0}\" 를 사용할 수 없습니다.\n스케치 이름은 기본 문자와 숫자를 포함해야 합니다\n(숫자로 시작하지 않는 스페이스 없는 아스키문자를 사용해야합니다).\n이 메시지를 제거하려면\n{1}에서 스케치를 제거하세요"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr "스케치에 이미 \"{0}\"파일이 포함되어 있습니다."
+
+#: Sketch.java:1755
+msgid ""
+"The sketch folder has disappeared.\n"
+" Will attempt to re-save in the same location,\n"
+"but anything besides the code will be lost."
+msgstr "스케치 폴더가 사라졌습니다\n같은 장소에 다시 저장을 시도합니다,\n하지만 코드를 제외한 나머지 부분은 잃어버립니다."
+
+#: ../../../../../app/src/processing/app/SketchController.java:849
+msgid ""
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "스케치 이름이 수정되야 합니다.\n스케치 이름은 문자 또는 숫자로 시작해야하며 다음에 문자,\n숫자, 대시, 점 및 밑줄이 옵니다. 최대 길이는 63자 입니다."
+
+#: Base.java:259
+msgid ""
+"The sketchbook folder no longer exists.\n"
+"Arduino will switch to the default sketchbook\n"
+"location, and create a new sketchbook folder if\n"
+"necessary. Arduino will then stop talking about\n"
+"himself in the third person."
+msgstr "스케치북 폴더가 더 이상 존재하지 않습니다.\n아두이노는 기본 스케치북 위치로 전환합니다\n그리고 필요하면 새로운 스케치북 폴더를 만들겁니다\n그러면 아두이노는 더 이상 이 문제에 대해\n얘기하지 않을겁니다."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:514
+msgid ""
+"The specified sketchbook folder contains your copy of the IDE.\n"
+"Please choose a different folder for your sketchbook."
+msgstr "지정된 스케치북 폴더는 IDE의 사본을 포함합니다.\n다른 폴더를 선택하십시오."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr "테마:"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
+msgid ""
+"This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
+"Are you sure you want to delete it?"
+msgstr "이 라이브러리는 라이브러리 매니저에 있지 않습니다.  다시 설치 할 수 없습니다.\n삭제 하시겠습니까?"
+
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "이 리포트는 파일 -> 환경설정에 \"컴파일중 자세한 출력보이기\"를\n활성화하여 더 많은 정보를\n보이게 할 수 있습니다.\n"
+
+#: Base.java:535
+msgid "Time for a Break"
+msgstr "휴식 시간"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr "타이밍"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
+#, java-format
+msgid "Tool {0} is not available for your operating system."
+msgstr "툴 {0} 를 이 운영체제에 사용할 수 없습니다. "
+
+#: Editor.java:663
+msgid "Tools"
+msgstr "툴"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
+msgid "Topic"
+msgstr "토픽"
+
+#: Editor.java:1070
+msgid "Troubleshooting"
+msgstr "트러블슈팅"
+
+#: ../../../processing/app/Preferences.java:117
+msgid "Turkish"
+msgstr "터키어"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
+msgid "Type"
+msgstr "타입"
+
+#: ../../../processing/app/Editor.java:2507
+msgid "Type board password to access its console"
+msgstr "콘솔에 접근하기 위해 보드의 패스워드를 입력하시오"
+
+#: ../../../processing/app/Sketch.java:1673
+msgid "Type board password to upload a new sketch"
+msgstr "새로운 스케치를 업로드하기 위해 보드의 패스워드를 입력하시오"
+
+#: ../../../processing/app/Preferences.java:118
+msgid "Ukrainian"
+msgstr "우크라이아어"
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr "{0} 에 연결할 수 없음"
+
+#: ../../../processing/app/Editor.java:2524
+#: ../../../processing/app/NetworkMonitor.java:145
+msgid "Unable to connect: is the sketch using the bridge?"
+msgstr "연결할 수 없음: 스케치가 브릿지를 사용하나요?"
+
+#: ../../../processing/app/NetworkMonitor.java:130
+msgid "Unable to connect: retrying"
+msgstr "연결할 수 없음: 재시도"
+
+#: ../../../processing/app/Editor.java:2526
+msgid "Unable to connect: wrong password?"
+msgstr "연결할 수 없음: 패스워드 확인"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
+#, java-format
+msgid "Unable to find {0} in {1}"
+msgstr "{1} 에서 {0} 를 찾을 수 없음"
+
+#: ../../../processing/app/Editor.java:2512
+msgid "Unable to open serial monitor"
+msgstr "시리얼 모니터를 열 수 없음"
+
+#: ../../../../../app/src/processing/app/Editor.java:2709
+msgid "Unable to open serial plotter"
+msgstr "시리얼 플로터를 열 수 없습니다"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Unable to reach Arduino.cc due to possible network issues."
+msgstr "네트워트 문제때문에 Arduino.cc에 접속 할 수 없습니다."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr "분류되지않은"
+
+#: Editor.java:1133 Editor.java:1355
+msgid "Undo"
+msgstr "취소"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
+#, java-format
+msgid "Unhandled type {0} in context key {1}"
+msgstr "컨텍스트 키 {1} 에서 처리되지 않은 타입 {0} "
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr "알 수 없는 보드"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
+#, java-format
+msgid "Unknown sketch file extension: {0}"
+msgstr "알수없는 스케치파일 확장자: {0}"
+
+#: Platform.java:168
+msgid ""
+"Unspecified platform, no launcher available.\n"
+"To enable opening URLs or folders, add a \n"
+"\"launcher=/path/to/app\" line to preferences.txt"
+msgstr "지정되지 않은 플랫폼, 런처를 사용할 수 없습니다.\nURL 또는 폴더를 사용하려면,\n\"launcher=/path/to/app\" 라인을 preferences.txt에 추가합니다."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
+msgid "Updatable"
+msgstr "업데이트 가능한"
+
+#: UpdateCheck.java:111
+msgid "Update"
+msgstr "업데이트"
+
+#: Preferences.java:428
+msgid "Update sketch files to new extension on save (.pde -> .ino)"
+msgstr "스케치 파일을 저장할때 새로운 확장자(.pde -> .ino)로 업데이트"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "업데이트가 가능합니다 {0}보드{1}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "업데이트가 가능합니다 {0}보드{1} 와 {2}라이브러리{3}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "업데이트가 가능합니다 {0}라이브러리{1}"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
+msgid "Updating list of installed libraries"
+msgstr "설치된 라이브러리 리스트 업데이트"
+
+#: EditorToolbar.java:41 Editor.java:545
+msgid "Upload"
+msgstr "업로드"
+
+#: EditorToolbar.java:46 Editor.java:553
+msgid "Upload Using Programmer"
+msgstr "프로그래머를 이용해 업로드"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr "스케치 업로드"
+
+#: Editor.java:2403 Editor.java:2439
+msgid "Upload canceled."
+msgstr "업로드 취소."
+
+#: ../../../processing/app/Sketch.java:1678
+msgid "Upload cancelled"
+msgstr "업로드 취소"
+
+#: Editor.java:2378
+msgid "Uploading to I/O Board..."
+msgstr "I/O 보드에 업로드…"
+
+#: Sketch.java:1622
+msgid "Uploading..."
+msgstr "업로딩…"
+
+#: Editor.java:1269
+msgid "Use Selection For Find"
+msgstr "찾기를 위해 선택된 부분을 사용"
+
+#: Preferences.java:409
+msgid "Use external editor"
+msgstr "외부 에디터 사용"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr "사용자 이름:"
+
+#: ../../../processing/app/debug/Compiler.java:410
+#, java-format
+msgid "Using library {0} at version {1} in folder: {2} {3}"
+msgstr "라이브러리 {0}를 버전 {1} 폴더: {2} {3} 에서 사용"
+
+#: ../../../processing/app/debug/Compiler.java:94
+#, java-format
+msgid "Using library {0} in folder: {1} {2}"
+msgstr "폴더:{1} {2}의 라이브러리 {0} 사용"
+
+#: ../../../processing/app/debug/Compiler.java:320
+#, java-format
+msgid "Using previously compiled file: {0}"
+msgstr "이전에 컴파일된 파일: {0} 사용"
+
+#: EditorToolbar.java:41 EditorToolbar.java:46
+msgid "Verify"
+msgstr "확인"
+
+#: Preferences.java:400
+msgid "Verify code after upload"
+msgstr "업로드 후 코드 확인하기"
+
+#: ../../../../../app/src/processing/app/Editor.java:725
+msgid "Verify/Compile"
+msgstr "확인/컴파일"
+
+#: ../../../../../app/src/processing/app/Base.java:451
+msgid "Verifying and uploading..."
+msgstr "확인 및 업로딩..."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
+msgid "Verifying archive integrity..."
+msgstr "아카이브 무결성 검사..."
+
+#: ../../../../../app/src/processing/app/Base.java:454
+msgid "Verifying..."
+msgstr "확인..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
+#, java-format
+msgid "Version <b>{0}</b>"
+msgstr "버전 <b>{0}</b>"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
+msgid "Version unknown"
+msgstr "알수없는 버전"
+
+#: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
+#, java-format
+msgid "Version {0}"
+msgstr "버전 {0}"
+
+#: ../../../processing/app/Preferences.java:154
+msgid "Vietnamese"
+msgstr "베트남어"
+
+#: Editor.java:1105
+msgid "Visit Arduino.cc"
+msgstr "Arduino.cc 방문하기"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
+#, java-format
+msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
+msgstr "경고: 라이브러리 {1}에서 카테고리 '{0}'가 유효하지 않습니다. '{2}'로 설정"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
+#, java-format
+msgid "WARNING: Spurious {0} folder in '{1}' library"
+msgstr "경고: '{1}' 라이브러리에 {0} 허위 폴더"
+
+#: ../../../processing/app/debug/Compiler.java:115
+#, java-format
+msgid ""
+"WARNING: library {0} claims to run on {1} architecture(s) and may be "
+"incompatible with your current board which runs on {2} architecture(s)."
+msgstr "경고: 라이브러리 {0}가 {1} 아키텍처에서 실행되며 {2}아키텍처에서 실행되는 현재보드에서는 호환되지 않을 수 있습니다."
+
+#: Base.java:2128
+msgid "Warning"
+msgstr "경고"
+
+#: ../../../processing/app/debug/Compiler.java:1295
+msgid ""
+"Warning: This core does not support exporting sketches. Please consider "
+"upgrading it or contacting its author"
+msgstr "경고: 이 코어는 스케치 내보내기를 지원하지 않습니다. 업데이트를 하거나 저자에게 연락하세요."
+
+#: ../../../cc/arduino/utils/ArchiveExtractor.java:197
+#, java-format
+msgid "Warning: file {0} links to an absolute path {1}"
+msgstr "경고: 파일 {0}가 절대 경로 {1}에 연결되어 있습니다"
+
+#: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
+msgid "Warning: forced trusting untrusted contributions"
+msgstr "경고: forced trusting untrusted contributions"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
+#, java-format
+msgid "Warning: forced untrusted script execution ({0})"
+msgstr "경고: forced untrusted script execution ({0})"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
+#, java-format
+msgid "Warning: non trusted contribution, skipping script execution ({0})"
+msgstr "경고: non trusted contribution, skipping script execution ({0})"
+
+#: ../../../processing/app/debug/LegacyTargetPlatform.java:158
+#, java-format
+msgid ""
+"Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
+" converted to {2}. Consider upgrading this core."
+msgstr "경고: 코어 '{0}'의 platform.txt는 오래된 {1}를 포함하며, 자동으로 {2}로 변환되었습니다. 이 코어를 업그레이드 하는 것이 좋습니다."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:91
+msgid ""
+"Warning: platform.txt from core '{0}' misses property '{1}', using default "
+"value '{2}'. Consider upgrading this core."
+msgstr "경고 : 코어 '{0}'의 platform.txt는 프로퍼티 '{1}'이 없어서, 기본값 '{2}' 를 사용합니다. 이 코어를 업그레이드하는 것이 좋습니다."
+
+#: ../../../../../app/src/processing/app/Preferences.java:190
+msgid "Western Frisian"
+msgstr "서 프리지아어"
+
+#: debug/Compiler.java:444
+msgid "Wire.receive() has been renamed Wire.read()."
+msgstr "Wire.receive()는 Wire.read()로 이름이 변경되었습니다."
+
+#: debug/Compiler.java:438
+msgid "Wire.send() has been renamed Wire.write()."
+msgstr "Wire.send()는 Wire.write()로 이름이 변경되었습니다."
+
+#: FindReplace.java:105
+msgid "Wrap Around"
+msgstr "자동 줄 바꿈"
+
+#: debug/Uploader.java:213
+msgid ""
+"Wrong microcontroller found.  Did you select the right board from the Tools "
+"> Board menu?"
+msgstr "잘못된 마이크로콘트롤러 발견. 툴 > 보드 메뉴에서 올바른 보드를 선택을 하셨나요?"
+
+#: Preferences.java:77 UpdateCheck.java:108
+msgid "Yes"
+msgstr "예"
+
+#: ../../../../../app/src/processing/app/Base.java:2312
+msgid "You can't import a folder that contains your sketchbook"
+msgstr "스케치북을 포함하는 폴더를 가져올 수 없습니다"
+
+#: Sketch.java:883
+msgid ""
+"You cannot save the sketch into a folder\n"
+"inside itself. This would go on forever."
+msgstr "스케치를 그 자체의 폴더에 저장할 수 없습니다.\n무한 반복될 수 있습니다."
+
+#: Base.java:1888
+msgid "You forgot your sketchbook"
+msgstr "스케치북을 잊었습니다"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr "변경 사항을 저장하지 않았습니다!\n이 옵션을 사용하려면 모든 스케치를 저장해야합니다."
+
+#: ../../../processing/app/AbstractMonitor.java:92
+msgid ""
+"You've pressed {0} but nothing was sent. Should you select a line ending?"
+msgstr "{0}를 입력했지만 아무것도 전달되지 않았습니다. 줄바꿈을 선택했나요?"
+
+#: Base.java:536
+msgid ""
+"You've reached the limit for auto naming of new sketches\n"
+"for the day. How about going for a walk instead?"
+msgstr "새로운 스케치의 자동 네이밍의 한계에 도달했습니다.\n산책을 하시는 것이 어떤가요?"
+
+#: ../../../processing/app/BaseNoGui.java:768
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your settings folder.\n"
+"Please move the IDE to another folder."
+msgstr "IDE의 복사본은 설정 폴더의 하위 폴더에 설치되어있습니다.\n다른 폴더로 IDE를 이동하십시오."
+
+#: ../../../processing/app/BaseNoGui.java:771
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
+"Please move the IDE to another folder."
+msgstr "IDE의 복사본은 스케치북의 하위 폴더에 설치되어있습니다.\n다른 폴더로 IDE를 이동하십시오."
+
+#: Base.java:2638
+msgid "ZIP files or folders"
+msgstr "ZIP 파일 또는 폴더"
+
+#: Base.java:2661
+msgid "Zip doesn't contain a library"
+msgstr "Zip 파일이 라이브러리를 포함하고 있지않습니다"
+
+#: Sketch.java:364
+#, java-format
+msgid "\".{0}\" is not a valid extension."
+msgstr "\".{0}\" 는 확장자로 사용할 수 없습니다."
+
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
+#, java-format
+msgid ""
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr "\"{0}\"에 인식할 수 없는 문자가 포함되어 있습니다. 만약 이 코드가 이전 버전의 아두이노로 만들어졌다면, 툴 -> 인코딩 수정 & 다시 로드 로 UTF-8 인코딩으로 업데이트 할 수 있습니다.아니면 잘못된 문자를 삭제하여 이 경고를 제거할 수 있습니다"
+
+#: debug/Compiler.java:409
+msgid ""
+"\n"
+"As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
+"You appear to be using it or another library that depends on the SPI library.\n"
+"\n"
+msgstr "\n아두이노 0019 경우, 이더넷 라이브러리는 SPI라이브러리에 의존합니다.\n이 사이브러리를 사용하거나 SPI 라이브러리에 의존적인\n다른 라이브러리를 사용하는 것 같습니다.\n"
+
+#: debug/Compiler.java:415
+msgid ""
+"\n"
+"As of Arduino 1.0, the 'BYTE' keyword is no longer supported.\n"
+"Please use Serial.write() instead.\n"
+"\n"
+msgstr "\n아두이노 1.0 경우, 'BYTE' 키워드는 더 이상 지원하지 않습니니다.\n대신 Serial.write()를 사용하시기 바랍니다.\n\n"
+
+#: debug/Compiler.java:427
+msgid ""
+"\n"
+"As of Arduino 1.0, the Client class in the Ethernet library has been renamed to EthernetClient.\n"
+"\n"
+msgstr "\n아두이노 1.0 경우, 이더넷 라이브러리의 Client 클래스는 EthernetClient로 이름이 변경되었습니다\n"
+
+#: debug/Compiler.java:421
+msgid ""
+"\n"
+"As of Arduino 1.0, the Server class in the Ethernet library has been renamed to EthernetServer.\n"
+"\n"
+msgstr "\n아두이노 1.0 경우, 이더넷 라이브러리의 Server 클래스는 EthernetServer로 이름이 변경되었습니다.\n\n"
+
+#: debug/Compiler.java:433
+msgid ""
+"\n"
+"As of Arduino 1.0, the Udp class in the Ethernet library has been renamed to EthernetUdp.\n"
+"\n"
+msgstr "\n아두이노 1.0 경우, 이더넷 라이브러리의 Udp 클래스는 EthernetClient로 이름이 변경되었습니다\n"
+
+#: debug/Compiler.java:445
+msgid ""
+"\n"
+"As of Arduino 1.0, the Wire.receive() function was renamed to Wire.read() for consistency with other libraries.\n"
+"\n"
+msgstr "\n아두이노 1.0 경우, Wire.receive()함수는 다른 라이브러리와의 일관성을 위해 Wire.read()로 이름이 변경되었습니다\n"
+
+#: debug/Compiler.java:439
+msgid ""
+"\n"
+"As of Arduino 1.0, the Wire.send() function was renamed to Wire.write() for consistency with other libraries.\n"
+"\n"
+msgstr "\n아두이노 1.0 경우, Wire.send()함수는 다른 라이브러리와의 일관성을 위해 Wire.write()로 이름이 변경되었습니다\n"
+
+#: SerialMonitor.java:130 SerialMonitor.java:133
+msgid "baud"
+msgstr "보드레이트"
+
+#: Preferences.java:389
+msgid "compilation "
+msgstr "컴파일 "
+
+#: ../../../processing/app/NetworkMonitor.java:111
+msgid "connected!"
+msgstr "연결!"
+
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr "http://www.arduino.cc/"
+
+#: UpdateCheck.java:118
+msgid "http://www.arduino.cc/en/Main/Software"
+msgstr "http://www.arduino.cc/en/Main/Software"
+
+#: UpdateCheck.java:53
+msgid "http://www.arduino.cc/latest.txt"
+msgstr "http://www.arduino.cc/latest.txt"
+
+#: Preferences.java:625
+#, java-format
+msgid "ignoring invalid font size {0}"
+msgstr "잘못된 글꼴 크기 {0}를 무시"
+
+#: Editor.java:936 Editor.java:943
+msgid "name is null"
+msgstr "name 이 null입니다."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr "{0}에 헤더 파일 (.h)이 없습니다"
+
+#: Editor.java:932
+msgid "serialMenu is null"
+msgstr "serialMenu가 Null입니다"
+
+#: debug/Uploader.java:195
+#, java-format
+msgid ""
+"the selected serial port {0} does not exist or your board is not connected"
+msgstr "선택돤 시리얼 포트{0}는 존재하지 않거나 해당 보드가 연결되지 않았습니다."
+
+#: ../../../processing/app/Base.java:389
+#, java-format
+msgid "unknown option: {0}"
+msgstr "알 수 없는 옵션: {0}"
+
+#: Preferences.java:391
+msgid "upload"
+msgstr "업로드"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
+#, java-format
+msgid "version <b>{0}</b>"
+msgstr "버전 <b>{0}</b>"
+
+#: ../../../../../app/src/processing/app/Editor.java:2243
+#, java-format
+msgid "{0} - {1} | Arduino {2}"
+msgstr "{0} - {1} | 아두이노 {2}"
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr "{0} 파일 서명 확인에 실패했습니다"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
+#, java-format
+msgid "{0} file signature verification failed. File ignored."
+msgstr "{0} 파일 서명 확인에 실패했습니다. 파일은 무시됐습니다."
+
+#: Editor.java:380
+#, java-format
+msgid "{0} files added to the sketch."
+msgstr "스케치에 {0}파일이 추가되었습니다."
+
+#: ../../../../../app/src/processing/app/Base.java:1201
+#, java-format
+msgid "{0} libraries"
+msgstr "{0} 라이브러리"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
+#, java-format
+msgid "{0} must be a folder"
+msgstr "{0} 는 폴더이어야 합니다"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} on {1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
+#, java-format
+msgid "{0} pattern is missing"
+msgstr "{0} 패턴이 없습니다"
+
+#: debug/Compiler.java:365
+#, java-format
+msgid "{0} returned {1}"
+msgstr "{0} 가 {1}를 리턴했습니다"
+
+#: Editor.java:2213
+#, java-format
+msgid "{0} | Arduino {1}"
+msgstr "{0} | 아두이노 {1}"
+
+#: ../../../processing/app/Base.java:519
+#, java-format
+msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
+msgstr "{0}: --pref의 잘못된 인자, \"pref=value\"의 형태이어야 합니다."
+
+#: ../../../processing/app/Base.java:476
+#, java-format
+msgid ""
+"{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
+"\"package:arch:board:options\""
+msgstr "{0}: 잘못된 보드 이름, \"package:arch:board\" 또는 \"package:arch:board:options\" 형태가 되야 합니다."
+
+#: ../../../processing/app/Base.java:507
+#, java-format
+msgid "{0}: Invalid option for board \"{1}\""
+msgstr "{0}: \"{1}' 보드의 옵션이 잘못 됨"
+
+#: ../../../processing/app/Base.java:502
+#, java-format
+msgid "{0}: Invalid option, should be of the form \"name=value\""
+msgstr "{0}: 잘못 된 옵션, \"이름=값\"의 형태여야 합니다."
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr "{0}: \"{2}\" 보드의 옵션 \"{1}\" 이 잘못 됨"
+
+#: ../../../processing/app/Base.java:486
+#, java-format
+msgid "{0}: Unknown architecture"
+msgstr "{0}: 알 수 없는 아키텍쳐"
+
+#: ../../../processing/app/Base.java:491
+#, java-format
+msgid "{0}: Unknown board"
+msgstr "{0}: 알 수 없는 보드"
+
+#: ../../../processing/app/Base.java:481
+#, java-format
+msgid "{0}: Unknown package"
+msgstr "{0}: 알 수 없는 패키지"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr "{0} {2} 보드를 사용하려면 패키지 {1}을 설치하십시오."
