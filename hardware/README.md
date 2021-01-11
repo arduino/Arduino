@@ -28,9 +28,13 @@ core, but with some changes, it should apply to sam as well.
 	# These steps are optional, but if your commits contain changes to other
 	# files than the avr core, this re-applies your commits with only the
 	# avr core changes, and regenerates the patches
+	
 	git checkout -b tmp-branch 950d88dcbe7b9b2d348fb25b5ffcd0c6d2d30b97
+	
 	git am --include 'hardware/arduino/avr/*' patches/*
+	
 	rm -rf patches/
+	
 	git format-patch -o patches 950d88dcbe7b9b2d348fb25b5ffcd0c6d2d30b97
 
 	# Then, in the ArduinoCore-avr repo, create a new branch on the commit
