@@ -2587,12 +2587,7 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
   protected void onBoardOrPortChange() {
-    TargetBoard board = BaseNoGui.getTargetBoard();
-    if (board != null)
-      lineStatus.setBoardName(board.getName());
-    else
-      lineStatus.setBoardName("-");
-    lineStatus.setPort(PreferencesData.get("serial.port"));
+    lineStatus.updateBoardAndPort();
     lineStatus.repaint();
   }
 
