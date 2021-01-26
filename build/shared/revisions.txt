@@ -1,5 +1,7 @@
 ARDUINO 1.8.14 2020.??.??
 
+[ide]
+* Fix status bar custom board preferences disappearing (thanks @magedrifaat)
 
 ARDUINO 1.8.13 2020.06.16
 
