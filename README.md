@@ -32,6 +32,14 @@ suggest discussing your ideas on the
 That way you can coordinate with the Arduino Team and others,
 giving your work a higher chance of being integrated into the official release
 
+### Security
+
+If you think you found a vulnerability or other security-related bug in this project, please read our
+[security policy](https://github.com/arduino/Arduino/security/policy) and report the bug to our Security Team 🛡️
+Thank you!
+
+e-mail contact: security@arduino.cc
+
 ## Installation
 
 Detailed instructions for installation in popular operating systems can be found at:
