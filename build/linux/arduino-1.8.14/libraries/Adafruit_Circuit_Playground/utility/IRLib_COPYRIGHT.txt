@@ -1,0 +1,54 @@
+﻿Copyright information for IRLib – an Arduino library for 
+infrared encoding and decoding
+
+IRLib2 is a collection of libraries which we will collectively referred 
+to as the PACKAGE. The PACKAGE consists of all files in the IRLib2, 
+IRLibFreq, IRLibRecv, IRLibRecvPCI, and IRLibProtocols folders.
+
+The PACKAGE is Copyright (c) 2014-2017 by Chris Young 
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+These files will be maintained at https://github.com/cyborg5/IRLib2
+Documentation and other support info at http://tech.cyborg5.com/irlib
+
+This is an updated version of my original IRLib which is still available at
+https://github.com/cyborg5/IRLib which will not be updated after this 
+PACKAGE has its first stable non-beta release.
+
+Both libraries are derived from the original source code in a library called
+IRemote by Ken Shirriff which was covered by GNU LESSER GENERAL PUBLIC
+LICENSE version 2.1. This package is covered by the GNU GENERAL PUBLIC
+LICENSE 3.0.  See LICENSE.txt for a copy of that license or visit 
+https://www.gnu.org/licenses/
+
+As I understand these licenses it is permissible to upgrade the license 
+this way.  Additionally this license change was made with the approval of
+Mr. Shirriff in an email conversation I had with him. In accord with his
+wishes and out of respect for his work, his original copyright message is
+shown below.
+
+/*
+ * IRremote
+ * Version 0.1 July, 2009
+ * Copyright 2009 Ken Shirriff
+ * For details, see http://www.righto.com/2009/08/multi-protocol-infrared-remote-library.html http://www.righto.com/
+ *
+ * Interrupt code based on NECIRrcv by Joe Knapp
+ * http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1210243556
+ * Also influenced by http://zovirl.com/2008/11/12/building-a-universal-remote-with-an-arduino/
+ */
+
+We also acknowledge and thank the developers of the AnalysIR program. AnalysIR is a Windows-based application which allows you to graphically analyze IR input signals through an Arduino, Raspberry Pi or other microcontrollers systems. The frequency analysis and other PCI based versions of the program are based upon and inspired by their work. We value their input into the development of that portion of the code. You can find more about their software at http://analysir.com 
+
+We also knowledge and thank programmer Gabriel Staples contributed bug fixes and an earlier version of the auto resume feature. Although much of his code was rewritten it could not have been possible without his contributions.
+
+Other major contributors will be acknowledged in this file in the future.

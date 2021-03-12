@@ -50,15 +50,15 @@ public class ThinkDifferent {
 
     application.addAppEventListener(new AppReOpenedListener() {
       @Override
-        public void appReOpened(AppReOpenedEvent aroe) {
-          try {
-            if (Base.INSTANCE.getEditors().size() == 0) {
-              Base.INSTANCE.handleNew();
-            }
-          } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+      public void appReOpened(AppReOpenedEvent aroe) {
+        try {
+          if (Base.INSTANCE.getEditors().size() == 0) {
+            Base.INSTANCE.handleNew();
           }
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
       }
     });
     application.setAboutHandler(new AboutHandler() {

@@ -854,7 +854,6 @@ public class Base {
     handleOpen(inputFile);
   }
 
-
   /**
    * Open a sketch in a new window.
    *
@@ -989,7 +988,10 @@ public class Base {
     // If quit is canceled, this will be replaced anyway
     // by a later handleQuit() that is not canceled.
     storeScreenDimensions();
-    storeSketches();
+    if (editors.size() == 1) {
+      if (editors.get(0).getSketch().getFiles().length != 0)
+        storeSketches();
+    }
     try {
       Editor.serialMonitor.close();
     } catch (Exception e) {

@@ -25,13 +25,7 @@ package processing.app;
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -61,22 +55,7 @@ import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.text.BadLocationException;
@@ -122,22 +101,24 @@ public class Editor extends JFrame implements RunnerListener {
   private JMenu recentSketchesMenu;
   private JMenu programmersMenu;
   private final Box upper;
+  private final Box middle; // Contains the header, project and editor
+  private final Box editor_upper;
   private ArrayList<EditorTab> tabs = new ArrayList<>();
   private int currentTabIndex = -1;
 
   private static class ShouldSaveIfModified
-      implements Predicate<SketchController> {
+    implements Predicate<SketchController> {
 
     @Override
     public boolean test(SketchController controller) {
       return PreferencesData.getBoolean("editor.save_on_verify")
-             && controller.getSketch().isModified()
-             && !controller.isReadOnly();
+        && controller.getSketch().isModified()
+        && !controller.isReadOnly();
     }
   }
 
   private static class CanExportInSketchFolder
-      implements Predicate<SketchController> {
+    implements Predicate<SketchController> {
 
     @Override
     public boolean test(SketchController controller) {
@@ -157,8 +138,8 @@ public class Editor extends JFrame implements RunnerListener {
   // set to blank, it's preferredSize() will be fukered
   private static final String EMPTY =
     "                                                                     " +
-    "                                                                     " +
-    "                                                                     ";
+      "                                                                     " +
+      "                                                                     ";
 
   /** Command on Mac OS X, Ctrl on Windows and Linux */
   private static final int SHORTCUT_KEY_MASK =
@@ -201,8 +182,10 @@ public class Editor extends JFrame implements RunnerListener {
   final EditorHeader header;
   EditorStatus status;
   EditorConsole console;
+  EditorProject project;
 
   private JSplitPane splitPane;
+  private JSplitPane splitProject;
 
   // currently opened program
   SketchController sketchController;
@@ -251,10 +234,10 @@ public class Editor extends JFrame implements RunnerListener {
 
     // add listener to handle window close box hit event
     addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-          base.handleClose(Editor.this);
-        }
-      });
+      public void windowClosing(WindowEvent e) {
+        base.handleClose(Editor.this);
+      }
+    });
     // don't close the window when clicked, the app will take care
     // of that via the handleQuitInternal() methods
     // http://dev.processing.org/bugs/show_bug.cgi?id=440
@@ -262,28 +245,28 @@ public class Editor extends JFrame implements RunnerListener {
 
     // When bringing a window to front, let the Base know
     addWindowListener(new WindowAdapter() {
-        public void windowActivated(WindowEvent e) {
-          base.handleActivated(Editor.this);
-        }
+      public void windowActivated(WindowEvent e) {
+        base.handleActivated(Editor.this);
+      }
 
-        // added for 1.0.5
-        // http://dev.processing.org/bugs/show_bug.cgi?id=1260
-        public void windowDeactivated(WindowEvent e) {
-          List<Component> toolsMenuItemsToRemove = new LinkedList<>();
-          for (Component menuItem : toolsMenu.getMenuComponents()) {
-            if (menuItem instanceof JComponent) {
-              Object removeOnWindowDeactivation = ((JComponent) menuItem).getClientProperty("removeOnWindowDeactivation");
-              if (removeOnWindowDeactivation != null && Boolean.valueOf(removeOnWindowDeactivation.toString())) {
-                toolsMenuItemsToRemove.add(menuItem);
-              }
+      // added for 1.0.5
+      // http://dev.processing.org/bugs/show_bug.cgi?id=1260
+      public void windowDeactivated(WindowEvent e) {
+        List<Component> toolsMenuItemsToRemove = new LinkedList<>();
+        for (Component menuItem : toolsMenu.getMenuComponents()) {
+          if (menuItem instanceof JComponent) {
+            Object removeOnWindowDeactivation = ((JComponent) menuItem).getClientProperty("removeOnWindowDeactivation");
+            if (removeOnWindowDeactivation != null && Boolean.valueOf(removeOnWindowDeactivation.toString())) {
+              toolsMenuItemsToRemove.add(menuItem);
             }
           }
-          for (Component menuItem : toolsMenuItemsToRemove) {
-            toolsMenu.remove(menuItem);
-          }
-          toolsMenu.remove(portMenu);
         }
-      });
+        for (Component menuItem : toolsMenuItemsToRemove) {
+          toolsMenu.remove(menuItem);
+        }
+        toolsMenu.remove(portMenu);
+      }
+    });
 
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
@@ -299,6 +282,8 @@ public class Editor extends JFrame implements RunnerListener {
 
     Box box = Box.createVerticalBox();
     upper = Box.createVerticalBox();
+    middle = Box.createHorizontalBox();
+    editor_upper = Box.createVerticalBox();
 
     if (toolbarMenu == null) {
       toolbarMenu = new JMenu();
@@ -308,7 +293,7 @@ public class Editor extends JFrame implements RunnerListener {
     upper.add(toolbar);
 
     header = new EditorHeader(this);
-    upper.add(header);
+    editor_upper.add(header);
 
     // assemble console panel, consisting of status area and the console itself
     JPanel consolePanel = new JPanel();
@@ -326,10 +311,15 @@ public class Editor extends JFrame implements RunnerListener {
     lineStatus = new EditorLineStatus();
     consolePanel.add(lineStatus, BorderLayout.SOUTH);
 
-    codePanel = new JPanel(new BorderLayout());
-    upper.add(codePanel);
 
+
+    codePanel = new JPanel(new BorderLayout());
+    editor_upper.add(codePanel);
+    middle.add(editor_upper);
+
+    upper.add(middle);
     splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper, consolePanel);
+
 
     // repaint child panes while resizing
     splitPane.setContinuousLayout(true);
@@ -363,8 +353,8 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Set the minimum size for the editor window
     setMinimumSize(scale(new Dimension(
-        PreferencesData.getInteger("editor.window.width.min"),
-        PreferencesData.getInteger("editor.window.height.min"))));
+      PreferencesData.getInteger("editor.window.width.min"),
+      PreferencesData.getInteger("editor.window.height.min"))));
 
     // Bring back the general options for the editor
     applyPreferences();
@@ -381,6 +371,11 @@ public class Editor extends JFrame implements RunnerListener {
 
     // default the console output to the last opened editor
     EditorConsole.setCurrentEditorConsole(console);
+
+    // Add Project View if True in the saved preferences
+
+    if(PreferencesData.getBoolean("project.view"))
+      handleAddProjectView();
   }
 
 
@@ -727,6 +722,15 @@ public class Editor extends JFrame implements RunnerListener {
     item.addActionListener(e -> handlePlotter());
     toolsMenu.add(item);
 
+    item = newJMenuItemShift(tr("Project View"), 'J');
+    item.addActionListener(e -> {
+      if (!PreferencesData.getBoolean("project.view")) {
+        handleAddProjectView();
+      }else{
+        handleRemoveProjectView();}
+    });
+    toolsMenu.add(item);
+
     addTools(toolsMenu, BaseNoGui.getToolsFolder());
     File sketchbookTools = new File(BaseNoGui.getSketchbookFolder(), "tools");
     addTools(toolsMenu, sketchbookTools);
@@ -937,14 +941,14 @@ public class Editor extends JFrame implements RunnerListener {
     } finally {
       if (zipFile != null) {
         try {
-           zipFile.close();
-         } catch (IOException e) {
-           // noop
-         }
-       }
-     }
-     return null;
-   }
+          zipFile.close();
+        } catch (IOException e) {
+          // noop
+        }
+      }
+    }
+    return null;
+  }
 
   public void updateKeywords(PdeKeywords keywords) {
     for (EditorTab tab : tabs)
@@ -1027,7 +1031,7 @@ public class Editor extends JFrame implements RunnerListener {
     BaseNoGui.selectSerialPort(name);
     try {
       boolean reopenMonitor = ((serialMonitor != null && serialMonitor.isVisible()) ||
-                                serialPlotter != null && serialPlotter.isVisible());
+        serialPlotter != null && serialPlotter.isVisible());
       if (serialMonitor != null) {
         serialMonitor.close();
       }
@@ -1084,15 +1088,15 @@ public class Editor extends JFrame implements RunnerListener {
     ports = platform.filterPorts(ports, PreferencesData.getBoolean("serial.ports.showall"));
 
     ports.stream() //
-        .filter(port -> port.getProtocolLabel() == null || port.getProtocolLabel().isEmpty())
-        .forEach(port -> {
-          int labelIdx = PROTOCOLS_ORDER.indexOf(port.getProtocol());
-          if (labelIdx != -1) {
-            port.setProtocolLabel(PROTOCOLS_LABELS.get(labelIdx));
-          } else {
-            port.setProtocolLabel(port.getProtocol());
-          }
-        });
+      .filter(port -> port.getProtocolLabel() == null || port.getProtocolLabel().isEmpty())
+      .forEach(port -> {
+        int labelIdx = PROTOCOLS_ORDER.indexOf(port.getProtocol());
+        if (labelIdx != -1) {
+          port.setProtocolLabel(PROTOCOLS_LABELS.get(labelIdx));
+        } else {
+          port.setProtocolLabel(port.getProtocol());
+        }
+      });
 
     Collections.sort(ports, (port1, port2) -> {
       String pr1 = port1.getProtocol();
@@ -1189,9 +1193,9 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(undoItem);
 
     if (!OSUtils.isMacOS()) {
-        redoItem = newJMenuItem(tr("Redo"), 'Y');
+      redoItem = newJMenuItem(tr("Redo"), 'Y');
     } else {
-        redoItem = newJMenuItemShift(tr("Redo"), 'Z');
+      redoItem = newJMenuItemShift(tr("Redo"), 'Z');
     }
     redoItem.setName("menuEditRedo");
     redoItem.addActionListener(event -> getCurrentTab().handleRedo());
@@ -1545,8 +1549,8 @@ public class Editor extends JFrame implements RunnerListener {
   protected void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tab.getTextArea().getDocument()
-        .addDocumentListener(new DocumentTextChangeListener(
-            () -> updateUndoRedoState()));
+      .addDocumentListener(new DocumentTextChangeListener(
+        () -> updateUndoRedoState()));
     tabs.add(tab);
     reorderTabs();
   }
@@ -1633,8 +1637,8 @@ public class Editor extends JFrame implements RunnerListener {
         statusNotice(tr("Done compiling."));
       } catch (PreferencesMapException e) {
         statusError(I18n.format(
-                tr("Error while compiling: missing '{0}' configuration parameter"),
-                e.getMessage()));
+          tr("Error while compiling: missing '{0}' configuration parameter"),
+          e.getMessage()));
       } catch (Exception e) {
         status.unprogress();
         statusError(e);
@@ -1693,13 +1697,13 @@ public class Editor extends JFrame implements RunnerListener {
     toFront();
 
     String prompt = I18n.format(tr("Save changes to \"{0}\"?  "),
-                                sketch.getName());
+      sketch.getName());
 
     if (!OSUtils.hasMacOSStyleMenus()) {
       int result =
         JOptionPane.showConfirmDialog(this, prompt, tr("Close"),
-                                      JOptionPane.YES_NO_CANCEL_OPTION,
-                                      JOptionPane.QUESTION_MESSAGE);
+          JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.QUESTION_MESSAGE);
 
       switch (result) {
         case JOptionPane.YES_OPTION:
@@ -1724,14 +1728,14 @@ public class Editor extends JFrame implements RunnerListener {
 
       JOptionPane pane =
         new JOptionPane(tr("<html> " +
-                          "<head> <style type=\"text/css\">"+
-                          "b { font: 13pt \"Lucida Grande\" }"+
-                          "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
-                          "</style> </head>" +
-                          "<b>Do you want to save changes to this sketch<BR>" +
-                          " before closing?</b>" +
-                          "<p>If you don't save, your changes will be lost."),
-                        JOptionPane.QUESTION_MESSAGE);
+          "<head> <style type=\"text/css\">"+
+          "b { font: 13pt \"Lucida Grande\" }"+
+          "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
+          "</style> </head>" +
+          "<b>Do you want to save changes to this sketch<BR>" +
+          " before closing?</b>" +
+          "<p>If you don't save, your changes will be lost."),
+          JOptionPane.QUESTION_MESSAGE);
 
       String[] options = new String[] {
         tr("Save"), tr("Cancel"), tr("Don't Save")
@@ -1852,10 +1856,10 @@ public class Editor extends JFrame implements RunnerListener {
     } else {
       if (current.isPrimary()) {
         setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
-                             BaseNoGui.VERSION_NAME_LONG));
+          BaseNoGui.VERSION_NAME_LONG));
       } else {
         setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
-                             current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+          current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
       }
     }
   }
@@ -1884,10 +1888,10 @@ public class Editor extends JFrame implements RunnerListener {
 
     } else {
       SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
-            handleSave2();
-          }
-        });
+        public void run() {
+          handleSave2();
+        }
+      });
     }
     return true;
   }
@@ -1993,8 +1997,8 @@ public class Editor extends JFrame implements RunnerListener {
     }
     String question = tr("Retry the upload with another serial port?");
     BoardPortJCheckBoxMenuItem result = (BoardPortJCheckBoxMenuItem) JOptionPane
-        .showInputDialog(this, title + "\n" + question, title,
-                         JOptionPane.PLAIN_MESSAGE, null, items.toArray(), 0);
+      .showInputDialog(this, title + "\n" + question, title,
+        JOptionPane.PLAIN_MESSAGE, null, items.toArray(), 0);
     if (result == null)
       return false;
     result.doClick();
@@ -2068,8 +2072,8 @@ public class Editor extends JFrame implements RunnerListener {
         }
       } catch (PreferencesMapException e) {
         statusError(I18n.format(
-                    tr("Error while uploading: missing '{0}' configuration parameter"),
-                    e.getMessage()));
+          tr("Error while uploading: missing '{0}' configuration parameter"),
+          e.getMessage()));
       } catch (RunnerException e) {
         //statusError("Error during upload.");
         //e.printStackTrace();
@@ -2102,7 +2106,7 @@ public class Editor extends JFrame implements RunnerListener {
       try {
         Thread.sleep(200);
       } catch (InterruptedException e) {
-          // noop
+        // noop
       }
       BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
       long sleptFor = 0;
@@ -2128,7 +2132,7 @@ public class Editor extends JFrame implements RunnerListener {
       } catch (Exception e) {
         statusError(e);
       }
-   }
+    }
   }
 
   private void resumeOrCloseSerialPlotter() {
@@ -2147,7 +2151,7 @@ public class Editor extends JFrame implements RunnerListener {
       } catch (Exception e) {
         statusError(e);
       }
-   }
+    }
   }
 
   class TimeoutUploadHandler implements Runnable {
@@ -2160,7 +2164,7 @@ public class Editor extends JFrame implements RunnerListener {
           avoidMultipleOperations = false;
         }
       } catch (InterruptedException e) {
-          // noop
+        // noop
       }
     }
   }
@@ -2593,6 +2597,55 @@ public class Editor extends JFrame implements RunnerListener {
 
   public void addCompilerProgressListener(CompilerProgressListener listener){
     this.status.addCompilerProgressListener(listener);
+  }
+
+  public void handleAddProjectView(){
+
+
+    // Check if the recent sketch is saved, if not fall back on the sketchbook path
+    if(untitled){
+      project = new EditorProject(PreferencesData.get("sketchbook.path"), base, this);
+    }else{
+      project = new EditorProject(sketch.getFolder().getAbsolutePath(), base, this);
+    }
+
+    // Reset the panels and add the project view
+    middle.remove(editor_upper);
+
+    middle.add(project);
+    middle.add(editor_upper);
+
+    // Split the code and project View
+    splitProject = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, project, editor_upper);
+    splitProject.setContinuousLayout(true);
+    splitProject.setResizeWeight(0.10f);
+    middle.add(splitProject);
+
+    // Pack the frame
+    pack();
+
+    // Print the status
+    statusNotice(tr("Added Project View"));
+
+    // Update preferences
+    PreferencesData.setBoolean("project.view", true);
+  }
+
+  public void handleRemoveProjectView(){
+    // Reset the panels and add only the code view
+    middle.remove(project);
+    middle.remove(editor_upper);
+    middle.remove(splitProject);
+    middle.add(editor_upper);
+
+    // Pack the frame
+    pack();
+
+    // Print the status
+    statusNotice(tr("Removed Project View"));
+
+    // Update preferences
+    PreferencesData.setBoolean("project.view", false);
   }
 
 }

@@ -1,0 +1,67 @@
+#######################################
+# Syntax Coloring Map For Ethernet
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Ethernet	KEYWORD1	Ethernet
+EthernetClient	KEYWORD1	EthernetClient
+EthernetServer	KEYWORD1	EthernetServer
+IPAddress	KEYWORD1	EthernetIPAddress
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+status	KEYWORD2
+connect	KEYWORD2
+write	KEYWORD2
+available	KEYWORD2
+availableForWrite	KEYWORD2
+read	KEYWORD2
+peek	KEYWORD2
+flush	KEYWORD2
+stop	KEYWORD2
+connected	KEYWORD2
+accept	KEYWORD2
+begin	KEYWORD2
+beginMulticast	KEYWORD2
+beginPacket	KEYWORD2
+endPacket	KEYWORD2
+parsePacket	KEYWORD2
+remoteIP	KEYWORD2
+remotePort	KEYWORD2
+getSocketNumber	KEYWORD2
+localIP	KEYWORD2
+localPort	KEYWORD2
+maintain	KEYWORD2
+linkStatus	KEYWORD2
+hardwareStatus	KEYWORD2
+MACAddress	KEYWORD2
+subnetMask	KEYWORD2
+gatewayIP	KEYWORD2
+dnsServerIP	KEYWORD2
+setMACAddress	KEYWORD2
+setLocalIP	KEYWORD2
+setSubnetMask	KEYWORD2
+setGatewayIP	KEYWORD2
+setDnsServerIP	KEYWORD2
+setRetransmissionTimeout	KEYWORD2
+setRetransmissionCount	KEYWORD2
+setConnectionTimeout	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+EthernetLinkStatus	LITERAL1
+Unknown	LITERAL1
+LinkON	LITERAL1
+LinkOFF	LITERAL1
+EthernetHardwareStatus	LITERAL1
+EthernetNoHardware	LITERAL1
+EthernetW5100	LITERAL1
+EthernetW5200	LITERAL1
+EthernetW5500	LITERAL1
