@@ -101,8 +101,8 @@ public class Compiler implements MessageConsumer {
     tr("Couldn't determine program size: {0}");
     tr("Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes for local variables. Maximum is {1} bytes.");
     tr("Global variables use {0} bytes of dynamic memory.");
-    tr("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it.");
-    tr("Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing your footprint.");
+    tr("Sketch too big; see https://support.arduino.cc/hc/en-us/articles/360013825179 for tips on reducing it.");
+    tr("Not enough memory; see https://support.arduino.cc/hc/en-us/articles/360013825179 for tips on reducing your footprint.");
     tr("Low memory available, stability problems may occur.");
     tr("An error occurred while verifying the sketch");
     tr("An error occurred while verifying/uploading the sketch");
