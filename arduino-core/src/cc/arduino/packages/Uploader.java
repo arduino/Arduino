@@ -176,7 +176,7 @@ public abstract class Uploader implements MessageConsumer {
       return;
     }
     if (StringUtils.containsAny(s, AVRDUDE_PROBLEMS)) {
-      error = tr("Problem uploading to board.  See http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions.");
+      error = tr("Problem uploading to board.  See https://support.arduino.cc/hc/en-us/sections/360003198300 for suggestions.");
       return;
     }
     if (s.contains("Expected signature")) {
