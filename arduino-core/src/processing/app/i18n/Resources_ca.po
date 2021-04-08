@@ -24,6 +24,7 @@
 # Enric Verdaguer <verdaga@hotmail.com>, 2016
 # Francesc Famadas, 2015
 # jmontane, 2018
+# Jofre Faraudo <jofrefaraudo@gmail.com>, 2021
 # 17275f6663c0806cb14df3aaa64f5dcc_36b1070 <63b2d9bf279ebdb5b732343823eaa154_408083>, 2016
 # Marc Palacín <marc.palacin.marfil@gmail.com>, 2016
 # Moritz Werner Casero <moritzwernercasero@gmail.com>, 2015
@@ -36,8 +37,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2021-04-01 15:50+0000\n"
+"Last-Translator: Jofre Faraudo <jofrefaraudo@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/mbanzi/arduino-ide-15/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -450,7 +451,7 @@ msgstr "Només es pot passar un de: {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
 msgid "Can't enable external editor"
-msgstr ""
+msgstr "No s'ha pogut activar l'editor extern"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -638,7 +639,7 @@ msgstr "No es pot substituir {0}"
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "No s'ha pogut escriure al fitxer de preferències: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -697,7 +698,7 @@ msgstr "Predeterminat"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
 msgid "Default theme"
-msgstr ""
+msgstr "Tema predeterminat"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -877,7 +878,7 @@ msgstr "Error a dins del Serial.{0}()"
 #: ../../../../../app/src/processing/app/Theme.java:302
 #, java-format
 msgid "Error loading theme {0}: {1}"
-msgstr ""
+msgstr "S'ha produït un error en carregar el tema {0}: {1}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -908,7 +909,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "S'ha produït un error en llegir l'índex de biblioteques: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
@@ -953,7 +954,7 @@ msgstr "Error durant l’enregistrament  del bootloader: no es troba el paràmet
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "Error durant l'enregistrament del bootloader: seleccioneu un port sèrie."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1033,7 +1034,7 @@ msgstr "No s'ha pogut canviar el nom de \"{0}\" a \"{1}\""
 
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:298
 msgid "Failed to rename sketch folder"
-msgstr ""
+msgstr "No s'ha pogut canviar el nom del directori del sketch"
 
 #: Editor.java:491
 msgid "File"
@@ -1196,7 +1197,7 @@ msgstr "Ignora diferències entre majúscules i minúscules"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
 msgid "Ignoring library with bad name"
-msgstr ""
+msgstr "S'ha ignorat la llibreria amb un nom incorrecte."
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1262,7 +1263,7 @@ msgstr "S'estan instal·lant les plaques..."
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
 msgid "Installing library: {0}:{1}"
-msgstr ""
+msgstr "S'està instal·lant la llibreria: {0}:{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1297,7 +1298,7 @@ msgstr ""
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "Versió invàlida {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1334,7 +1335,7 @@ msgstr "La biblioteca no pot fer servir ambdós directoris 'src' i 'utility'. To
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
 msgid "Library is already installed: {0}:{1}"
-msgstr ""
+msgstr "La biblioteca ja està instal·lada: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1754,7 +1755,7 @@ msgstr "Suprimeix"
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
 msgid "Removing library: {0}:{1}"
-msgstr ""
+msgstr "S'està suprimint la biblioteca: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1792,7 +1793,7 @@ msgstr "Retirat"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr "Voleu tornar a intentar la pujada amb un port sèrie diferent?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1904,7 +1905,7 @@ msgstr "Plotter sèrie"
 msgid ""
 "Serial monitor is not supported on network ports such as {0} for the {1} in "
 "this release"
-msgstr ""
+msgstr "El monitor sèrie no està disponible en ports de xarxa com el {0} pel {1} en aquesta versió"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
@@ -1920,12 +1921,12 @@ msgstr "Port sèrie \"{0}\" no trobat. Ha seleccionat el port corresponent al me
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "No hi ha cap port sèrie seleccionat."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "No s'ha trobat el port sèrie {0}."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1950,7 +1951,7 @@ msgstr "Mostra la carpeta del Sketch"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
 msgid "Show timestamp"
-msgstr ""
+msgstr "Mostra la marca de temps"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2113,7 +2114,7 @@ msgstr "La classe Udp ha estat reanomenada a EthernetUdp."
 
 #: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
-msgstr ""
+msgstr "La placa actual seleccionada necessita el nucli «{0}» que no està instal·lat."
 
 #: Editor.java:2147
 #, java-format
@@ -2129,7 +2130,7 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library folder names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "La biblioteca «{0}» no es pot usar.\nEls noms dels directoris de les biblioteques han de començar amb una lletra o nombre, seguit de lletres, nombres, guions (-), punts (.) i guions baixos (_) i no poden superar els 63 caràcters."
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -2167,7 +2168,7 @@ msgstr "El sketch \"{0}\" no pot ser utilitzat.\nEls noms dels sketch han de con
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:272
 #, java-format
 msgid "The sketch already contains a file named \"{0}\""
-msgstr ""
+msgstr "El sketch ja conté un fitxer anomenat «{0}»"
 
 #: Sketch.java:1755
 msgid ""
@@ -2200,7 +2201,7 @@ msgstr "La carpeta del bloc d'esbossos especificada conté la teva còpia de l'I
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
 msgid "Theme: "
-msgstr ""
+msgstr "Tema: "
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2563,7 +2564,7 @@ msgstr "Ha oblidat el seu sketchbook"
 msgid ""
 "You have unsaved changes!\n"
 "You must save all your sketches to enable this option."
-msgstr ""
+msgstr "Teniu canvis sense desar!\nDeseu tots els esbossos per activar aquesta opció."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

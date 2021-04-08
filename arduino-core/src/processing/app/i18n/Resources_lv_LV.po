@@ -20,8 +20,8 @@
 # Translators:
 # Translators:
 # Translators:
-# Kristofers <kristozz@gmail.com>, 2015,2017
-# Kristofers <kristozz@gmail.com>, 2012
+# Kristofers Celms <kristozz@gmail.com>, 2015,2017
+# Kristofers Celms <kristozz@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"

@@ -34,8 +34,8 @@
 # Rafael H L Moretti <rafael.moretti@gmail.com>, 2014
 # Rui <xymarior@yandex.com>, 2019
 # sergio mazzotti <ser.mazzotti@gmail.com>, 2017
-# Tiago G. Sala, 2014
-# Tiago G. Sala, 2018
+# Tiago Sala, 2014
+# Tiago Sala, 2018
 # Walter Souza <wsouza@zipmail.com.br>, 2016
 msgid ""
 msgstr ""

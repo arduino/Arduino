@@ -28,7 +28,7 @@
 # james58899 <james59988@gmail.com>, 2014
 # Jordan_Fung <jordanfung2002@gmail.com>, 2014
 # yehnan <yehnan174@gmail.com>, 2013,2015-2017
-# 洪嘉鴻 <jerry9030@gmail.com>, 2016
+# Chiahong <jerry9030@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"

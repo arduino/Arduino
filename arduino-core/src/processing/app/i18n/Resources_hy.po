@@ -29,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2020-05-17 13:03+0000\n"
+"PO-Revision-Date: 2020-11-02 13:40+0000\n"
 "Last-Translator: Avag Sayan <avo777772012@gmail.com>\n"
 "Language-Team: Armenian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hy/)\n"
 "MIME-Version: 1.0\n"
@@ -424,11 +424,11 @@ msgstr "Բուռմերեն (Մյանմար)"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
-msgstr "Վառել Bootloader-ը"
+msgstr "Գրանցել Bootloader-ը"
 
 #: Editor.java:2504
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
-msgstr "bootloader-ը վառվում է I/O հարթակին (սա կարող է տեւել միքանի րոպե)..."
+msgstr "Գրանցում է bootloader-ը I/O հարթակին (սա կարող է տևել միքանի րոպե)…"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
 msgid ""
@@ -735,7 +735,7 @@ msgstr "Պահումն ավարտված է"
 
 #: Editor.java:2510
 msgid "Done burning bootloader."
-msgstr "bootloader վառումն ավարտված է:"
+msgstr "bootloader-ի գրանցումն ավարտված է:"
 
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
@@ -938,11 +938,11 @@ msgstr "Սխալ ''{0}'' սերիալ պորտի վերաբերյալ:"
 
 #: Editor.java:2512 Editor.java:2516 Editor.java:2520
 msgid "Error while burning bootloader."
-msgstr "Սխալ bootloader-ի վառման ընթացքում:"
+msgstr " bootloader-ի սխալ տեղի ունեցավ գրանցման ժամանակ:"
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr "Սխալ bootloader-ը վառելիս: պակասող '{0}' կոնֆիգուրացիոն պարամետր"
+msgstr "bootloader-ի գրանցման սխալ՝ պակասում է '{0}' կարգավորման հատկությունը"
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
