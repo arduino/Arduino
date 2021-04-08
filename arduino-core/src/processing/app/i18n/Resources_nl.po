@@ -127,6 +127,16 @@ msgstr "Er is een nieuwe versie van Arduino beschikbaar.\nWilt u naar de Arduino
 msgid "A newer {0} package is available"
 msgstr "Er is een nieuwere {0} package beschikbaar"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
+msgid ""
+"A package index has an invalid signature and needs to be updated.\n"
+"Please open the Board Manager from the menu\n"
+"\n"
+"      Tools -> Board -> Board Manager\n"
+"\n"
+"to update it"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "Een submap van je schetsboek is geen geldige bibliotheek"
@@ -159,10 +169,6 @@ msgstr "Additionele Board Beheer URLs"
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
-msgid "Aggressively cache compiled core"
-msgstr "Agressief cachen van gecompileerde versie"
-
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "Albanees"
@@ -179,10 +185,6 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "Er is een fout opgetreden bij het repareren van de bestandscodering.\nProbeer deze schets niet op te slaan omdat een oudere versie\nmogelijk overschreven wordt. Gebruik Openen om de schets opnieuw te openen en probeer het nogmaals.\n"
-
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
-msgid "An error occurred while updating libraries index!"
-msgstr "Er is een fout opgetreden bij het bijwerken van de index van de bibliotheken"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -238,14 +240,6 @@ msgstr "Het archiveren van de schets is geannuleerd, omdat\nde schets niet goed 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
 msgstr "Arduino"
-
-#: ../../../processing/app/I18n.java:83
-msgid "Arduino ARM (32-bits) Boards"
-msgstr "Arduino ARM (32-bits) Boards"
-
-#: ../../../processing/app/I18n.java:82
-msgid "Arduino AVR Boards"
-msgstr "Arduino AVR Boards"
 
 #: Editor.java:2137
 msgid ""
@@ -383,6 +377,10 @@ msgstr "Board {0}:{1}:{2} definieert geen ''build.board''-voorkeur. Auto-ingeste
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "Board:"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
+msgid "Boards"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -635,6 +633,11 @@ msgstr "Kan de oude versie van {0} niet verwijderen"
 msgid "Could not replace {0}"
 msgstr "Kan {0} niet vervangen"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
+#, java-format
+msgid "Could not start discovery '{0}': {1}"
+msgstr ""
+
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -702,6 +705,11 @@ msgstr "Huidig thema"
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Verwijderen"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
+#, java-format
+msgid "Dependencies for library {0}:{1}"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -799,10 +807,6 @@ msgstr "Nederlands"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "Nederlands (Nederland)"
-
-#: ../../../../../app/src/processing/app/Editor.java:1309
-msgid "Edison Help"
-msgstr "Edison Help"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -1112,10 +1116,6 @@ msgstr "Gallicisch"
 msgid "Galician (Spain)"
 msgstr "Galicisch (Spanje)"
 
-#: ../../../../../app/src/processing/app/Editor.java:1288
-msgid "Galileo Help"
-msgstr "Galileo Help"
-
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr "Georgisch"
@@ -1247,6 +1247,14 @@ msgstr "Laden van de packages..."
 msgid "Install"
 msgstr "Installeren"
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
+msgid "Install '{0}' only"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
+msgid "Install all"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
 msgstr "Installatie voltooid!"
@@ -1319,6 +1327,10 @@ msgstr "Koreaans"
 msgid "Latvian"
 msgstr "Lets"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
+msgid "Libraries"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "Bibliotheek Beheer"
@@ -1335,6 +1347,11 @@ msgstr "Bibliotheek kan niet beide 'scr' en 'utility' mappen gebruiken. Controle
 #, java-format
 msgid "Library is already installed: {0}:{1}"
 msgstr "Bibliotheek is reeds geïnstalleerd: {0}:{1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
+#, java-format
+msgid "Library {0} is already installed in: {1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1385,6 +1402,14 @@ msgstr "Modus wordt niet ondersteund"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
 msgstr "Meer"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
+msgid "More Info"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
+msgid "More info"
+msgstr ""
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1487,6 +1512,10 @@ msgstr "Geen regeleinde"
 msgid "No parameters"
 msgstr "Geen parameters"
 
+#: ../../../../../app/src/processing/app/Base.java:1721
+msgid "No programmers available for this board"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr "Geen proxy"
@@ -1494,6 +1523,10 @@ msgstr "Geen proxy"
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "Nee, echt, even tijd voor een beetje frisse lucht."
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
+msgid "No recipes defined for discovery '{0}'"
+msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1526,11 +1559,11 @@ msgstr "Geen"
 msgid "Norwegian Bokmål"
 msgstr "Noors Bokmål"
 
-#: ../../../processing/app/Sketch.java:1656
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
 msgid ""
-"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
-"for tips on reducing your footprint."
-msgstr "Niet genoeg geheugen: ga naar http://www.arduino.cc/en/Guide/Troubleshooting#size voor tips over het verkleinen van uw voetafdruk."
+"Not enough memory; see https://support.arduino.cc/hc/en-us/"
+"articles/360013825179 for tips on reducing your footprint."
+msgstr ""
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1540,6 +1573,10 @@ msgstr "OK"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "Er is een bestand toegevoegd aan de schets."
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
+msgid "Online Help"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1704,11 +1741,11 @@ msgstr "Probleem met het openen van bestanden in de map \"{0}\""
 msgid "Problem getting data folder"
 msgstr "Probleem met het openen van de data-map."
 
-#: debug/Uploader.java:209
+#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
 msgid ""
-"Problem uploading to board.  See "
-"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "Probleem bij het uploaden naar het board. Zie http://www.arduino.cc/en/Guide/Troubleshooting#upload voor suggesties."
+"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
+"sections/360003198300 for suggestions."
+msgstr ""
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1841,6 +1878,10 @@ msgstr "Opslaan bij het verifiëren of uploaden"
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "Opslaan..."
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
+msgid "Search Filter"
+msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -1984,11 +2025,11 @@ msgstr "Schets zonder naam"
 msgid "Sketch is read-only"
 msgstr "De schets is gemarkeerd als alleen-lezen"
 
-#: Sketch.java:1653
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
 msgid ""
-"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
-"tips on reducing it."
-msgstr "Schets is te groot; ga naar http://www.arduino.cc/en/Guide/Troubleshooting#size voor tips over het verkleinen van de schets."
+"Sketch too big; see https://support.arduino.cc/hc/en-us/"
+"articles/360013825179 for tips on reducing it."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2138,6 +2179,13 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Bibliotheek \"{0}\" kan niet worden gebruikt.\nBibliotheeknamen mogen alleen eenvoudige letters en cijfers bevatten.\n(Alleen ASCII en geen spaties en een naam mag niet met een cijfer beginnen)"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
+#, java-format
+msgid ""
+"The library {0} needs some other library<br />dependencies currently not "
+"installed:"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2335,10 +2383,6 @@ msgstr "Bij te werken"
 msgid "Update"
 msgstr "Updaten"
 
-#: Preferences.java:428
-msgid "Update sketch files to new extension on save (.pde -> .ino)"
-msgstr "Bij het opslaan de schetsbestanden aanpassen aan de nieuwe extensie (.pde -> .ino)"
-
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2389,6 +2433,10 @@ msgstr "Bezig met uploaden..."
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "Selectie gebruiken voor zoekactie"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
+msgid "Use accessibility features"
+msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2530,6 +2578,10 @@ msgstr "Wire.receive() is hernoemd naar Wire.read()."
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send() is hernoemd naar Wire.write()."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
+msgid "Would you like to install also all the missing dependencies?"
+msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2673,18 +2725,6 @@ msgstr "compilatie"
 msgid "connected!"
 msgstr "verbonden!"
 
-#: ../../../../../app/src/processing/app/Editor.java:1352
-msgid "http://www.arduino.cc/"
-msgstr "http://www.arduino.cc/"
-
-#: UpdateCheck.java:118
-msgid "http://www.arduino.cc/en/Main/Software"
-msgstr "http://www.arduino.cc/en/Main/Software"
-
-#: UpdateCheck.java:53
-msgid "http://www.arduino.cc/latest.txt"
-msgstr "http://www.arduino.cc/latest.txt"
-
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2728,12 +2768,6 @@ msgstr "versie <b>{0}</b>"
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
 msgstr "{0} - {1} | Arduino {2}"
-
-#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
-#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
-#, java-format
-msgid "{0} file signature verification failed"
-msgstr "Verificatie van bestandshandtekening mislukt: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format

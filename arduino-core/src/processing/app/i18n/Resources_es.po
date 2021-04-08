@@ -133,6 +133,16 @@ msgstr "Una nueva versión de Arduino está disponible...\n¿quieres visitar la 
 msgid "A newer {0} package is available"
 msgstr "Está disponible una nueva versión del paquete {0}"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
+msgid ""
+"A package index has an invalid signature and needs to be updated.\n"
+"Please open the Board Manager from the menu\n"
+"\n"
+"      Tools -> Board -> Board Manager\n"
+"\n"
+"to update it"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "Un subdirectorio de su 'cuaderno de bocetos' no es una librería válida"
@@ -165,10 +175,6 @@ msgstr "Gestor de URLs Adicionales de Tarjetas:"
 msgid "Afrikaans"
 msgstr "Afrikáans"
 
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
-msgid "Aggressively cache compiled core"
-msgstr "Núcleo agresivamente compilado de caché"
-
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "Albanés"
@@ -185,10 +191,6 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "Ha ocurrido un error mientras se solucionaba la codificación del archivo.\nNo intentes guardar este programa así sobreescribiendo la vieja versión.\nUsa Abrir para reabrir el programa e inténtalo de nuevo.\n"
-
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
-msgid "An error occurred while updating libraries index!"
-msgstr "Ha ocurrido un error mientras se actualizaba el índice de librerías!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -244,14 +246,6 @@ msgstr "El archivo del programa se ha cancelado porque\nno se pudo guardar el pr
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
 msgstr "Arduino"
-
-#: ../../../processing/app/I18n.java:83
-msgid "Arduino ARM (32-bits) Boards"
-msgstr "Placas Arduino AR; (32 bits)"
-
-#: ../../../processing/app/I18n.java:82
-msgid "Arduino AVR Boards"
-msgstr "Placas Arduino AVR"
 
 #: Editor.java:2137
 msgid ""
@@ -389,6 +383,10 @@ msgstr "Board {0}:{1}:{2} no define el ajuste ''build.board''. Auto-ajuste a: {3
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "Tarjeta:"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
+msgid "Boards"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -641,6 +639,11 @@ msgstr "No pude eliminar la versión antigua de {0}"
 msgid "Could not replace {0}"
 msgstr "No pude reemplazar {0}"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
+#, java-format
+msgid "Could not start discovery '{0}': {1}"
+msgstr ""
+
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -708,6 +711,11 @@ msgstr "Tema por defecto"
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Borrar"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
+#, java-format
+msgid "Dependencies for library {0}:{1}"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -805,10 +813,6 @@ msgstr "Holandés"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "Holandés (Holanda)"
-
-#: ../../../../../app/src/processing/app/Editor.java:1309
-msgid "Edison Help"
-msgstr "Ayuda de Edison"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -1118,10 +1122,6 @@ msgstr "Gallego"
 msgid "Galician (Spain)"
 msgstr "Gallego (España)"
 
-#: ../../../../../app/src/processing/app/Editor.java:1288
-msgid "Galileo Help"
-msgstr "Ayuda Galileo"
-
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr "Georgiano"
@@ -1253,6 +1253,14 @@ msgstr "Inicializando paquetes..."
 msgid "Install"
 msgstr "Instalar"
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
+msgid "Install '{0}' only"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
+msgid "Install all"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
 msgstr "Instalación completada!"
@@ -1325,6 +1333,10 @@ msgstr "Coreano"
 msgid "Latvian"
 msgstr "Letón"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
+msgid "Libraries"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "Gestor de Liberías"
@@ -1341,6 +1353,11 @@ msgstr "La Librería no puede usar ambas carpetas 'src' y 'utilidad'. Doble marc
 #, java-format
 msgid "Library is already installed: {0}:{1}"
 msgstr "La biblioteca ya está instalada: {0}:{1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
+#, java-format
+msgid "Library {0} is already installed in: {1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1391,6 +1408,14 @@ msgstr "Modo no soportado"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
 msgstr "Más"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
+msgid "More Info"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
+msgid "More info"
+msgstr ""
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1493,6 +1518,10 @@ msgstr "Sin ajuste de línea"
 msgid "No parameters"
 msgstr "Sin parámetros"
 
+#: ../../../../../app/src/processing/app/Base.java:1721
+msgid "No programmers available for this board"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr "Sin proxy"
@@ -1500,6 +1529,10 @@ msgstr "Sin proxy"
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "No, en serio, toma un poco de aire fresco."
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
+msgid "No recipes defined for discovery '{0}'"
+msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1532,11 +1565,11 @@ msgstr "Ninguno"
 msgid "Norwegian Bokmål"
 msgstr "Noruego"
 
-#: ../../../processing/app/Sketch.java:1656
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
 msgid ""
-"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
-"for tips on reducing your footprint."
-msgstr "No hay suficiente memoria, ver http://www.arduino.cc/en/Guide/Troubleshooting#size para obtener consejos sobre cómo optimizar su código."
+"Not enough memory; see https://support.arduino.cc/hc/en-us/"
+"articles/360013825179 for tips on reducing your footprint."
+msgstr ""
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1546,6 +1579,10 @@ msgstr "Ok"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "Un fichero añadido a tu programa."
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
+msgid "Online Help"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1710,11 +1747,11 @@ msgstr "Problema accediendo a los archivos de la carpeta \"{0}\""
 msgid "Problem getting data folder"
 msgstr "Problema al adquirir carpeta de datos."
 
-#: debug/Uploader.java:209
+#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
 msgid ""
-"Problem uploading to board.  See "
-"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "Problema subiendo a la placa. Visita http://www.arduino.cc/en/Guide/Troubleshooting#upload para sugerencias."
+"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
+"sections/360003198300 for suggestions."
+msgstr ""
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1847,6 +1884,10 @@ msgstr "Guardar cuando se verifique o cargue"
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "Guardando"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
+msgid "Search Filter"
+msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -1990,11 +2031,11 @@ msgstr "El programa no tiene nombre"
 msgid "Sketch is read-only"
 msgstr "El programa es Sólo Lectura"
 
-#: Sketch.java:1653
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
 msgid ""
-"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
-"tips on reducing it."
-msgstr "Programa muy grando: visite http://www.arduino.cc/en/Guide/Troubleshooting#size para ver cómo reducirlo."
+"Sketch too big; see https://support.arduino.cc/hc/en-us/"
+"articles/360013825179 for tips on reducing it."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2144,6 +2185,13 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "La librería \"{0}\" no se puede usar.\nLos nombres de librería deben contener sólo números y letras.\n(Sólo ASCII y sin espacios, y no pueden empezar con un número)"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
+#, java-format
+msgid ""
+"The library {0} needs some other library<br />dependencies currently not "
+"installed:"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2341,10 +2389,6 @@ msgstr "Actualizable"
 msgid "Update"
 msgstr "Actualizar"
 
-#: Preferences.java:428
-msgid "Update sketch files to new extension on save (.pde -> .ino)"
-msgstr "Actualizar ficheros de proyecto a la nueva extensión al salvar (.pde -> .ino)"
-
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2395,6 +2439,10 @@ msgstr "Subiendo..."
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "Usar selección para buscar"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
+msgid "Use accessibility features"
+msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2536,6 +2584,10 @@ msgstr "Wire.receive() ha sido renombrado a Wire.read()"
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send() ha sido renombrado a Wire.write()"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
+msgid "Would you like to install also all the missing dependencies?"
+msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2679,18 +2731,6 @@ msgstr "Compilación"
 msgid "connected!"
 msgstr "¡Conectado!"
 
-#: ../../../../../app/src/processing/app/Editor.java:1352
-msgid "http://www.arduino.cc/"
-msgstr "http://www.arduino.cc/"
-
-#: UpdateCheck.java:118
-msgid "http://www.arduino.cc/en/Main/Software"
-msgstr "http://www.arduino.cc/en/Main/Software"
-
-#: UpdateCheck.java:53
-msgid "http://www.arduino.cc/latest.txt"
-msgstr "http://www.arduino.cc/latest.txt"
-
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2734,12 +2774,6 @@ msgstr "versión <b>{0}</b>"
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
 msgstr "{0} - {1} | Arduino {2}"
-
-#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
-#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
-#, java-format
-msgid "{0} file signature verification failed"
-msgstr "{0} la verificación de la firma de archivo falló"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format
