@@ -1163,7 +1163,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(item);
 
     item = new JMenuItem(tr("Visit Arduino.cc"));
-    item.addActionListener(event -> Base.openURL(tr("http://www.arduino.cc/")));
+    item.addActionListener(event -> Base.openURL("https://www.arduino.cc/"));
     menu.add(item);
 
     // macosx already has its own about menu

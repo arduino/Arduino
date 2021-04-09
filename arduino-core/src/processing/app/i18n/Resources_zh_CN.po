@@ -132,6 +132,16 @@ msgstr "Arduino 有新的可用版本，你\n需要立即浏览它的下载网�
 msgid "A newer {0} package is available"
 msgstr "当前有新 {0} 包可供使用"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
+msgid ""
+"A package index has an invalid signature and needs to be updated.\n"
+"Please open the Board Manager from the menu\n"
+"\n"
+"      Tools -> Board -> Board Manager\n"
+"\n"
+"to update it"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "项目文件夹中的子文件夹不是有效的库"
@@ -164,10 +174,6 @@ msgstr "附加开发板管理器网址:"
 msgid "Afrikaans"
 msgstr "南非语"
 
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
-msgid "Aggressively cache compiled core"
-msgstr "主动缓存以编译的内核"
-
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "阿尔巴尼亚语"
@@ -184,10 +190,6 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "在修复文件编码时发生一个错误。\n请不要保存这个项目否则可能会覆盖源文件。\n使用“打开”命令重新打开项目再试一次。\n"
-
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
-msgid "An error occurred while updating libraries index!"
-msgstr "更新库索引时出错!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -243,14 +245,6 @@ msgstr "已经取消归档项目\n因为无法正确保存该项目。"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
 msgstr "Arduino"
-
-#: ../../../processing/app/I18n.java:83
-msgid "Arduino ARM (32-bits) Boards"
-msgstr "Arduino ARM (32 位)开发板"
-
-#: ../../../processing/app/I18n.java:82
-msgid "Arduino AVR Boards"
-msgstr "Arduino AVR 开发板"
 
 #: Editor.java:2137
 msgid ""
@@ -388,6 +382,10 @@ msgstr "{0}:{1}:{2} 开发板没有定义''build.board''偏好。自动设置为
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "开发板："
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
+msgid "Boards"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -640,6 +638,11 @@ msgstr "无法移除{0}的旧版本"
 msgid "Could not replace {0}"
 msgstr "无法替换{0}"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
+#, java-format
+msgid "Could not start discovery '{0}': {1}"
+msgstr ""
+
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -707,6 +710,11 @@ msgstr ""
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "删除"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
+#, java-format
+msgid "Dependencies for library {0}:{1}"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -804,10 +812,6 @@ msgstr "荷兰语"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "荷兰语(荷兰)"
-
-#: ../../../../../app/src/processing/app/Editor.java:1309
-msgid "Edison Help"
-msgstr "Edison 帮助"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -1117,10 +1121,6 @@ msgstr "加利西亚语"
 msgid "Galician (Spain)"
 msgstr "加利西亚语(西班牙)"
 
-#: ../../../../../app/src/processing/app/Editor.java:1288
-msgid "Galileo Help"
-msgstr "Galileo 帮助"
-
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr "格鲁吉亚"
@@ -1252,6 +1252,14 @@ msgstr "正在初始化包..."
 msgid "Install"
 msgstr "安装"
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
+msgid "Install '{0}' only"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
+msgid "Install all"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
 msgstr "安装完成！"
@@ -1324,6 +1332,10 @@ msgstr "韩语"
 msgid "Latvian"
 msgstr "拉脱维亚语"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
+msgid "Libraries"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "库管理器"
@@ -1339,6 +1351,11 @@ msgstr "库不可以同时使用 'src' 和 'utility' 文件夹。再次检查 {0
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
 msgid "Library is already installed: {0}:{1}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
+#, java-format
+msgid "Library {0} is already installed in: {1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
@@ -1390,6 +1407,14 @@ msgstr "不支持此模式"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
 msgstr "更多"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
+msgid "More Info"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
+msgid "More info"
+msgstr ""
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1492,6 +1517,10 @@ msgstr "没有结束符"
 msgid "No parameters"
 msgstr "找不到参数"
 
+#: ../../../../../app/src/processing/app/Base.java:1721
+msgid "No programmers available for this board"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr "无代理"
@@ -1499,6 +1528,10 @@ msgstr "无代理"
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "真没有，你该出去呼吸新鲜空气了。"
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
+msgid "No recipes defined for discovery '{0}'"
+msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1531,11 +1564,11 @@ msgstr "无"
 msgid "Norwegian Bokmål"
 msgstr "挪威语"
 
-#: ../../../processing/app/Sketch.java:1656
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
 msgid ""
-"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
-"for tips on reducing your footprint."
-msgstr "没有足够的内存；访问以下网址根据提示减小内存的用量。\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size"
+"Not enough memory; see https://support.arduino.cc/hc/en-us/"
+"articles/360013825179 for tips on reducing your footprint."
+msgstr ""
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1545,6 +1578,10 @@ msgstr "好"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "一个文件被添加到这个项目。"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
+msgid "Online Help"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1709,11 +1746,11 @@ msgstr "读取 \"{0}\" 文件夹中文件时出现问题"
 msgid "Problem getting data folder"
 msgstr "取得资料文件夹时出现问题"
 
-#: debug/Uploader.java:209
+#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
 msgid ""
-"Problem uploading to board.  See "
-"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "上传出错。查看http://www.arduino.cc/en/Guide/Troubleshooting#upload 获取建议。"
+"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
+"sections/360003198300 for suggestions."
+msgstr ""
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1846,6 +1883,10 @@ msgstr "当验证或上传时保存"
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "保存中..."
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
+msgid "Search Filter"
+msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -1989,11 +2030,11 @@ msgstr "未命名项目"
 msgid "Sketch is read-only"
 msgstr "项目为只读状态"
 
-#: Sketch.java:1653
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
 msgid ""
-"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
-"tips on reducing it."
-msgstr "项目太大了；阅读以下页面的提示减小文件大小。\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size "
+"Sketch too big; see https://support.arduino.cc/hc/en-us/"
+"articles/360013825179 for tips on reducing it."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2143,6 +2184,13 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "无法使用库\"{0}\"。\n库的名称只能含有基本字母与数字。\n（只能是ASCII，不能有空白字符，也不能以數字開頭）"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
+#, java-format
+msgid ""
+"The library {0} needs some other library<br />dependencies currently not "
+"installed:"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2340,10 +2388,6 @@ msgstr "可更新"
 msgid "Update"
 msgstr "更新"
 
-#: Preferences.java:428
-msgid "Update sketch files to new extension on save (.pde -> .ino)"
-msgstr "保存时更新项目文件的扩展名（.pde -> .ino）"
-
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2394,6 +2438,10 @@ msgstr "上传..."
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "查找选中单元"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
+msgid "Use accessibility features"
+msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2535,6 +2583,10 @@ msgstr "Wire.receive() 已改名为 Wire.read()."
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send() 已改名为 Wire.write()."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
+msgid "Would you like to install also all the missing dependencies?"
+msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2678,18 +2730,6 @@ msgstr "编译"
 msgid "connected!"
 msgstr "已连接!"
 
-#: ../../../../../app/src/processing/app/Editor.java:1352
-msgid "http://www.arduino.cc/"
-msgstr "http://www.arduino.cc/"
-
-#: UpdateCheck.java:118
-msgid "http://www.arduino.cc/en/Main/Software"
-msgstr "http://www.arduino.cc/en/Main/Software"
-
-#: UpdateCheck.java:53
-msgid "http://www.arduino.cc/latest.txt"
-msgstr "http://www.arduino.cc/latest.txt"
-
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2733,12 +2773,6 @@ msgstr "版本 <b>{0}</b>"
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
 msgstr "{0} - {1} | Arduino {2}"
-
-#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
-#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
-#, java-format
-msgid "{0} file signature verification failed"
-msgstr "{0} 文件签名验证失败"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format
