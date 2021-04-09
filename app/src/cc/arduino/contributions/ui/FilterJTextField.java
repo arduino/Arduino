@@ -108,9 +108,9 @@ public class FilterJTextField extends JTextField {
       // Replace anything but 0-9, a-z, or : with a space
       filter = filter.replaceAll("[^\\x30-\\x39^\\x61-\\x7a^\\x3a]", " ");
       
-      filteredText = filter.split(" ")
+      filteredText = filter.split(" ");
     } 
-    onFilter(filteredText)
+    onFilter(filteredText);
   }
 
   protected void onFilter(String[] strings) {
