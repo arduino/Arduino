@@ -101,13 +101,16 @@ public class FilterJTextField extends JTextField {
   }
 
   public void applyFilter() {
-    String filter = showingHint ? "" : getText();
-    filter = filter.toLowerCase();
-
-    // Replace anything but 0-9, a-z, or : with a space
-    filter = filter.replaceAll("[^\\x30-\\x39^\\x61-\\x7a^\\x3a]", " ");
-
-    onFilter(filter.split(" "));
+    String[] filteredText = new String[0];
+    if (!showingHint) {
+      String filter = getText().toLowerCase();
+        
+      // Replace anything but 0-9, a-z, or : with a space
+      filter = filter.replaceAll("[^\\x30-\\x39^\\x61-\\x7a^\\x3a]", " ");
+      
+      filteredText = filter.split(" ");
+    } 
+    onFilter(filteredText);
   }
 
   protected void onFilter(String[] strings) {
