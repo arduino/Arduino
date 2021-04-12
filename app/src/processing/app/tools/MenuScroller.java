@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 /**
  * A class that provides scrolling capabilities to a long menu dropdown or
@@ -539,7 +540,7 @@ public class MenuScroller {
     }
 
     private void setMenuItems() {
-      menuItems = menu.getComponents();
+      menuItems = Arrays.stream(menu.getComponents()).filter(x -> x.isVisible()).toArray(Component[]::new);
       if (keepVisibleIndex >= topFixedCount
         && keepVisibleIndex <= menuItems.length - bottomFixedCount
         && (keepVisibleIndex > firstIndex + scrollCount

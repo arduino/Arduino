@@ -1473,6 +1473,7 @@ public class Base {
           customMenu.putClientProperty("platform", getPlatformUniqueId(targetPlatform));
           customMenu.putClientProperty("removeOnWindowDeactivation", true);
           boardsCustomMenus.add(customMenu);
+          MenuScroller.setScrollerFor(customMenu);
         }
       }
     }
