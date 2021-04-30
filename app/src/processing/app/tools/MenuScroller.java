@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 /**
  * A class that provides scrolling capabilities to a long menu dropdown or
@@ -33,6 +34,7 @@ public class MenuScroller {
 
   private JPopupMenu menu;
   private Component[] menuItems;
+  private Component[] allMenuItems;
   private MenuScrollItem upItem;
   private MenuScrollItem downItem;
   private final MenuScrollListener menuListener = new MenuScrollListener();
@@ -539,7 +541,8 @@ public class MenuScroller {
     }
 
     private void setMenuItems() {
-      menuItems = menu.getComponents();
+      allMenuItems = menu.getComponents();
+      menuItems = Arrays.stream(allMenuItems).filter(x -> x.isVisible()).toArray(Component[]::new);
       if (keepVisibleIndex >= topFixedCount
         && keepVisibleIndex <= menuItems.length - bottomFixedCount
         && (keepVisibleIndex > firstIndex + scrollCount
@@ -554,7 +557,7 @@ public class MenuScroller {
 
     private void restoreMenuItems() {
       menu.removeAll();
-      for (Component component : menuItems) {
+      for (Component component : allMenuItems) {
         menu.add(component);
       }
     }
