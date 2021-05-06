@@ -315,8 +315,7 @@ public class Base {
           BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
       ProgressListener progressListener = new ConsoleProgressListener();
 
-      List<String> downloadedPackageIndexFiles = contributionInstaller.updateIndex(progressListener);
-      contributionInstaller.deleteUnknownFiles(downloadedPackageIndexFiles);
+      contributionInstaller.updateIndex(progressListener);
       indexer.parseIndex();
       indexer.syncWithFilesystem();
 

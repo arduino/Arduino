@@ -140,9 +140,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        List<String> downloadedPackageIndexFiles = installer
-            .updateIndex(this::setProgress);
-        installer.deleteUnknownFiles(downloadedPackageIndexFiles);
+        installer.updateIndex(this::setProgress);
         onIndexesUpdated();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();

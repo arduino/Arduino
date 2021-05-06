@@ -41,7 +41,6 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
@@ -284,7 +283,7 @@ public class ContributionInstaller {
     return errors;
   }
 
-  public synchronized List<String> updateIndex(ProgressListener progressListener) {
+  public synchronized void updateIndex(ProgressListener progressListener) {
     MultiStepProgress progress = new MultiStepProgress(1);
 
     final DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
@@ -293,14 +292,11 @@ public class ContributionInstaller {
       PreferencesData.getCollection(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS)
     );
     packageIndexURLs.add(Constants.PACKAGE_INDEX_URL);
-    List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
 
     for (String packageIndexURLString : packageIndexURLs) {
       try {
         // Extract the file name from the URL
         final URL packageIndexURL = new URL(packageIndexURLString);
-        String indexFileName = FilenameUtils.getName(packageIndexURL.getPath());
-        downloadedPackageIndexFilesAccumulator.add(BaseNoGui.indexer.getIndexFile(indexFileName).getName());
 
         log.info("Start download and signature check of={}", packageIndexURLs);
         downloader.downloadIndexAndSignature(progress, packageIndexURL, progressListener, signatureVerifier);
@@ -312,22 +308,5 @@ public class ContributionInstaller {
 
     progress.stepDone();
     log.info("Downloaded package index URL={}", packageIndexURLs);
-    return downloadedPackageIndexFilesAccumulator;
-  }
-
-  public synchronized void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
-    File preferencesFolder = BaseNoGui.indexer.getIndexFile(".").getParentFile();
-    File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME));
-    if (additionalPackageIndexFiles == null) {
-      return;
-    }
-    log.info("Check unknown files. Additional package index folder files={}, Additional package index url downloaded={}", downloadedPackageIndexFiles, additionalPackageIndexFiles);
-
-    for (File additionalPackageIndexFile : additionalPackageIndexFiles) {
-      if (!downloadedPackageIndexFiles.contains(additionalPackageIndexFile.getName())) {
-        log.info("Delete this unknown file={} because not included in this list={}", additionalPackageIndexFile, additionalPackageIndexFiles);
-        Files.delete(additionalPackageIndexFile.toPath());
-      }
-    }
   }
 }

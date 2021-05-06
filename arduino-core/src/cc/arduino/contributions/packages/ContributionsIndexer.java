@@ -36,6 +36,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import processing.app.BaseNoGui;
 import processing.app.Platform;
@@ -50,6 +51,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -107,19 +110,14 @@ public class ContributionsIndexer {
     index.getPackages().forEach(pack -> pack.setTrusted(true));
 
     // Overlay 3rd party indexes
-    File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
-
-    if (indexFiles != null) {
-      for (File indexFile : indexFiles) {
-        try {
-          mergeContributions(indexFile);
-        } catch (JsonProcessingException e) {
-          System.err.println(format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
-          System.err.println(e);
-        }
+    List<File> indexFiles = get3rdPartyIndexFiles();
+    for (File indexFile : indexFiles) {
+      try {
+        mergeContributions(indexFile);
+      } catch (JsonProcessingException e) {
+        System.err.println(format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
+        System.err.println(e);
       }
-    } else {
-      System.err.println(format(tr("Error reading package indexes folder: {0}\n(maybe a permission problem?)"), preferencesFolder));
     }
 
     // Fill tools and toolsDependency cross references
@@ -144,6 +142,29 @@ public class ContributionsIndexer {
     }
 
     index.fillCategories();
+  }
+
+  private List<File> get3rdPartyIndexFiles() throws MalformedURLException {
+    List<File> indexFiles = new ArrayList<>();
+    for (String urlString : PreferencesData.getCollection(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS)) {
+      final URL url = new URL(urlString);
+      String filename = FilenameUtils.getName(url.getPath());
+      indexFiles.add(getIndexFile(filename));
+    }
+
+    File[] testIndexFiles = preferencesFolder.listFiles((dir, name) -> {
+      if (!new File(dir, name).isFile())
+        return false;
+      if (!name.startsWith("test_package_") || !name.endsWith("_index.json"))
+        return false;
+      return true;
+    });
+    if (testIndexFiles == null) {
+      System.err.println(
+          format(tr("Error reading package indexes folder: {0}\n(maybe a permission problem?)"), preferencesFolder));
+    }
+    indexFiles.addAll(Arrays.asList(testIndexFiles));
+    return indexFiles;
   }
 
   private void mergeContributions(File indexFile) throws IOException {

@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 public class ContributionsIndex {
 
-  private ArrayList<ContributedPackage> packages = new ArrayList<ContributedPackage>();
+  private ArrayList<ContributedPackage> packages = new ArrayList<>();
   public List<ContributedPackage> getPackages() { return packages; }
 
   public ContributedPackage findPackage(String packageName) {
