@@ -29,11 +29,18 @@
 
 package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.DownloadableContribution;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.io.File;
-import java.util.*;
+import cc.arduino.contributions.DownloadableContribution;
 
 public class ContributedPlatform extends DownloadableContribution {
 
@@ -45,8 +52,8 @@ public class ContributedPlatform extends DownloadableContribution {
   private String category;
   private String architecture;
   private String checksum;
-  private ArrayList<ContributedToolReference> toolsDependencies = new ArrayList<ContributedToolReference>();
-  private ArrayList<ContributedBoard> boards = new ArrayList<ContributedBoard>();
+  private ArrayList<ContributedToolReference> toolsDependencies = new ArrayList<>();
+  private ArrayList<ContributedBoard> boards = new ArrayList<>();
   private ContributedHelp help;
   private boolean installed;
   private File installedFolder;
@@ -54,12 +61,16 @@ public class ContributedPlatform extends DownloadableContribution {
   private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
   private ContributedPackage parentPackage;
 
+  @Override
   public String getUrl() { return url; }
 
+  @Override
   public String getVersion() { return version; }
 
+  @Override
   public long getSize() { return size; }
 
+  @Override
   public String getArchiveFileName() { return archiveFileName; }
 
   public String getName() { return name; }
