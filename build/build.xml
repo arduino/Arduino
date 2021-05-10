@@ -105,6 +105,7 @@
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino17" />
   <property name="AVRCORE-VERSION" value="1.8.3" />
   <property name="arduinoOTA-VERSION" value="1.3.0" />
+  <property name="WIFI101-FW-UPDATER_VERSION" value="0.11.0" />
   <!-- https://github.com/arduino/built-in-examples -->
   <property name="BUILT-IN-EXAMPLES-VERSION" value="1.9.0" />
 
@@ -224,8 +225,8 @@
 
     <!-- Add WiFi101 updater tool -->
     <antcall target="unzip">
-      <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-0.10.13.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v0.10.13/WiFi101-Updater-ArduinoIDE-Plugin-0.10.13.zip" />
+      <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-${WIFI101-FW-UPDATER_VERSION}.zip" />
+      <param name="archive_url" value="https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v${WIFI101-FW-UPDATER_VERSION}/WiFi101-Updater-ArduinoIDE-Plugin-${WIFI101-FW-UPDATER_VERSION}.zip" />
       <param name="final_folder" value="${target.path}/tools/WiFi101" />
       <param name="dest_folder" value="${target.path}/tools/" />
     </antcall>
