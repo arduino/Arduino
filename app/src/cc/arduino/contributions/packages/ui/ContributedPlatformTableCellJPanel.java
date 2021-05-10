@@ -232,6 +232,9 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
               + format(tr("version <b>{0}</b>"), installed.getParsedVersion())
               + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
+    if (releases.isDeprecated()) {
+      desc += " <strong><font color=\"#C03030\">DEPRECATED</font></strong>";
+    }
     desc += "<br />";
 
     desc += tr("Boards included in this package:") + "<br />";
