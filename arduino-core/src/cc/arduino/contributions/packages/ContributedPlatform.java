@@ -60,6 +60,7 @@ public class ContributedPlatform extends DownloadableContribution {
   private boolean builtIn;
   private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
   private ContributedPackage parentPackage;
+  private boolean deprecated;
 
   @Override
   public String getUrl() { return url; }
@@ -155,6 +156,14 @@ public class ContributedPlatform extends DownloadableContribution {
 
   public void setParentPackage(ContributedPackage parentPackage) {
     this.parentPackage = parentPackage;
+  }
+
+  public boolean isDeprecated() {
+    return deprecated;
+  }
+
+  public void setDeprecated(boolean deprecated) {
+    this.deprecated = deprecated;
   }
 
   @Override
