@@ -44,12 +44,14 @@ public class ContributedPlatformReleases {
   public final List<ContributedPlatform> releases;
   public final List<String> versions;
   public ContributedPlatform selected = null;
+  public boolean deprecated;
 
   public ContributedPlatformReleases(ContributedPlatform platform) {
     packager = platform.getParentPackage();
     arch = platform.getArchitecture();
     releases = new LinkedList<>();
     versions = new LinkedList<>();
+    deprecated = platform.isDeprecated();
     add(platform);
   }
 
@@ -65,7 +67,9 @@ public class ContributedPlatformReleases {
     if (version != null) {
       versions.add(version);
     }
-    selected = getLatest();
+    ContributedPlatform latest = getLatest();
+    selected = latest;
+    deprecated = latest.isDeprecated();
   }
 
   public ContributedPlatform getInstalled() {
@@ -87,6 +91,10 @@ public class ContributedPlatformReleases {
 
   public ContributedPlatform getSelected() {
     return selected;
+  }
+
+  public boolean isDeprecated() {
+    return deprecated;
   }
 
   public void select(ContributedPlatform value) {
