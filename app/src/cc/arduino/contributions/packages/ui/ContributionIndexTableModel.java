@@ -36,6 +36,7 @@ import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -73,6 +74,18 @@ public class ContributionIndexTableModel
         addContribution(platform);
       }
     }
+    Collections.sort(contributions, (x,y)-> {
+      if (x.isDeprecated() != y.isDeprecated()) {
+        return x.isDeprecated() ? 1 : -1;
+      }
+      ContributedPlatform x1 = x.getLatest();
+      ContributedPlatform y1 = y.getLatest();
+      int category = (x1.getCategory().equals("Arduino") ? -1 : 0) + (y1.getCategory().equals("Arduino") ? 1 : 0);
+      if (category != 0) {
+        return category;
+      }
+      return x1.getName().compareToIgnoreCase(y1.getName());
+    });
     fireTableDataChanged();
   }
 
