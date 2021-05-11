@@ -24,7 +24,7 @@
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Bao Phan <baophan94@icloud.com>, 2016
 # Cristian Maglie <c.maglie@arduino.cc>, 2021
-# dsds adas <samnhatlam2007@gmail.com>, 2020
+# dsds adas <samnhatlam2007@gmail.com>, 2020-2021
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Quoc-Bao Nguyen <quocbao747@gmail.com>, 2016-2017,2020
 msgid ""
@@ -32,8 +32,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2021-04-08 13:08+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2021-05-07 06:06+0000\n"
+"Last-Translator: dsds adas <samnhatlam2007@gmail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/mbanzi/arduino-ide-15/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,16 +123,6 @@ msgstr "Một phiên bản mới của Arduino vừa được phát hành,\nbạ
 msgid "A newer {0} package is available"
 msgstr "Có {0} gói cập nhật mới"
 
-#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
-msgid ""
-"A package index has an invalid signature and needs to be updated.\n"
-"Please open the Board Manager from the menu\n"
-"\n"
-"      Tools -> Board -> Board Manager\n"
-"\n"
-"to update it"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "Thư mục con trong tập phác thảo của bạn không phải là thư viện hợp lệ"
@@ -165,6 +155,10 @@ msgstr "Địa chỉ URLs nhận về các thư viện bổ sung:"
 msgid "Afrikaans"
 msgstr "Tiếng Nam Phi"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Chủ động cache core đã biên dịch"
+
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "Tiếng Albanian"
@@ -181,6 +175,10 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "Xảy ra lỗi khi sửa lỗi việc mã hóa tập tin.\nKhông nên cố gắng lưu lại sketch vì có thể gây ra việc chép đè lên dữ liệu\nđối với phiên bản trước đó. Sử dụng lệnh Mở để mở lại sketch và thử lại lần nữa.\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr "Lỗi xảy ra trong khi cập nhật danh sách thư viện!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -225,7 +223,7 @@ msgstr "Đã hủy việc lưu trữ sketch."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 #, java-format
 msgid "Archiving built core (caching) in: {0}"
-msgstr ""
+msgstr "Đang đóng gói lõi đã tạo ( Đang lưu đệm ) tại {0}"
 
 #: tools/Archiver.java:75
 msgid ""
@@ -236,6 +234,14 @@ msgstr "Việc lưu trữ sketch đã bị hủy bỏ vì\nsketch không thể �
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
 msgstr "Arduino"
+
+#: ../../../processing/app/I18n.java:83
+msgid "Arduino ARM (32-bits) Boards"
+msgstr "Bo mạch Arduino ARM (32-bits)"
+
+#: ../../../processing/app/I18n.java:82
+msgid "Arduino AVR Boards"
+msgstr "Bo mạch Arduino AVR"
 
 #: Editor.java:2137
 msgid ""
@@ -373,10 +379,6 @@ msgstr "Bo mạch {0}:{1}:{2} không xác định một giá trị tùy biến '
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "Bo mạch:"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
-msgid "Boards"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -629,11 +631,6 @@ msgstr "Không thể loại bỏ phiên bản cũ của {0}"
 msgid "Could not replace {0}"
 msgstr "Không thể thay thay thế {0}"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
-#, java-format
-msgid "Could not start discovery '{0}': {1}"
-msgstr ""
-
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -701,11 +698,6 @@ msgstr "Chủ đề mặc định"
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Xóa"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
-#, java-format
-msgid "Dependencies for library {0}:{1}"
-msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -803,6 +795,10 @@ msgstr "Dutch"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "Dutch (Netherlands)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr "Giúp đỡ về bo Edison"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -1112,6 +1108,10 @@ msgstr "Galician"
 msgid "Galician (Spain)"
 msgstr "Galician (Tây Ban Nha)"
 
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr "Giúp đỡ về Galileo"
+
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr "Georgian"
@@ -1211,7 +1211,7 @@ msgstr "Trong phiên bản Arduino 1.0, phần định dạng tập tin mặc đ
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
-msgstr "Thư viện bao gồm"
+msgstr "Thêm vào thư viện"
 
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
@@ -1242,14 +1242,6 @@ msgstr "Đang khởi tạo các gói chương trình..."
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
 msgid "Install"
 msgstr "Cài đặt"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
-msgid "Install '{0}' only"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
-msgid "Install all"
-msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
@@ -1323,10 +1315,6 @@ msgstr "Korean"
 msgid "Latvian"
 msgstr "Latvian"
 
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
-msgid "Libraries"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "Quản lí thư viện"
@@ -1343,11 +1331,6 @@ msgstr "Thư viện không thể dùng cả hai thư mục 'src' và 'utility'. 
 #, java-format
 msgid "Library is already installed: {0}:{1}"
 msgstr "Thư vện đã được cài đặt:{0}:{1}"
-
-#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
-#, java-format
-msgid "Library {0} is already installed in: {1}"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1399,14 +1382,6 @@ msgstr "Chế độ không được hỗ trợ"
 msgid "More"
 msgstr "Thêm"
 
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
-msgid "More Info"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
-msgid "More info"
-msgstr ""
-
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
 msgstr "Thêm các tùy biến có thể được chỉnh sửa trực tiếp trong tập tin"
@@ -1434,7 +1409,7 @@ msgstr "Tên cho tập tin mới:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Cổng nối tiếp bên trong, không thể lấy dữ liệu"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1508,10 +1483,6 @@ msgstr "Không kết thúc dòng"
 msgid "No parameters"
 msgstr "Không có tham số"
 
-#: ../../../../../app/src/processing/app/Base.java:1721
-msgid "No programmers available for this board"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr "Không có proxy"
@@ -1519,10 +1490,6 @@ msgstr "Không có proxy"
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "Không cần thiết lắm đâu, ra ngoài và đón một chút ánh nắng ban ngày nào."
-
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
-msgid "No recipes defined for discovery '{0}'"
-msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1555,11 +1522,11 @@ msgstr "Không"
 msgid "Norwegian Bokmål"
 msgstr "Norwegian Bokmål"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
+#: ../../../processing/app/Sketch.java:1656
 msgid ""
-"Not enough memory; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing your footprint."
-msgstr ""
+"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
+"for tips on reducing your footprint."
+msgstr "Không đủ bộ nhớ; truy cập http://www.arduino.cc/en/Guide/Troubleshooting#size để có thêm kiến thức về phẩn giảm footprint của bạn."
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1569,10 +1536,6 @@ msgstr "Đồng ý"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "Chỉ một tập tin được thêm vào sketch."
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
-msgid "Online Help"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1737,11 +1700,11 @@ msgstr "Sự cố khi truy cập các tệp tin trong thư mục \"{0}\""
 msgid "Problem getting data folder"
 msgstr "Xảy ra lỗi khi tiếp nhận thư mục dữ liệu"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
+#: debug/Uploader.java:209
 msgid ""
-"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
-"sections/360003198300 for suggestions."
-msgstr ""
+"Problem uploading to board.  See "
+"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
+msgstr "Vấn đề liên quan đến bo mạch. Truy cập http://www.arduino.cc/en/Guide/Troubleshooting#upload để biết thêm chi tiết."
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1874,10 +1837,6 @@ msgstr "Lưu khi kiểm tra hoặc tải lên"
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "Đang lưu..."
-
-#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
-msgid "Search Filter"
-msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -2021,11 +1980,11 @@ msgstr "Sketch chưa được đặt tên"
 msgid "Sketch is read-only"
 msgstr "Sketch thuộc loại chỉ được đọc"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
+#: Sketch.java:1653
 msgid ""
-"Sketch too big; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing it."
-msgstr ""
+"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
+"tips on reducing it."
+msgstr "Sketch quá lớn; xem http://www.arduino.cc/en/Guide/Troubleshooting#size để biết các mẹo làm giảm sketch lại."
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2175,13 +2134,6 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Thư viện \"{0}\" không thể được sử dụng.\nTên thư viện chỉ được chứa các chữ cái cơ bản và số kèm theo.\n(chỉ bao gồm các ký tự ASCII viết liền nhau không cách khoảng, không được bắt đầu bằng số)"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
-#, java-format
-msgid ""
-"The library {0} needs some other library<br />dependencies currently not "
-"installed:"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2379,6 +2331,10 @@ msgstr "Có thể cập nhật"
 msgid "Update"
 msgstr "Cập nhật"
 
+#: Preferences.java:428
+msgid "Update sketch files to new extension on save (.pde -> .ino)"
+msgstr "Cập nhật tập tin sketch đối với các định dạng mới khi lưu (.pde->ino)"
+
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2429,10 +2385,6 @@ msgstr "Đang tải..."
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "Sử dụng vùng lựa chọn cho tìm kiếm"
-
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
-msgid "Use accessibility features"
-msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2512,7 +2464,7 @@ msgstr "CẢNH BÁO: Thể loại '{0}' trong thư viện {1} không hợp lệ.
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "CẢNH BÁO: Tệp tin giả mạo {0} tại thư viện {1}"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2574,10 +2526,6 @@ msgstr "Wire.receive() đã được đổi tên thành Wire.read()."
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send() đã được chuyển tên thành Wire.write()."
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
-msgid "Would you like to install also all the missing dependencies?"
-msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2721,6 +2669,18 @@ msgstr "biên dịch"
 msgid "connected!"
 msgstr "đã kết nối!"
 
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr "http://www.arduino.cc/"
+
+#: UpdateCheck.java:118
+msgid "http://www.arduino.cc/en/Main/Software"
+msgstr "http://www.arduino.cc/en/Main/Software"
+
+#: UpdateCheck.java:53
+msgid "http://www.arduino.cc/latest.txt"
+msgstr "http://www.arduino.cc/latest.txt"
+
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2765,6 +2725,12 @@ msgstr "phiên bản <b>{0}</b>"
 msgid "{0} - {1} | Arduino {2}"
 msgstr "{0} - {1} | Arduino {2}"
 
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr " Không thể kiểm tra chữ ký tệp {0}"
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format
 msgid "{0} file signature verification failed. File ignored."
@@ -2808,29 +2774,29 @@ msgstr "{0} | Arduino {1}"
 #: ../../../processing/app/Base.java:519
 #, java-format
 msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
-msgstr ""
+msgstr "{0}: Cú pháp không hợp lí cho -pref, nên có dạng nhu \"pref=value\""
 
 #: ../../../processing/app/Base.java:476
 #, java-format
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr ""
+msgstr "{0}: Tên bo mạch không hợp lệ, nên có dạng như \"package:arch:board\" hoặc \"package:arch:board:options\""
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr ""
+msgstr "{0}: Lựa chọn không hợp lệ cho bo \"{1}'"
 
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr ""
+msgstr "{0}: Lựa chọn không hợp lệ, phải có dạng  \"name=value\""
 
 #: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
 #, java-format
 msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
-msgstr ""
+msgstr "{0}:  Giá trị  không hợp lệ cho lụa chọn \"{1}\" cho bo mạch \"{2}\""
 
 #: ../../../processing/app/Base.java:486
 #, java-format
@@ -2850,4 +2816,4 @@ msgstr "{0}: Gói không xác định"
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
 msgid "{0}Install this package{1} to use your {2} board"
-msgstr ""
+msgstr "{0}Cài đặt gói {1} để sử dụng bo mạch {2} của bạn"

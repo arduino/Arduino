@@ -124,16 +124,6 @@ msgstr "Arduino uuem versioon on saadaval.\nSoovid sa allalaadimise lehe avada?"
 msgid "A newer {0} package is available"
 msgstr "Pakist {0} on uus versioon saadaval"
 
-#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
-msgid ""
-"A package index has an invalid signature and needs to be updated.\n"
-"Please open the Board Manager from the menu\n"
-"\n"
-"      Tools -> Board -> Board Manager\n"
-"\n"
-"to update it"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "Su visandite kausta alamkaust pole korrektne teek."
@@ -166,6 +156,10 @@ msgstr "Lisa-URL-id plaatide halduseks: "
 msgid "Afrikaans"
 msgstr "Afrikaani"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Kompileeritud baaspaki agressiivne puhverdamine"
+
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "Albaania"
@@ -182,6 +176,10 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "Viga faili kodeeringu parandamise katsel. Ära proovi\nseda visandit salvestada kuna see võib olemasoleva\nüle kirjutada. Ava visand uuesti ning proovi siis uuesti.\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr "Viga teekide indeksi uuendamisel."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -237,6 +235,14 @@ msgstr "Visandi arhiveerimine ebaõnnestus kuna seda\nei saanud korralikult salv
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
 msgstr "Arduino"
+
+#: ../../../processing/app/I18n.java:83
+msgid "Arduino ARM (32-bits) Boards"
+msgstr "Arduino ARM (32 bit) plaadid"
+
+#: ../../../processing/app/I18n.java:82
+msgid "Arduino AVR Boards"
+msgstr "Arduino AVR plaadid"
 
 #: Editor.java:2137
 msgid ""
@@ -374,10 +380,6 @@ msgstr "Plaat {0}:{1}:{2} ei määra „build.board“ eelistust. See seatakse v
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "Plaat: "
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
-msgid "Boards"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -630,11 +632,6 @@ msgstr "„{0}“ vana versiooni ei saanud eemaldada"
 msgid "Could not replace {0}"
 msgstr "{0} pole võimalik asendada"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
-#, java-format
-msgid "Could not start discovery '{0}': {1}"
-msgstr ""
-
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -702,11 +699,6 @@ msgstr "Vaiketeema"
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Kustuta"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
-#, java-format
-msgid "Dependencies for library {0}:{1}"
-msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -804,6 +796,10 @@ msgstr "Hollandi"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "Hollandi (Holland)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr "Edisoni abiinfo"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -1113,6 +1109,10 @@ msgstr "Galeegi"
 msgid "Galician (Spain)"
 msgstr "Galeegi (Hispaania)"
 
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr "Galileo abiinfo"
+
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr "Gruusia"
@@ -1244,14 +1244,6 @@ msgstr "Pakkide initsialiseerimine ..."
 msgid "Install"
 msgstr "Paigalda"
 
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
-msgid "Install '{0}' only"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
-msgid "Install all"
-msgstr ""
-
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
 msgstr "Paigaldamine lõpetatud."
@@ -1324,10 +1316,6 @@ msgstr "Korea"
 msgid "Latvian"
 msgstr "Läti"
 
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
-msgid "Libraries"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "Teekide haldus"
@@ -1344,11 +1332,6 @@ msgstr "Teek ei saa kasutada korraga „src“ ja „utility“ kaustu. Vaata {0
 #, java-format
 msgid "Library is already installed: {0}:{1}"
 msgstr "Teegi {0} versioon {1} on juba paigaldatud"
-
-#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
-#, java-format
-msgid "Library {0} is already installed in: {1}"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1399,14 +1382,6 @@ msgstr "Režiim pole toetatud"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
 msgstr "Rohkem kui vaikeväärtus"
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
-msgid "More Info"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
-msgid "More info"
-msgstr ""
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1509,10 +1484,6 @@ msgstr "Reavahetust ei lisa"
 msgid "No parameters"
 msgstr "Parameetreid pole"
 
-#: ../../../../../app/src/processing/app/Base.java:1721
-msgid "No programmers available for this board"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr "Proxyt ei kasutata"
@@ -1520,10 +1491,6 @@ msgstr "Proxyt ei kasutata"
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "Tõesti oleks aeg natuke värsket õhku hingata."
-
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
-msgid "No recipes defined for discovery '{0}'"
-msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1556,11 +1523,11 @@ msgstr "Üldse mitte"
 msgid "Norwegian Bokmål"
 msgstr "Norra (Bokmål)"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
+#: ../../../processing/app/Sketch.java:1656
 msgid ""
-"Not enough memory; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing your footprint."
-msgstr ""
+"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
+"for tips on reducing your footprint."
+msgstr "Mälu pole piisavalt. Mälukasutuse vähendamise nippe leiad aadressilt http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1570,10 +1537,6 @@ msgstr "OK"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "Visandisse on lisatud üks fail."
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
-msgid "Online Help"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1738,11 +1701,11 @@ msgstr "Probleem kaustas „{0}“ failidele ligipääsuga"
 msgid "Problem getting data folder"
 msgstr "Probleem andmekausta leidmisega"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
+#: debug/Uploader.java:209
 msgid ""
-"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
-"sections/360003198300 for suggestions."
-msgstr ""
+"Problem uploading to board.  See "
+"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
+msgstr "Probleem plaadile üleslaadimisega. Aadressilt http://www.arduino.cc/en/Guide/Troubleshooting#upload leiad soovitusi probleemi lahendamiseks."
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1875,10 +1838,6 @@ msgstr "Salvestamine kontrollimisel või üleslaadimisel"
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "Salvestamine ..."
-
-#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
-msgid "Search Filter"
-msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -2022,11 +1981,11 @@ msgstr "Visand on pealkirjastamata"
 msgid "Sketch is read-only"
 msgstr "Visand on kirjutuskaitsega"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
+#: Sketch.java:1653
 msgid ""
-"Sketch too big; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing it."
-msgstr ""
+"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
+"tips on reducing it."
+msgstr "Visand on liiga suur. Aadressilt http://www.arduino.cc/en/Guide/Troubleshooting#size leiad näpunäiteid selle vähendamiseks."
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2176,13 +2135,6 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Teeki „{0}“ ei saa kasutada.\nTeekide nimed tohivad sisaldada ainult ASCII tähti ja\nnumbreid ning peavad algama tähega."
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
-#, java-format
-msgid ""
-"The library {0} needs some other library<br />dependencies currently not "
-"installed:"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2380,6 +2332,10 @@ msgstr "Uuendatav"
 msgid "Update"
 msgstr "Uuenda"
 
+#: Preferences.java:428
+msgid "Update sketch files to new extension on save (.pde -> .ino)"
+msgstr "Visandi laiendi uuendamine (.pde -> .ino) salvestamisel"
+
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2430,10 +2386,6 @@ msgstr "Üleslaadimine ..."
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "Valitud teksti otsimine"
-
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
-msgid "Use accessibility features"
-msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2575,10 +2527,6 @@ msgstr "Wire.receive() on ümber nimetatud – Wire.read()."
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send() on ümber nimetatud – Wire.write()."
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
-msgid "Would you like to install also all the missing dependencies?"
-msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2722,6 +2670,18 @@ msgstr "kompileerimise ajal"
 msgid "connected!"
 msgstr "ühendus loodud."
 
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr "http://www.arduino.cc/"
+
+#: UpdateCheck.java:118
+msgid "http://www.arduino.cc/en/Main/Software"
+msgstr "http://www.arduino.cc/en/Main/Software"
+
+#: UpdateCheck.java:53
+msgid "http://www.arduino.cc/latest.txt"
+msgstr "http://www.arduino.cc/latest.txt"
+
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2765,6 +2725,12 @@ msgstr "versioon <b>{0}</b>"
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
 msgstr "{0} - {1} | Arduino {2}"
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr "{0} faili signatuuri kontrollimine ebaõnnestus"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format

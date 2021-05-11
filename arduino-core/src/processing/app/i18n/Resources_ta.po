@@ -119,16 +119,6 @@ msgstr "Arduinoவின் புதிய பதிப்பு கிடை�
 msgid "A newer {0} package is available"
 msgstr ""
 
-#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
-msgid ""
-"A package index has an invalid signature and needs to be updated.\n"
-"Please open the Board Manager from the menu\n"
-"\n"
-"      Tools -> Board -> Board Manager\n"
-"\n"
-"to update it"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr ""
@@ -161,6 +151,10 @@ msgstr ""
 msgid "Afrikaans"
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr ""
@@ -177,6 +171,10 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "கோப்பு குறியீட்டை சரிசெய்ய முயலும்போது ஒரு பிழை ஏற்பட்டுவிட்டது.\nஇந்திய வரைவை சேமிக்க முயலவேண்டாம். ஏனென்றால், அது பழைய பதிப்பை \nமற்றியமைத்துவிடும். வரைவை மறுபடியும் திறந்து முயற்சித்துப்பார்க்கவும்.\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -231,6 +229,14 @@ msgstr "வரைவை ஆவணப்படுத்துவது ரத்�
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
+msgstr ""
+
+#: ../../../processing/app/I18n.java:83
+msgid "Arduino ARM (32-bits) Boards"
+msgstr ""
+
+#: ../../../processing/app/I18n.java:82
+msgid "Arduino AVR Boards"
 msgstr ""
 
 #: Editor.java:2137
@@ -368,10 +374,6 @@ msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
-msgid "Boards"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
@@ -625,11 +627,6 @@ msgstr "{0}வின் பழைய பதிப்பை அகற்ற ம�
 msgid "Could not replace {0}"
 msgstr "{0}வை மாற்ற முடியவில்லை"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
-#, java-format
-msgid "Could not start discovery '{0}': {1}"
-msgstr ""
-
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -697,11 +694,6 @@ msgstr ""
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "நீக்கு"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
-#, java-format
-msgid "Dependencies for library {0}:{1}"
-msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -798,6 +790,10 @@ msgstr "டச்சு"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
 msgstr ""
 
 #: Editor.java:1130
@@ -1108,6 +1104,10 @@ msgstr "காலிசியன்"
 msgid "Galician (Spain)"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr ""
@@ -1239,14 +1239,6 @@ msgstr ""
 msgid "Install"
 msgstr ""
 
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
-msgid "Install '{0}' only"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
-msgid "Install all"
-msgstr ""
-
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
 msgstr ""
@@ -1319,10 +1311,6 @@ msgstr ""
 msgid "Latvian"
 msgstr "லேட்வியன்"
 
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
-msgid "Libraries"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr ""
@@ -1338,11 +1326,6 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
 msgid "Library is already installed: {0}:{1}"
-msgstr ""
-
-#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
-#, java-format
-msgid "Library {0} is already installed in: {1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
@@ -1393,14 +1376,6 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
-msgid "More Info"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
-msgid "More info"
 msgstr ""
 
 #: Preferences.java:449
@@ -1504,10 +1479,6 @@ msgstr "வரி முடிவு இல்லை"
 msgid "No parameters"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1721
-msgid "No programmers available for this board"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr ""
@@ -1515,10 +1486,6 @@ msgstr ""
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "இல்லை உண்மையாகவே, இது நீங்கள் புத்துணர்ச்சி பெறவேண்டிய நேரம்."
-
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
-msgid "No recipes defined for discovery '{0}'"
-msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1551,10 +1518,10 @@ msgstr ""
 msgid "Norwegian Bokmål"
 msgstr ""
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
+#: ../../../processing/app/Sketch.java:1656
 msgid ""
-"Not enough memory; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing your footprint."
+"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
+"for tips on reducing your footprint."
 msgstr ""
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
@@ -1565,10 +1532,6 @@ msgstr "சரி"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "வரைவில் ஒரு கோப்பு சேர்க்கப்பட்டுள்ளன."
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
-msgid "Online Help"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1733,11 +1696,11 @@ msgstr ""
 msgid "Problem getting data folder"
 msgstr "தரவு கோப்புறையை பெறுவதில் பிரச்சினை"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
+#: debug/Uploader.java:209
 msgid ""
-"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
-"sections/360003198300 for suggestions."
-msgstr ""
+"Problem uploading to board.  See "
+"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
+msgstr "பலகைக்கு பதிவேற்றம் செய்வதில் பிரச்சனை எழுந்துள்ளது. http://www.arduino.cc/en/Guide/Troubleshooting#upload ஐ பரிந்துரைகளுக்கு பார்க்கவும்."
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1870,10 +1833,6 @@ msgstr ""
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "சேமிக்கிறது..."
-
-#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
-msgid "Search Filter"
-msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -2017,11 +1976,11 @@ msgstr "வரைவு பெயரிடப்படவில்லை"
 msgid "Sketch is read-only"
 msgstr "வரைவை வாசிக்க மட்டுமே முடியும்"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
+#: Sketch.java:1653
 msgid ""
-"Sketch too big; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing it."
-msgstr ""
+"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
+"tips on reducing it."
+msgstr "வரைவின் பெரியதாக உள்ளது; அதை குறைப்பது பற்றிய வழிமுறைகளுக்கு,\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size ஐ பார்க்கவும்."
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2171,13 +2130,6 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "\"{0}\" நூலகத்தை பயன்படுத்த முடியவில்லை.\nநூலக பெயர்களில் அடிப்படை எழுத்துக்கள் மற்றும் எண்கள் மட்டுமே இருக்க வேண்டும்.\n(இடைவெளி இல்லாமல் ASCII மட்டும், இது எண்னில் ஆரம்பமாகக் கூடாது)"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
-#, java-format
-msgid ""
-"The library {0} needs some other library<br />dependencies currently not "
-"installed:"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2375,6 +2327,10 @@ msgstr ""
 msgid "Update"
 msgstr "புதிய பதிப்பை தேடு"
 
+#: Preferences.java:428
+msgid "Update sketch files to new extension on save (.pde -> .ino)"
+msgstr "சேமிக்கும் பொது வரைவு கோப்புகளை புதிய நீட்டிப்புகளுக்கு புதுப்பிக்கவும் (.pde -> .ino)"
+
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2425,10 +2381,6 @@ msgstr "பதிவேற்றுகிறது..."
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "தேடுதலுக்கு தெரிவுகளை பயன்படுத்தவும்"
-
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
-msgid "Use accessibility features"
-msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2570,10 +2522,6 @@ msgstr "Wire.receive(), Wire.read() என பெயர்மாற்றப்�
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send(), Wire.write() என பெயர்மாற்றப்பட்டுள்ளது."
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
-msgid "Would you like to install also all the missing dependencies?"
-msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2717,6 +2665,18 @@ msgstr "தொகுப்பு"
 msgid "connected!"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr ""
+
+#: UpdateCheck.java:118
+msgid "http://www.arduino.cc/en/Main/Software"
+msgstr "http://www.arduino.cc/en/Main/Software"
+
+#: UpdateCheck.java:53
+msgid "http://www.arduino.cc/latest.txt"
+msgstr "http://www.arduino.cc/latest.txt"
+
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2759,6 +2719,12 @@ msgstr ""
 #: ../../../../../app/src/processing/app/Editor.java:2243
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
 msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310

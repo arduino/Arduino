@@ -20,7 +20,7 @@
 # Translators:
 # Translators:
 # Translators:
-# Avag Sayan <avo777772012@gmail.com>, 2020
+# Avag Sayan <avo777772012@gmail.com>, 2020-2021
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # zepyur <jrvezh@yahoo.com>, 2012
 # Levon Poghosyan <deimusmeister@gmail.com>, 2015
@@ -29,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2020-11-02 13:40+0000\n"
+"PO-Revision-Date: 2021-04-24 08:22+0000\n"
 "Last-Translator: Avag Sayan <avo777772012@gmail.com>\n"
 "Language-Team: Armenian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hy/)\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr "(պահանջվում է Արդուինոյի վերագործարկում)"
+msgstr "(պահանջում է Արդուինոյի վերագործարկում)"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
@@ -120,16 +120,6 @@ msgstr "Արդուինոի նոր տարբերակը արդեն հասանելի
 msgid "A newer {0} package is available"
 msgstr "Նոր {0} փաթեթը հասանելի է"
 
-#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
-msgid ""
-"A package index has an invalid signature and needs to be updated.\n"
-"Please open the Board Manager from the menu\n"
-"\n"
-"      Tools -> Board -> Board Manager\n"
-"\n"
-"to update it"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "Ձեր գծագրի ենթապանակը արդի գրադարան չէ"
@@ -162,6 +152,10 @@ msgstr "Լրացուցիչ հարթակների կառավարիչների URL-�
 msgid "Afrikaans"
 msgstr "Աֆրիկաանս"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Ագրեսիվորեն պահել «կոմպիլացված» միջուկը"
+
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "Ալբաներեն"
@@ -178,6 +172,10 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "Սխալ է տեղի ունեցել նիշքի կոդավորումն ուղղելու ընթացքում:\nՄի փորձեք պահպանել ծրագիրը, քանի որ այն կարող պահվել\nհին տարբարակով: Նորից բացեք էսքիզն ու կրկին փորձեք:\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr "Գրադարանների ինդեկսի թարմացման ժամանակ սխալ տեղի ունեցավ!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -233,6 +231,14 @@ msgstr "Գծանկարի արխիվացումը չեղարկվել է, քանի 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
 msgstr "Արդուինո"
+
+#: ../../../processing/app/I18n.java:83
+msgid "Arduino ARM (32-bits) Boards"
+msgstr "Արդուինո ARM (32-bit) հարթակները"
+
+#: ../../../processing/app/I18n.java:82
+msgid "Arduino AVR Boards"
+msgstr "Արդուինո AVR հարթակներ"
 
 #: Editor.java:2137
 msgid ""
@@ -370,10 +376,6 @@ msgstr " {0}:{1}:{2} հարթակը չի սահմանում ''build.board'' կա
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "Հարթակ:"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
-msgid "Boards"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -626,11 +628,6 @@ msgstr "Հնարավոր չէր ջնջել {0}-ի հին տարբերակը "
 msgid "Could not replace {0}"
 msgstr "{0}-ն չեղավ փոխարինել"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
-#, java-format
-msgid "Could not start discovery '{0}': {1}"
-msgstr ""
-
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -698,11 +695,6 @@ msgstr "Հիմնական ոճ"
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Ջնջել"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
-#, java-format
-msgid "Dependencies for library {0}:{1}"
-msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -800,6 +792,10 @@ msgstr "Հոլանդերեն"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "Հոլանդերեն (Հոլանդիա)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr "Եդիսոնի օգնություն"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -1109,6 +1105,10 @@ msgstr "Գալիսերեն"
 msgid "Galician (Spain)"
 msgstr "Գալիսերեն (Իսպանիա)"
 
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr "Գալիլեոի օգնություն"
+
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr "Վրացերեն"
@@ -1240,14 +1240,6 @@ msgstr "Փաթեթների ինիցիալիզացիա"
 msgid "Install"
 msgstr "Տեղադրել"
 
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
-msgid "Install '{0}' only"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
-msgid "Install all"
-msgstr ""
-
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
 msgstr "Տեղադրումը ավարտվեց!"
@@ -1320,10 +1312,6 @@ msgstr "Կորեերեն"
 msgid "Latvian"
 msgstr "Լատվերեն"
 
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
-msgid "Libraries"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "Գրադարանի կառավարիչ"
@@ -1340,11 +1328,6 @@ msgstr "Գրադարանը չի կարող օգտագործել «src» և «uti
 #, java-format
 msgid "Library is already installed: {0}:{1}"
 msgstr "Գրադարաններն արդեն տեղադրված են՝ {0}:{1}"
-
-#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
-#, java-format
-msgid "Library {0} is already installed in: {1}"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1395,14 +1378,6 @@ msgstr "Ռեժիմը չի ապահովվում"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
 msgstr "Ավելին"
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
-msgid "More Info"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
-msgid "More info"
-msgstr ""
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1505,10 +1480,6 @@ msgstr "Չկա տողի վերջավորում"
 msgid "No parameters"
 msgstr "Պարամետրերը չկան"
 
-#: ../../../../../app/src/processing/app/Base.java:1721
-msgid "No programmers available for this board"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr "Պրոքսի չկա"
@@ -1516,10 +1487,6 @@ msgstr "Պրոքսի չկա"
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "Ոչ իրոք, ժամանակն է օդափոխվելու"
-
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
-msgid "No recipes defined for discovery '{0}'"
-msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1552,11 +1519,11 @@ msgstr "Ոչ մեկը"
 msgid "Norwegian Bokmål"
 msgstr "Նորվեգերեն"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
+#: ../../../processing/app/Sketch.java:1656
 msgid ""
-"Not enough memory; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing your footprint."
-msgstr ""
+"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
+"for tips on reducing your footprint."
+msgstr "Ոչ բավարար հիշողություն; տես http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1566,10 +1533,6 @@ msgstr "Լավ"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "Մեկ նիշք ավելացվել է գծագրին:"
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
-msgid "Online Help"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1734,11 +1697,11 @@ msgstr "Խնդիր է առաջանում \"{0}\" թղթապանակի նիշք �
 msgid "Problem getting data folder"
 msgstr "Խնդիր տվյալների պանակը կարդալիս"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
+#: debug/Uploader.java:209
 msgid ""
-"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
-"sections/360003198300 for suggestions."
-msgstr ""
+"Problem uploading to board.  See "
+"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
+msgstr "Խնդիր հարթակ վերբեռնելիս: Առաջարկների համար տես http://www.arduino.cc/en/Guide/Troubleshooting#upload"
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1871,10 +1834,6 @@ msgstr "Պահպանել երբ ստուգվում է կամ վերբեռնվո�
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "Հիշում․․․"
-
-#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
-msgid "Search Filter"
-msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -2018,11 +1977,11 @@ msgstr "Գծագիրն անվերնագիր է"
 msgid "Sketch is read-only"
 msgstr "Գծագիրն միայն կարդալու է"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
+#: Sketch.java:1653
 msgid ""
-"Sketch too big; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing it."
-msgstr ""
+"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
+"tips on reducing it."
+msgstr "Գծագիրը շատ մեծ է; չափը փոքրացնելու առաջարկների համար տես http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2172,13 +2131,6 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "\"{0}\" գրադարանը չի կարող օգտագործվել:\nԳրադարանների անունները պետք է պարունակեն հիմնական տառեր եւ թվեր:\n(Միայն ASCII եւ առանց բացակների, եւ այն չի կարող սկսվել թվով)"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
-#, java-format
-msgid ""
-"The library {0} needs some other library<br />dependencies currently not "
-"installed:"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2376,6 +2328,10 @@ msgstr "Թարամացման ենթակա"
 msgid "Update"
 msgstr "Թարմացում"
 
+#: Preferences.java:428
+msgid "Update sketch files to new extension on save (.pde -> .ino)"
+msgstr "Թարմացնել նիշքի ձևաչափերը նոր ընդլայնմամբ (.pde -> .ino)"
+
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2426,10 +2382,6 @@ msgstr "Ներբեռնում․․․"
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "Օգտագործել Նշումը Փնտրելու համար"
-
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
-msgid "Use accessibility features"
-msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2571,10 +2523,6 @@ msgstr "Wire.receive()-ը վերանվանվել է Wire.read()-ի:"
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send()-ը վերանվանվել է Wire.write()-ի:"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
-msgid "Would you like to install also all the missing dependencies?"
-msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2718,6 +2666,18 @@ msgstr "կոմպիլացիա"
 msgid "connected!"
 msgstr "կապնվեց!"
 
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr "http://www.arduino.cc/"
+
+#: UpdateCheck.java:118
+msgid "http://www.arduino.cc/en/Main/Software"
+msgstr "http://www.arduino.cc/en/Main/Software"
+
+#: UpdateCheck.java:53
+msgid "http://www.arduino.cc/latest.txt"
+msgstr "http://www.arduino.cc/latest.txt"
+
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2761,6 +2721,12 @@ msgstr "տարբերակ <b>{0}</b>"
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
 msgstr "{0} - {1} | Արդուինո {2}"
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr "{0} նիշքի ստորագրման ստուգումը ձախողվեց"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format

@@ -127,16 +127,6 @@ msgstr "O nouă versiune este disponibilă pentru Arduino IDE,\ndoreşti să viz
 msgid "A newer {0} package is available"
 msgstr "{0} nou pachet este disponibil"
 
-#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:97
-msgid ""
-"A package index has an invalid signature and needs to be updated.\n"
-"Please open the Board Manager from the menu\n"
-"\n"
-"      Tools -> Board -> Board Manager\n"
-"\n"
-"to update it"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "Un subdirector de schițe nu este o bibliotecă validă"
@@ -169,6 +159,10 @@ msgstr "Alte adrese URL Boards Manager:"
 msgid "Afrikaans"
 msgstr "Africană"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Salvarea agresivă în cache a nucleului compilat"
+
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "Albaneză"
@@ -185,6 +179,10 @@ msgid ""
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "A apărut o eroare în timpul corectării codării fişierului.\nNu salva aceasta schiţa deoarece se va suprascrie fişierul vechi.\nRedeschide schiţa şi încearcă din nou.\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr "A apărut o eroare la actualizarea index-ului bibliotecii!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -240,6 +238,14 @@ msgstr "Arhivarea schiţei a fost anulată deoarece\nschiţa nu a putut fi salva
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
 msgstr "Arduino"
+
+#: ../../../processing/app/I18n.java:83
+msgid "Arduino ARM (32-bits) Boards"
+msgstr "Plăcii Arduino ARM (32-bits)"
+
+#: ../../../processing/app/I18n.java:82
+msgid "Arduino AVR Boards"
+msgstr "Plăci Arduino AVR"
 
 #: Editor.java:2137
 msgid ""
@@ -377,10 +383,6 @@ msgstr "Placa {0}:{1}:{2} nu are definită nici o preferinţă ''build.board'' .
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "Placă"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:97
-msgid "Boards"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -633,11 +635,6 @@ msgstr "Nu se poate înlătura vechea versiune pentru {0}"
 msgid "Could not replace {0}"
 msgstr "Nu se poate înlocui {0}"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:93
-#, java-format
-msgid "Could not start discovery '{0}': {1}"
-msgstr ""
-
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
@@ -705,11 +702,6 @@ msgstr "Temă implicită"
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Ştergere"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:69
-#, java-format
-msgid "Dependencies for library {0}:{1}"
-msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
@@ -807,6 +799,10 @@ msgstr "Olandeză"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "Olandeză (Netherlands)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr "Ajutor Edison"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -1116,6 +1112,10 @@ msgstr "Galeză"
 msgid "Galician (Spain)"
 msgstr "Galeză (Spania)"
 
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr "Ajutor Galileo"
+
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
 msgstr "Georgiană"
@@ -1247,14 +1247,6 @@ msgstr "Inițializare pachete..."
 msgid "Install"
 msgstr "Instalare"
 
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:91
-msgid "Install '{0}' only"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:85
-msgid "Install all"
-msgstr ""
-
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
 msgstr "Instalare completă!"
@@ -1327,10 +1319,6 @@ msgstr "Coreană"
 msgid "Latvian"
 msgstr "Letonă"
 
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:107
-msgid "Libraries"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "Manager Biblioteci"
@@ -1347,11 +1335,6 @@ msgstr "Biblioteca nu poate utiliza folderele \"src\" și \"utility\". Confirma�
 #, java-format
 msgid "Library is already installed: {0}:{1}"
 msgstr "Biblioteca este deja instalată: {0}:{1}"
-
-#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:148
-#, java-format
-msgid "Library {0} is already installed in: {1}"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1402,14 +1385,6 @@ msgstr "Mod nesuportat"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
 msgstr "Mai mult"
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:71
-msgid "More Info"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCellJPanel.java:38
-msgid "More info"
-msgstr ""
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1512,10 +1487,6 @@ msgstr "Fără editarea liniei"
 msgid "No parameters"
 msgstr "Paramettrii lipsă"
 
-#: ../../../../../app/src/processing/app/Base.java:1721
-msgid "No programmers available for this board"
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
 msgstr "Fara proxy"
@@ -1523,10 +1494,6 @@ msgstr "Fara proxy"
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "Pe bune, e timpul sa ieşi la aer."
-
-#: ../../../../../arduino-core/src/cc/arduino/packages/DiscoveryManager.java:78
-msgid "No recipes defined for discovery '{0}'"
-msgstr ""
 
 #: Editor.java:1872
 #, java-format
@@ -1559,11 +1526,11 @@ msgstr "Nici unul"
 msgid "Norwegian Bokmål"
 msgstr "Norvegiană (Malabo)"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:105
+#: ../../../processing/app/Sketch.java:1656
 msgid ""
-"Not enough memory; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing your footprint."
-msgstr ""
+"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
+"for tips on reducing your footprint."
+msgstr "Schiţa este prea mare; vezi http://www.arduino.cc/en/Guide/Troubleshooting#size pentru ponturi în reducerea acesteia."
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1573,10 +1540,6 @@ msgstr "OK"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "Un fişier a fost adăugat schiţei."
-
-#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCellJPanel.java:72
-msgid "Online Help"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1741,11 +1704,11 @@ msgstr "Problemă de accesare a fișierelor din dosarul \"{0}\""
 msgid "Problem getting data folder"
 msgstr "Problema la preluarea directorului de date"
 
-#: ../../../../../arduino-core/src/cc/arduino/packages/Uploader.java:179
+#: debug/Uploader.java:209
 msgid ""
-"Problem uploading to board.  See https://support.arduino.cc/hc/en-us/"
-"sections/360003198300 for suggestions."
-msgstr ""
+"Problem uploading to board.  See "
+"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
+msgstr "Probleme la încărcarea aplicaţiei.  Vezi http://www.arduino.cc/en/Guide/Troubleshooting#upload pentru sugestii."
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1878,10 +1841,6 @@ msgstr "Salvează atunci când se verifică sau se încarcă"
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "Salvez..."
-
-#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:136
-msgid "Search Filter"
-msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -2025,11 +1984,11 @@ msgstr "Schiţa nu are nume"
 msgid "Sketch is read-only"
 msgstr "Schiţa este doar în citire"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:104
+#: Sketch.java:1653
 msgid ""
-"Sketch too big; see https://support.arduino.cc/hc/en-us/"
-"articles/360013825179 for tips on reducing it."
-msgstr ""
+"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
+"tips on reducing it."
+msgstr "Schiţa este prea mare; vezi http://www.arduino.cc/en/Guide/Troubleshooting#size pentru ponturi în reducerea acesteia."
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -2179,13 +2138,6 @@ msgid ""
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Biblioteca \\\"{0}\\\" nu poate fi folosită.\nNumele bibliotecii trebuie să conţină doar litere şi numere.\n(ASCII-fără spatii, şi numele nu poate începe cu un număr)"
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:115
-#, java-format
-msgid ""
-"The library {0} needs some other library<br />dependencies currently not "
-"installed:"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
@@ -2383,6 +2335,10 @@ msgstr "Actualizabil"
 msgid "Update"
 msgstr "Actualizează"
 
+#: Preferences.java:428
+msgid "Update sketch files to new extension on save (.pde -> .ino)"
+msgstr "Se schimba extensia fişierelor schiţă la salvare (.pde -> .ino)"
+
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
@@ -2433,10 +2389,6 @@ msgstr "Încărcare..."
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "Foloseşte selecţia pentru căutare"
-
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:285
-msgid "Use accessibility features"
-msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -2578,10 +2530,6 @@ msgstr "Wire.receive() a fost redenumit in Wire.read()."
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
 msgstr "Wire.send() a fost redenumit în Wire.write()."
-
-#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/MultiLibraryInstallDialog.java:128
-msgid "Would you like to install also all the missing dependencies?"
-msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
@@ -2725,6 +2673,18 @@ msgstr "compilare"
 msgid "connected!"
 msgstr "conectat!"
 
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr "http://www.arduino.cc/"
+
+#: UpdateCheck.java:118
+msgid "http://www.arduino.cc/en/Main/Software"
+msgstr "http://www.arduino.cc/en/Main/Software"
+
+#: UpdateCheck.java:53
+msgid "http://www.arduino.cc/latest.txt"
+msgstr "http://www.arduino.cc/latest.txt"
+
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
@@ -2768,6 +2728,12 @@ msgstr "versiunea <b>{0}</b>"
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
 msgstr "{0} - {1} | Arduino {2}"
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr "{0} verificări nereușite de semnături fișier"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format
