@@ -61,12 +61,6 @@ public class ContributedPlatformReleases {
     return platform.getArchitecture().equals(arch);
   }
 
-  public boolean contains(ContributedPlatform platform) {
-    return (platform.getParentPackage().equals(packager)
-        && platform.getArchitecture().equals(arch)
-        && versions.contains(platform.getParsedVersion()));
-  }
-
   public void add(ContributedPlatform platform) {
     releases.add(platform);
     String version = platform.getParsedVersion();

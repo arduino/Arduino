@@ -60,30 +60,32 @@ public class ContributionIndexTableModel
 
   private void updateContributions() {
     contributions.clear();
+
+    // Generate ContributedPlatformReleases from all platform releases
     for (ContributedPackage pack : BaseNoGui.indexer.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
+        addContribution(platform);
+      }
+    }
+
+    // Filter ContributedPlatformReleases based on search terms
+    contributions.removeIf(releases -> {
+      for (ContributedPlatform platform : releases.releases) {
         String compoundTargetSearchText = platform.getName() + "\n"
                                           + platform.getBoards().stream()
                                               .map(ContributedBoard::getName)
                                               .collect(Collectors.joining(" "));
-
-        // Add all the versions of the same core, even if there's no match
-        for (ContributedPlatformReleases contribution : contributions) {
-          if (contribution.shouldContain(platform)) {
-            addContribution(platform);
-            continue;
-          }
-        }
-
         if (!filter.test(platform)) {
           continue;
         }
         if (!stringContainsAll(compoundTargetSearchText, filters))
           continue;
-
-        addContribution(platform);
+        return false;
       }
-    }
+      return true;
+    });
+
+    // Sort ContributedPlatformReleases and put deprecated platforms to the bottom
     Collections.sort(contributions, (x,y)-> {
       if (x.isDeprecated() != y.isDeprecated()) {
         return x.isDeprecated() ? 1 : -1;
@@ -96,6 +98,7 @@ public class ContributionIndexTableModel
       }
       return x1.getName().compareToIgnoreCase(y1.getName());
     });
+
     fireTableDataChanged();
   }
 
@@ -122,10 +125,6 @@ public class ContributionIndexTableModel
     for (ContributedPlatformReleases contribution : contributions) {
       if (!contribution.shouldContain(platform)) {
         continue;
-      }
-      if (contribution.contains(platform)) {
-        // no duplicates
-        return;
       }
       contribution.add(platform);
       return;
