@@ -47,7 +47,7 @@ e-mail contact: security@arduino.cc
 Detailed instructions for installation in popular operating systems can be found at:
 
 -  [Linux](https://www.arduino.cc/en/Guide/Linux) (see also the [Arduino playground](https://playground.arduino.cc/Learning/Linux))
--  [macOS](https://www.arduino.cc/en/guide/MacOSX)
+-  [macOS](https://www.arduino.cc/en/Guide/macOS)
 -  [Windows](https://www.arduino.cc/en/Guide/Windows)
 
 ## Contents of this repository
