@@ -1,4 +1,7 @@
-ARDUINO 1.8.14 2020.05.12
+ARDUINO 1.8.15 2021.??.??
+
+
+ARDUINO 1.8.14 2021.05.12
 
 [ide]
 * Fix status bar custom board preferences disappearing (thanks @magedrifaat)
