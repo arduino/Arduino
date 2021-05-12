@@ -1,7 +1,26 @@
-ARDUINO 1.8.14 2020.??.??
+ARDUINO 1.8.14 2020.05.12
 
 [ide]
 * Fix status bar custom board preferences disappearing (thanks @magedrifaat)
+* Boards Manager bugfix: sometimes the "Install" button appeared instead of "Update"
+  after entering a search term.
+* Libraries/Boards Manager: the Type and Category filters are kept after install/uninstall.
+* Added 'deprecated' label support in Boards Manager, platforms marked as deprecated are
+  shown at the bottom of the list.
+* Serial Plotter: line endings dropdown menu now comply with the global preference settings. (thanks @sceniclife)
+* Libraries Manager: Maintainer is displayed instead of the Author.
+* Firmware Updater: Added new firmwares and support for Nano RP2040 Connect.
+* Boards Manager: cached 3rd party package_index.json are no more deleted if the origin URL is removed from preferences,
+  this allows other tools (like arduino-cli), that may have different URLs configuration, to work properly.
+* The board configuration submenus are now scrollable.
+* New shortcut: Shift+click on Serial Monitor button will open the Serial Plotter. (thanks @n-elia)
+* Fixed NPE if no board is selected. (thanks @matthijskooijman)
+
+[arduino-builder]
+* Improved lib detection: check for matching name in library.properties
+* Fix compile if invalid build.options.json is found (thanks @d-a-v)
+* Improved error messages for .cpp/.h file in the sketch
+
 
 ARDUINO 1.8.13 2020.06.16
 
