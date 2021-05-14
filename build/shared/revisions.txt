@@ -1,4 +1,7 @@
-ARDUINO 1.8.15 2021.??.??
+ARDUINO 1.8.15 2021.05.13
+
+HOTFIX:
+* Fixed regression in library discovery (failing to compile bundled libs, like SD or Ethernet, on some platforms)
 
 
 ARDUINO 1.8.14 2021.05.12
