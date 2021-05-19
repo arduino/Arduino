@@ -40,12 +40,15 @@ import java.io.OutputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.logging.log4j.core.util.NullOutputStream;
 
+import processing.app.Base;
 import processing.app.Editor;
 import processing.app.helpers.ProcessUtils;
 import processing.app.tools.Tool;
 
 public class ClangFormat implements Tool {
 
+  private final String clangExecutable = Base.getContentFile("clang-format")
+      .getAbsolutePath();
   private Editor editor;
 
   public ClangFormat() {
@@ -103,7 +106,7 @@ public class ClangFormat implements Tool {
 
   String runClangFormatOn(String source)
       throws IOException, InterruptedException {
-    String cmd[] = new String[] { "clang-format" };
+    String cmd[] = new String[] { clangExecutable };
 
     Process process = ProcessUtils.exec(cmd);
     ByteArrayOutputStream result = new ByteArrayOutputStream();
