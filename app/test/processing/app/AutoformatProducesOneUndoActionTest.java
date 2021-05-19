@@ -48,12 +48,10 @@ public class AutoformatProducesOneUndoActionTest extends AbstractGUITest {
           "}";
   public static final String SOURCE_AFTER = "void setup() {\n" +
           "  // put your setup code here, to run once:\n" +
-          "\n" +
           "}\n" +
           "\n" +
           "void loop() {\n" +
           "  // put your main code here, to run repeatedly:\n" +
-          "\n" +
           "}";
 
   @Test
