@@ -700,7 +700,7 @@
     </chmod>
   </target>
 
-  <target name="linux-libastyle-x86" depends="linux-build" description="Download libastyle.so for x86/x64 arch">
+  <target name="linux-liblistserials-x86" depends="linux-build" description="Download liblistserials.so for x86/x64 arch">
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -715,7 +715,7 @@
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
   </target>
 
-  <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
+  <target name="linux-liblistserials-arm" depends="linux-build" description="Download liblistserials.so for ARM">
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -730,7 +730,7 @@
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
   </target>
 
-  <target name="linuxarm-build" depends="linux-libastyle-arm" description="Build linux (32-bit) version">
+  <target name="linuxarm-build" depends="linux-liblistserials-arm" description="Build linux (32-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUXARM_BUNDLED_JVM}"/>
     </antcall>
@@ -748,7 +748,7 @@
     </antcall>
   </target>
 
-  <target name="linux-libastyle-aarch64" depends="linux-build" description="Download libastyle.so for AArch64">
+  <target name="linux-liblistserials-aarch64" depends="linux-build" description="Download liblistserials.so for AArch64">
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -763,7 +763,7 @@
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
   </target>
 
-  <target name="linuxaarch64-build" depends="linux-libastyle-aarch64" description="Build Linux (AArch64) version">
+  <target name="linuxaarch64-build" depends="linux-liblistserials-aarch64" description="Build Linux (AArch64) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUXAARCH64_BUNDLED_JVM}"/>
     </antcall>
@@ -781,7 +781,7 @@
     </antcall>
   </target>
 
-  <target name="linux32-build" depends="linux-libastyle-x86" description="Build linux (32-bit) version">
+  <target name="linux32-build" depends="linux-liblistserials-x86" description="Build linux (32-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
     </antcall>
@@ -799,7 +799,7 @@
     </antcall>
   </target>
 
-  <target name="linux64-build" depends="linux-libastyle-x86" description="Build linux (64-bit) version">
+  <target name="linux64-build" depends="linux-liblistserials-x86" description="Build linux (64-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX64_BUNDLED_JVM}"/>
     </antcall>
