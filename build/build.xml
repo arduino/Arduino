@@ -524,17 +524,6 @@
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
-    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.jnilib" />
-    <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" tofile="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
-    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
-
-    <antcall target="unzip">
       <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
       <param name="archive_url" value="https://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
       <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
@@ -712,15 +701,6 @@
   </target>
 
   <target name="linux-libastyle-x86" depends="linux-build" description="Download libastyle.so for x86/x64 arch">
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="linux/libastylej-2.05.1/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
-
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -733,19 +713,9 @@
     </antcall>
     <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
-
   </target>
 
   <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="linux/libastylej-2.05.1/libastylej_arm.so" tofile="linux/work/lib/libastylej.so" />
-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
-
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -758,7 +728,6 @@
     </antcall>
     <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/arm/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
-
   </target>
 
   <target name="linuxarm-build" depends="linux-libastyle-arm" description="Build linux (32-bit) version">
@@ -780,15 +749,6 @@
   </target>
 
   <target name="linux-libastyle-aarch64" depends="linux-build" description="Download libastyle.so for AArch64">
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="linux/libastylej-2.05.1/libastylej_aarch64.so" tofile="linux/work/lib/libastylej.so" />
-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
-
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -1100,13 +1060,6 @@
 
     <antcall target="windows-build-avr-toolchain" />
 
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="windows/libastylej-2.05.1/AStylej.dll" todir="windows/work/lib" />
     <copy file="windows/msvcp100.dll" todir="windows/work" />
     <copy file="windows/msvcr100.dll" todir="windows/work" />
 
