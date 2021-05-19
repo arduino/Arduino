@@ -43,19 +43,14 @@ import org.apache.logging.log4j.core.util.NullOutputStream;
 import processing.app.Base;
 import processing.app.Editor;
 import processing.app.helpers.ProcessUtils;
-import processing.app.tools.Tool;
 
-public class ClangFormat implements Tool {
+public class ClangFormat implements Runnable {
 
   private final String clangExecutable = Base.getContentFile("clang-format")
       .getAbsolutePath();
   private Editor editor;
 
-  public ClangFormat() {
-  }
-
-  @Override
-  public void init(Editor editor) {
+  public ClangFormat(Editor editor) {
     this.editor = editor;
   }
 
@@ -75,11 +70,6 @@ public class ClangFormat implements Tool {
       editor.statusError("Auto format error: " + e.getMessage());
       e.printStackTrace();
     }
-  }
-
-  @Override
-  public String getMenuTitle() {
-    return tr("Auto Format");
   }
 
   private Thread copyAndClose(InputStream input, OutputStream output) {
