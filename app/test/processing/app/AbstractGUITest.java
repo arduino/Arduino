@@ -29,17 +29,15 @@
 
 package processing.app;
 
-import cc.arduino.files.DeleteFilesOnShutdown;
+import javax.swing.JPopupMenu;
+
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.junit.After;
 import org.junit.Before;
-import processing.app.helpers.ArduinoFrameFixture;
-import processing.app.helpers.FileUtils;
 
-import javax.swing.*;
-import java.util.Random;
+import processing.app.helpers.ArduinoFrameFixture;
 
 public abstract class AbstractGUITest extends AbstractWithPreferencesTest {
 

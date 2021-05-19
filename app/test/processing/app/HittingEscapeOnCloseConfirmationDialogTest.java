@@ -29,18 +29,18 @@
 
 package processing.app;
 
+import static org.junit.Assert.assertEquals;
+import static processing.app.I18n.tr;
+
+import java.awt.event.KeyEvent;
+
 import org.fest.swing.core.KeyPressInfo;
 import org.fest.swing.core.matcher.DialogMatcher;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.DialogFixture;
 import org.junit.Test;
+
 import processing.app.helpers.SketchTextAreaFixture;
-
-import javax.swing.*;
-import java.awt.event.KeyEvent;
-
-import static org.junit.Assert.assertEquals;
-import static processing.app.I18n.tr;
 
 public class HittingEscapeOnCloseConfirmationDialogTest extends AbstractGUITest {
 

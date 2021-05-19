@@ -80,8 +80,6 @@ import javax.swing.TransferHandler;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
 
 import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
 
@@ -97,7 +95,6 @@ import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
-import processing.app.debug.TargetBoard;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.Keys;
