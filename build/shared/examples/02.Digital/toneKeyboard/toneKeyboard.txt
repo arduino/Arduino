@@ -1,1 +1,0 @@
-A three-key musical keyboard using force sensors and a piezo speaker. 

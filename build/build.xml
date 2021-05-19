@@ -99,12 +99,14 @@
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.5.4" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.5.6" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.2-2" />
   <property name="AVRGCC-VERSION" value="7.3.0-atmel3.6.1-arduino7" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino17" />
   <property name="AVRCORE-VERSION" value="1.8.3" />
   <property name="arduinoOTA-VERSION" value="1.3.0" />
+  <!-- https://github.com/arduino/built-in-examples -->
+  <property name="BUILT-IN-EXAMPLES-VERSION" value="1.9.0" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -209,10 +211,7 @@
 
     <antcall target="assemble-hardware" />
 
-    <!-- copy shared examples folder -->
-    <copy todir="${target.path}/examples">
-      <fileset dir="shared/examples" />
-    </copy>
+    <antcall target="assemble-examples" />
 
     <mkdir dir="${target.path}/reference"/>
 
@@ -225,11 +224,33 @@
 
     <!-- Add WiFi101 updater tool -->
     <antcall target="unzip">
-      <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-0.10.12.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v0.10.12/WiFi101-Updater-ArduinoIDE-Plugin-0.10.12.zip" />
+      <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-0.10.13.zip" />
+      <param name="archive_url" value="https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v0.10.13/WiFi101-Updater-ArduinoIDE-Plugin-0.10.13.zip" />
       <param name="final_folder" value="${target.path}/tools/WiFi101" />
       <param name="dest_folder" value="${target.path}/tools/" />
     </antcall>
+  </target>
+
+  <target name="assemble-examples">
+    <!-- Add the built-in example sketches -->
+    <property name="BUILT-IN-EXAMPLES-REPOSITORY-OWNER" value="arduino" />
+    <property name="BUILT-IN-EXAMPLES-REPOSITORY-NAME" value="arduino-examples" />
+    <property name="BUILT-IN-EXAMPLES-STAGING-PATH" value="shared" />
+    <property name="BUILT-IN-EXAMPLES-FINAL-PATH" value="${target.path}/examples" />
+
+    <!-- Download built-in examples from repository -->
+    <antcall target="unzip">
+      <param name="archive_file" value="${BUILT-IN-EXAMPLES-REPOSITORY-NAME}-${BUILT-IN-EXAMPLES-VERSION}.zip" />
+      <param name="archive_url" value="https://github.com/${BUILT-IN-EXAMPLES-REPOSITORY-OWNER}/${BUILT-IN-EXAMPLES-REPOSITORY-NAME}/archive/${BUILT-IN-EXAMPLES-VERSION}.zip" />
+      <!-- Because the presence of this folder determines whether the extraction happens, this must point to a version-dependent path, otherwise updates will fail -->
+      <param name="final_folder" value="${BUILT-IN-EXAMPLES-STAGING-PATH}/${BUILT-IN-EXAMPLES-REPOSITORY-NAME}-${BUILT-IN-EXAMPLES-VERSION}/examples" />
+      <param name="dest_folder" value="${BUILT-IN-EXAMPLES-STAGING-PATH}" />
+    </antcall>
+
+    <!-- Copy examples from subfolder of the downloaded repository -->
+    <copy todir="${BUILT-IN-EXAMPLES-FINAL-PATH}">
+      <fileset dir="${BUILT-IN-EXAMPLES-STAGING-PATH}/${BUILT-IN-EXAMPLES-REPOSITORY-NAME}-${BUILT-IN-EXAMPLES-VERSION}/examples" />
+    </copy>
   </target>
 
   <target name="assemble-docs" unless="no_docs">

@@ -105,7 +105,7 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
 
   @Test
   public void testCommandLineBuildWithRelativePath() throws Exception {
-    File wd = new File(buildPath, "build/shared/examples/01.Basics/Blink/");
+    File wd = new File(buildPath, "app/testdata/sketches/Blink/");
     runArduino(true, true, wd, new String[] {
         "--board", "arduino:avr:uno",
         "--verify", "Blink.ino",

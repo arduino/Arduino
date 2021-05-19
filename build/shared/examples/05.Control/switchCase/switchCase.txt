@@ -1,1 +1,0 @@
-How to choose between a discrete number of values. 
