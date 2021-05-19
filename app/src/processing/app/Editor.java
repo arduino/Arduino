@@ -981,23 +981,20 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   private void addInternalTools(JMenu menu) {
-    JMenuItem item;
-
-    item = createToolMenuItem("cc.arduino.packages.formatter.AStyle");
-    if (item == null) {
-      throw new NullPointerException("Tool cc.arduino.packages.formatter.AStyle unavailable");
+    JMenuItem formatItem = createToolMenuItem("cc.arduino.packages.formatter.clangformat.ClangFormat");
+    if (formatItem == null) {
+      throw new NullPointerException("Tool cc.arduino.packages.formatter.clangformat.ClangFormat");
     }
-    item.setName("menuToolsAutoFormat");
+    formatItem.setName("menuToolsAutoFormat");
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    item.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
-    menu.add(item);
+    formatItem.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
+    menu.add(formatItem);
 
-    //menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
-    //menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
+    // menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
+    // menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
     menu.add(createToolMenuItem("processing.app.tools.Archiver"));
     menu.add(createToolMenuItem("processing.app.tools.FixEncoding"));
   }
-
 
   private void selectSerialPort(String name) {
     if(portMenu == null) {
