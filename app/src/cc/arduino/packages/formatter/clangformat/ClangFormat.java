@@ -40,6 +40,9 @@ import java.io.OutputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.logging.log4j.core.util.NullOutputStream;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import processing.app.Base;
 import processing.app.Editor;
 import processing.app.helpers.ProcessUtils;
@@ -57,14 +60,15 @@ public class ClangFormat implements Runnable {
   @Override
   public void run() {
     String originalText = editor.getCurrentTab().getText();
-
+    int cursorOffset = editor.getCurrentTab().getTextArea().getCaretPosition();
     try {
-      String formattedText = runClangFormatOn(originalText);
-      if (formattedText.equals(originalText)) {
+      FormatResult result = runClangFormatOn(originalText, cursorOffset);
+      if (result.FormattedText.equals(originalText)) {
         editor.statusNotice(tr("No changes necessary for Auto Format."));
         return;
       }
-      editor.getCurrentTab().setText(formattedText);
+      editor.getCurrentTab().setText(result.FormattedText);
+      editor.getCurrentTab().getTextArea().setCaretPosition(result.Cursor);
       editor.statusNotice(tr("Auto Format finished."));
     } catch (IOException | InterruptedException e) {
       editor.statusError("Auto format error: " + e.getMessage());
@@ -94,21 +98,49 @@ public class ClangFormat implements Runnable {
     return t;
   }
 
-  String runClangFormatOn(String source)
+  FormatResult runClangFormatOn(String source, int cursorOffset)
       throws IOException, InterruptedException {
-    String cmd[] = new String[] { clangExecutable };
+    String cmd[] = new String[] { clangExecutable, "--cursor=" + cursorOffset };
 
     Process process = ProcessUtils.exec(cmd);
-    ByteArrayOutputStream result = new ByteArrayOutputStream();
+    ByteArrayOutputStream clangOutput = new ByteArrayOutputStream();
     ByteArrayInputStream dataOut = new ByteArrayInputStream(source.getBytes());
-    Thread out = copyAndClose(process.getInputStream(), result);
+
+    Thread in = copyAndClose(dataOut, process.getOutputStream());
     Thread err = copyAndClose(process.getErrorStream(),
                               NullOutputStream.getInstance());
-    Thread in = copyAndClose(dataOut, process.getOutputStream());
+    Thread out = copyAndClose(process.getInputStream(), clangOutput);
+
     /* int r = */process.waitFor();
     in.join();
     out.join();
     err.join();
-    return result.toString();
+
+    // clang-format will output first a JSON object with:
+    // - the resulting cursor position and
+    // - a flag teling if the conversion was successful
+    // for example:
+    //
+    // { "Cursor": 34, "IncompleteFormat": false }
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    mapper.configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    FormatResult res = mapper.readValue(clangOutput.toByteArray(),
+                                        FormatResult.class);
+
+    // After the JSON object above clang-format will output the formatted source
+    // code in plain text
+    String formattedText = clangOutput.toString();
+    formattedText = formattedText.substring(formattedText.indexOf('}') + 1);
+    // handle different line endings
+    res.FormattedText = formattedText.replaceFirst("\\R", "");
+    return res;
   }
+}
+
+class FormatResult {
+  public String FormattedText;
+  public int Cursor;
+  public boolean IncompleteFormat;
 }
