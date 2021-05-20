@@ -45,6 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import processing.app.Base;
 import processing.app.Editor;
+import processing.app.EditorTab;
 import processing.app.helpers.ProcessUtils;
 
 public class ClangFormat implements Runnable {
@@ -59,16 +60,17 @@ public class ClangFormat implements Runnable {
 
   @Override
   public void run() {
-    String originalText = editor.getCurrentTab().getText();
-    int cursorOffset = editor.getCurrentTab().getTextArea().getCaretPosition();
+    EditorTab tab = editor.getCurrentTab();
+    String originalText = tab.getText();
+    int cursorOffset = tab.getTextArea().getCaretPosition();
     try {
       FormatResult result = runClangFormatOn(originalText, cursorOffset);
       if (result.FormattedText.equals(originalText)) {
         editor.statusNotice(tr("No changes necessary for Auto Format."));
         return;
       }
-      editor.getCurrentTab().setText(result.FormattedText);
-      editor.getCurrentTab().getTextArea().setCaretPosition(result.Cursor);
+      tab.setText(result.FormattedText);
+      tab.getTextArea().setCaretPosition(result.Cursor);
       editor.statusNotice(tr("Auto Format finished."));
     } catch (IOException | InterruptedException e) {
       editor.statusError("Auto format error: " + e.getMessage());
