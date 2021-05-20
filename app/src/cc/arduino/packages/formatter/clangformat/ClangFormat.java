@@ -33,6 +33,7 @@ import static processing.app.I18n.tr;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,6 +44,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import processing.app.Base;
+import processing.app.BaseNoGui;
 import processing.app.Editor;
 import processing.app.EditorTab;
 
@@ -100,11 +102,27 @@ public class ClangFormat implements Runnable {
     return t;
   }
 
+  private File findConfigFile() {
+    // check if sketch has a config file
+    File sketchDir = editor.getSketch().getFolder();
+    if (new File(sketchDir, ".clang-format").isFile()) {
+      return sketchDir;
+    }
+
+    // check if a global config file exists
+    if (BaseNoGui.getSettingsFile(".clang-format").isFile()) {
+      return BaseNoGui.getSettingsFolder();
+    }
+
+    // otherwise: no custom configs, return Arduino IDE app dir.
+    return new File(clangExecutable).getParentFile();
+  }
+
   FormatResult runClangFormatOn(String source, int cursorOffset)
       throws IOException, InterruptedException, ClangException {
     String cmd[] = new String[] { clangExecutable, "--cursor=" + cursorOffset };
 
-    Process process = ProcessUtils.exec(cmd);
+    Process process = Runtime.getRuntime().exec(cmd, null, findConfigFile());
     ByteArrayOutputStream clangOutput = new ByteArrayOutputStream();
     ByteArrayOutputStream clangError = new ByteArrayOutputStream();
     ByteArrayInputStream dataOut = new ByteArrayInputStream(source.getBytes());

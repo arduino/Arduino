@@ -345,6 +345,8 @@
     </antcall>
 
     <delete dir="${staging_folder}/${clang_arch_name}"/>
+
+    <copy file="shared/clang-format-arduino" tofile="${staging_folder}/work/${staging_hardware_folder}/../.clang-format" />
   </target>
 
   <!-- - - - - - - - - -->
