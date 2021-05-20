@@ -38,7 +38,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.compress.utils.IOUtils;
-import org.apache.logging.log4j.core.util.NullOutputStream;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +45,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import processing.app.Base;
 import processing.app.Editor;
 import processing.app.EditorTab;
-import processing.app.helpers.ProcessUtils;
 
 public class ClangFormat implements Runnable {
 
@@ -75,6 +73,8 @@ public class ClangFormat implements Runnable {
     } catch (IOException | InterruptedException e) {
       editor.statusError("Auto format error: " + e.getMessage());
       e.printStackTrace();
+    } catch (ClangException e) {
+      editor.statusError("Auto format error: " + e.getMessage());
     }
   }
 
@@ -101,22 +101,26 @@ public class ClangFormat implements Runnable {
   }
 
   FormatResult runClangFormatOn(String source, int cursorOffset)
-      throws IOException, InterruptedException {
+      throws IOException, InterruptedException, ClangException {
     String cmd[] = new String[] { clangExecutable, "--cursor=" + cursorOffset };
 
     Process process = ProcessUtils.exec(cmd);
     ByteArrayOutputStream clangOutput = new ByteArrayOutputStream();
+    ByteArrayOutputStream clangError = new ByteArrayOutputStream();
     ByteArrayInputStream dataOut = new ByteArrayInputStream(source.getBytes());
 
     Thread in = copyAndClose(dataOut, process.getOutputStream());
-    Thread err = copyAndClose(process.getErrorStream(),
-                              NullOutputStream.getInstance());
+    Thread err = copyAndClose(process.getErrorStream(), clangError);
     Thread out = copyAndClose(process.getInputStream(), clangOutput);
 
-    /* int r = */process.waitFor();
+    int r = process.waitFor();
     in.join();
     out.join();
     err.join();
+
+    if (r != 0) {
+      throw new ClangException(clangError.toString());
+    }
 
     // clang-format will output first a JSON object with:
     // - the resulting cursor position and
@@ -138,6 +142,12 @@ public class ClangFormat implements Runnable {
     // handle different line endings
     res.FormattedText = formattedText.replaceFirst("\\R", "");
     return res;
+  }
+}
+
+class ClangException extends Exception {
+  public ClangException(String string) {
+    super(string);
   }
 }
 
