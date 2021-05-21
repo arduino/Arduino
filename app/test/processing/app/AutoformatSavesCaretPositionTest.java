@@ -68,7 +68,8 @@ public class AutoformatSavesCaretPositionTest extends AbstractGUITest {
             "\n" +
             "}", formattedText);
 
-    assertEquals(29, editor.getCaretPosition());
+    // Autoformat with clang-format keeps cursor relative to source code
+    assertEquals(17, editor.getCaretPosition());
 
   }
 

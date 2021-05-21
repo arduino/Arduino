@@ -46,7 +46,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.Editor;
-import processing.app.EditorTab;
+import processing.app.syntax.SketchTextArea;
 
 public class ClangFormat implements Runnable {
 
@@ -60,17 +60,27 @@ public class ClangFormat implements Runnable {
 
   @Override
   public void run() {
-    EditorTab tab = editor.getCurrentTab();
+    SketchTextArea tab = editor.getCurrentTab().getTextArea();
     String originalText = tab.getText();
-    int cursorOffset = tab.getTextArea().getCaretPosition();
+    int cursorOffset = tab.getCaretPosition();
     try {
       FormatResult result = runClangFormatOn(originalText, cursorOffset);
       if (result.FormattedText.equals(originalText)) {
         editor.statusNotice(tr("No changes necessary for Auto Format."));
         return;
       }
+
+      // To keep cursor position after UNDO we produce a bogus edit (insertion
+      // and removal of a " " at cursor position) and we compound this change
+      // with the full auto-format update.
+      tab.beginAtomicEdit();
+      tab.insert(" ", cursorOffset);
+      tab.replaceRange("", cursorOffset, cursorOffset + 1);
       tab.setText(result.FormattedText);
-      tab.getTextArea().setCaretPosition(result.Cursor);
+      tab.endAtomicEdit();
+
+      tab.setCaretPosition(result.Cursor);
+
       editor.statusNotice(tr("Auto Format finished."));
     } catch (IOException | InterruptedException e) {
       editor.statusError("Auto format error: " + e.getMessage());

@@ -74,7 +74,8 @@ public class AutoformatProducesOneUndoActionTest extends AbstractGUITest {
     String formattedText = editor.getText();
     assertEquals(SOURCE_AFTER, formattedText);
 
-    assertEquals(29, editor.getCaretPosition());
+    // Autoformat with clang-format keeps cursor relative to source code
+    assertEquals(17, editor.getCaretPosition());
 
     menuEditUndo.requireEnabled();
     menuEditUndo.click();
