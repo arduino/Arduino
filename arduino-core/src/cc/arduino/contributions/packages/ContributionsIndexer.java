@@ -144,12 +144,17 @@ public class ContributionsIndexer {
     index.fillCategories();
   }
 
-  private List<File> get3rdPartyIndexFiles() throws MalformedURLException {
+  private List<File> get3rdPartyIndexFiles() {
     List<File> indexFiles = new ArrayList<>();
     for (String urlString : PreferencesData.getCollection(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS)) {
-      final URL url = new URL(urlString);
-      String filename = FilenameUtils.getName(url.getPath());
-      indexFiles.add(getIndexFile(filename));
+      URL url;
+      try {
+        url = new URL(urlString);
+        String filename = FilenameUtils.getName(url.getPath());
+        indexFiles.add(getIndexFile(filename));
+      } catch (MalformedURLException e) {
+        System.err.println(format(tr("Malformed Additional Board Manager URL '{0}': {1}"), urlString, e.getMessage()));
+      }
     }
 
     File[] testIndexFiles = preferencesFolder.listFiles((dir, name) -> {
