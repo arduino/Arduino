@@ -48,12 +48,10 @@ public class AutoformatProducesOneUndoActionTest extends AbstractGUITest {
           "}";
   public static final String SOURCE_AFTER = "void setup() {\n" +
           "  // put your setup code here, to run once:\n" +
-          "\n" +
           "}\n" +
           "\n" +
           "void loop() {\n" +
           "  // put your main code here, to run repeatedly:\n" +
-          "\n" +
           "}";
 
   @Test
@@ -74,7 +72,8 @@ public class AutoformatProducesOneUndoActionTest extends AbstractGUITest {
     String formattedText = editor.getText();
     assertEquals(SOURCE_AFTER, formattedText);
 
-    assertEquals(29, editor.getCaretPosition());
+    // Autoformat with clang-format keeps cursor relative to source code
+    assertEquals(17, editor.getCaretPosition());
 
     menuEditUndo.requireEnabled();
     menuEditUndo.click();
