@@ -89,13 +89,10 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   public void setKeywords(PdeKeywords keywords) {
     pdeKeywords = keywords;
-    setLinkGenerator(new DocLinkGenerator(pdeKeywords));
   }
 
   private void installFeatures() throws IOException {
     setTheme(PreferencesData.get("editor.syntax_theme", "default"));
-
-    setLinkGenerator(new DocLinkGenerator(pdeKeywords));
 
     setSyntaxEditingStyle(SYNTAX_STYLE_CPLUSPLUS);
   }
@@ -172,48 +169,6 @@ public class SketchTextArea extends RSyntaxTextArea {
       int end = getLineEndOffset(line);
       getDocument().getText(offset, end - offset, segment);
     } catch (BadLocationException ignored) {
-    }
-  }
-
-  private static class DocLinkGenerator implements LinkGenerator {
-
-    private final PdeKeywords pdeKeywords;
-
-    public DocLinkGenerator(PdeKeywords pdeKeywords) {
-      this.pdeKeywords = pdeKeywords;
-    }
-
-    @Override
-    public LinkGeneratorResult isLinkAtOffset(RSyntaxTextArea textArea, final int offs) {
-      Token token = textArea.modelToToken(offs);
-      if (token == null) {
-        return null;
-      }
-
-      String reference = pdeKeywords.getReference(token.getLexeme());
-
-      if (reference != null || (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION)) {
-
-        return new LinkGeneratorResult() {
-
-          @Override
-          public int getSourceOffset() {
-            return offs;
-          }
-
-          @Override
-          public HyperlinkEvent execute() {
-
-            LOG.fine("Open Reference: " + reference);
-
-            Base.showReference("Reference/" + reference);
-
-            return null;
-          }
-        };
-      }
-
-      return null;
     }
   }
 

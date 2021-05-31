@@ -2169,60 +2169,6 @@ public class Base {
   // .................................................................
 
 
-  static public void showReference(String filename) {
-    showReference("reference/www.arduino.cc/en", filename);
-  }
-
-  static public void showReference(String prefix, String filename) {
-    File referenceFolder = getContentFile(prefix);
-    File referenceFile = new File(referenceFolder, filename);
-    if (!referenceFile.exists())
-      referenceFile = new File(referenceFolder, filename + ".html");
-
-    if(referenceFile.exists()){
-      openURL(referenceFile.getAbsolutePath());
-    }else{
-      showWarning(tr("Problem Opening URL"), format(tr("Could not open the URL\n{0}"), referenceFile), null);
-    }
-  }
-
-  public static void showEdisonGettingStarted() {
-    showReference("reference/Edison_help_files", "ArduinoIDE_guide_edison");
-  }
-
-  static public void showArduinoGettingStarted() {
-    if (OSUtils.isMacOS()) {
-      showReference("Guide/MacOSX");
-    } else if (OSUtils.isWindows()) {
-      showReference("Guide/Windows");
-    } else {
-      openURL("http://www.arduino.cc/playground/Learning/Linux");
-    }
-  }
-
-  static public void showReference() {
-    showReference("Reference/HomePage");
-  }
-
-
-  static public void showEnvironment() {
-    showReference("Guide/Environment");
-  }
-
-
-  static public void showTroubleshooting() {
-    showReference("Guide/Troubleshooting");
-  }
-
-
-  static public void showFAQ() {
-    showReference("Main/FAQ");
-  }
-
-
-  // .................................................................
-
-
   /**
    * "No cookie for you" type messages. Nothing fatal or all that
    * much of a bummer, but something to notify the user about.
