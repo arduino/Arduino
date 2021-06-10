@@ -269,6 +269,10 @@ programmer = arduino:avrispmkii
 upload.using = bootloader
 upload.verify = true
 
+# This is true if the arduino IDE will try to load libraries from <Sketch>/libraries
+# This is false by default to maintain backwards compatibility 
+build.load_sketch_libraries = false
+
 # default port is not defined to prevent running AVRDUDE before Port selected (issue #7943)
 #serial.port=
 serial.databits=8

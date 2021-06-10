@@ -246,7 +246,13 @@ public class Compiler implements MessageConsumer {
     addPathFlagIfPathExists(cmd, "-tools", Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toFile());
     addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
 
+    if(PreferencesData.getBoolean("build.load_sketch_libraries") == true) {
+        addPathFlagIfPathExists(cmd, "-libraries",Paths.get(sketch.getFolder().getAbsolutePath(),"libraries").toFile());
+    }
+
     addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
+
+   
     addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder().folder);
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));

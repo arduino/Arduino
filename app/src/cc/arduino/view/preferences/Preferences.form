@@ -480,6 +480,13 @@
                         </Property>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JCheckBox" name="loadSketchLibrariesBox">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="tr(&quot;Use libraries in sketch folder&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
                   </SubComponents>
                 </Container>
                 <Component class="javax.swing.JLabel" name="jLabel1">
