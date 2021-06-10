@@ -405,6 +405,12 @@ public class SerialPlotter extends AbstractMonitor {
         // the line only contained trimmable characters
         continue;
       }
+	
+	  if("<CLEAR>".equals(line)){
+			graphs.clear();//clear the graphs points in the array
+			xCount = 0;//reset the count of data point
+	  }
+
       String[] parts = line.split("[, \t]+");
       if(parts.length == 0) {
         continue;
