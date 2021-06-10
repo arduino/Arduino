@@ -51,6 +51,7 @@ public class SerialPlotter extends AbstractMonitor {
 
   private ArrayList<Graph> graphs;
   private final static int BUFFER_CAPACITY = 500;
+  private final static int MAX_GRAPH_COUNT = 20;
 
   private static class Graph {
     public CircularBuffer buffer;
@@ -412,18 +413,18 @@ public class SerialPlotter extends AbstractMonitor {
 
       int validParts = 0;
       int validLabels = 0;
-      for(int i = 0; i < parts.length; ++i) {
+      for(int i = 0; i < parts.length && validParts < MAX_GRAPH_COUNT; ++i) {
         Double value = null;
         String label = null;
-        
+
         // column formated name value pair
         if(parts[i].contains(":")) {
           // get label
           String[] subString = parts[i].split("[:]+");
-            
+
           if(subString.length > 0) {
             int labelLength = subString[0].length();
-              
+
             if(labelLength > 32) {
                 labelLength = 32;
             }
@@ -431,7 +432,7 @@ public class SerialPlotter extends AbstractMonitor {
           } else {
             label = "";
           }
-            
+
           if(subString.length > 1) {
             parts[i] = subString[1];
           } else {
@@ -448,7 +449,7 @@ public class SerialPlotter extends AbstractMonitor {
         if(label == null && value == null) {
           label = parts[i];
         }
-        
+
         if(value != null) {
           if(validParts >= graphs.size()) {
             graphs.add(new Graph(validParts));
