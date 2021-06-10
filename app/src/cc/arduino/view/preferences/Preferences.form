@@ -366,6 +366,9 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new ImageIcon(Theme.getThemeImage(&quot;newwindow&quot;, this, Theme.scale(16), Theme.scale(14)))" type="code"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="tr(&quot;Enter additional URLs, one for each row&quot;)" type="code"/>
+                    </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[1, 1, 1, 1]"/>
                     </Property>
