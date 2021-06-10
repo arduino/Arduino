@@ -32,6 +32,7 @@ import static processing.app.I18n.tr;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
@@ -242,19 +243,45 @@ public class EditorHeader extends JComponent {
       tabRight = new int[codeCount];
     }
 
-    int x = scale(6); // offset from left edge of the component
-    int i = 0;
+    List<String> texts = new ArrayList<String>();
+    int totalWidth = 0;
     for (EditorTab tab : tabs) {
       SketchFile file = tab.getSketchFile();
       String filename = file.getPrettyName();
 
       // if modified, add the li'l glyph next to the name
-      String text = "  " + filename + (file.isModified() ? " \u00A7" : "  ");
+      String text = filename;
+      if (file.isModified())
+        text += " \u00A7";
+      texts.add(text);
 
       int textWidth = (int)
         font.getStringBounds(text, g.getFontRenderContext()).getWidth();
 
-      int pieceCount = 2 + (textWidth / PIECE_WIDTH);
+      int pieceCount = textWidth / PIECE_WIDTH;
+      int pieceWidth = pieceCount * PIECE_WIDTH;
+      totalWidth += PIECE_WIDTH * (pieceCount + 2) - 1; // left + middle + right - overlap(=1)
+    }
+
+    int marginPieceCount = 0;
+    int marginForEveryPiece = PIECE_WIDTH * tabs.size();
+    for (int i = 1; i <= 6; ++i) {
+      if (sizeW - totalWidth > marginForEveryPiece * i) {
+        marginPieceCount = i;
+        continue;
+      }
+      break;
+    }
+
+    int x = scale(6); // offset from left edge of the component
+    int i = 0;
+    for (EditorTab tab : tabs) {
+      String text = texts.get(i);
+
+      int textWidth = (int)
+        font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+
+      int pieceCount = marginPieceCount + (textWidth / PIECE_WIDTH);
       int pieceWidth = pieceCount * PIECE_WIDTH;
 
       int state = (i == editor.getCurrentTabIndex()) ? SELECTED : UNSELECTED;
@@ -277,7 +304,7 @@ public class EditorHeader extends JComponent {
 
       g.drawImage(pieces[state][RIGHT], x, 0, null);
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
-      i++;
+      ++i;
     }
 
     menuLeft = sizeW - (16 + menuButtons[0].getWidth(this));
