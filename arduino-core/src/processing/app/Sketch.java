@@ -2,13 +2,20 @@ package processing.app;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import java.io.FileOutputStream;
 
 import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
+import processing.app.tools.ZipDeflater;
+
+import org.apache.commons.compress.utils.IOUtils;
 
 import static processing.app.I18n.tr;
 
@@ -17,8 +24,10 @@ import static processing.app.I18n.tr;
  */
 public class Sketch {
   public static final String DEFAULT_SKETCH_EXTENSION = "ino";
+  public static final String DEFAULT_SKETCH_EXTENSION_COMPRESSED = "inoz";
   public static final List<String> OLD_SKETCH_EXTENSIONS = Arrays.asList("pde");
-  public static final List<String> SKETCH_EXTENSIONS = Stream.concat(Stream.of(DEFAULT_SKETCH_EXTENSION), OLD_SKETCH_EXTENSIONS.stream()).collect(Collectors.toList());
+  public static final List<String> DEFAULT_SKETCH_EXTENSIONS = Stream.concat(Stream.of(DEFAULT_SKETCH_EXTENSION), Stream.of(DEFAULT_SKETCH_EXTENSION_COMPRESSED)).collect(Collectors.toList());
+  public static final List<String> SKETCH_EXTENSIONS = Stream.concat(DEFAULT_SKETCH_EXTENSIONS.stream(), OLD_SKETCH_EXTENSIONS.stream()).collect(Collectors.toList());
   public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "hh", "hpp", "s");
   public static final List<String> EXTENSIONS = Stream.concat(SKETCH_EXTENSIONS.stream(), OTHER_ALLOWED_EXTENSIONS.stream()).collect(Collectors.toList());
 
@@ -26,6 +35,8 @@ public class Sketch {
    * folder that contains this sketch
    */
   private File folder;
+
+  private File compressedSketch = null;
 
   private List<SketchFile> files = new ArrayList<>();
 
@@ -50,8 +61,68 @@ public class Sketch {
    *          Any file inside the sketch directory.
    */
   Sketch(File file) throws IOException {
-    folder = file.getParentFile();
+    if (file.getName().endsWith("inz")) {
+      //extract it in a temp folder and assign the
+      compressedSketch = file;
+      File tmpFolder = FileUtils.createTempFolder();
+      ZipDeflater zipDeflater = new ZipDeflater(file, tmpFolder);
+      zipDeflater.deflate();
+      String basename = FileUtils.splitFilename(file.getName()).basename;
+      folder = new File(tmpFolder, basename);
+    } else {
+      folder = file.getParentFile();
+    }
     files = listSketchFiles(true);
+  }
+
+  public void buildZip(File dir, String sofar,
+                       ZipOutputStream zos) throws IOException {
+    String files[] = dir.list();
+    if (files == null) {
+      throw new IOException("Unable to list files from " + dir);
+    }
+    for (int i = 0; i < files.length; i++) {
+      if (files[i].equals(".") ||
+          files[i].equals("..")) continue;
+
+      File sub = new File(dir, files[i]);
+      String nowfar = (sofar == null) ?
+        files[i] : (sofar + "/" + files[i]);
+
+      if (sub.isDirectory()) {
+        // directories are empty entries and have / at the end
+        ZipEntry entry = new ZipEntry(nowfar + "/");
+        //System.out.println(entry);
+        zos.putNextEntry(entry);
+        zos.closeEntry();
+        buildZip(sub, nowfar, zos);
+
+      } else {
+        ZipEntry entry = new ZipEntry(nowfar);
+        entry.setTime(sub.lastModified());
+        zos.putNextEntry(entry);
+        zos.write(loadBytesRaw(sub));
+        zos.closeEntry();
+      }
+    }
+  }
+
+  static public byte[] loadBytesRaw(File file) throws IOException {
+    int size = (int) file.length();
+    FileInputStream input = null;
+    try {
+      input = new FileInputStream(file);
+      byte buffer[] = new byte[size];
+      int offset = 0;
+      int bytesRead;
+      while ((bytesRead = input.read(buffer, offset, size - offset)) != -1) {
+        offset += bytesRead;
+        if (bytesRead == 0) break;
+      }
+      return buffer;
+    } finally {
+      IOUtils.closeQuietly(input);
+    }
   }
 
   static public File checkSketchFile(File file) {
@@ -137,6 +208,13 @@ public class Sketch {
       if (file.isModified())
         file.save();
     }
+    String basename = files.get(0).getPrettyName();
+    if (compressedSketch != null) {
+      ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(compressedSketch));
+      buildZip(folder, basename, zos);
+      zos.flush();
+      IOUtils.closeQuietly(zos);
+    }
   }
 
   public int getCodeCount() {
@@ -151,6 +229,9 @@ public class Sketch {
    * Returns a file object for the primary .pde of this sketch.
    */
   public SketchFile getPrimaryFile() {
+    if (compressedSketch != null) {
+      return new SketchFile(this, compressedSketch);
+    }
     return files.get(0);
   }
 
