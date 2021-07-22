@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta charset="utf-8" />
+<meta name="Author" content="Apple Inc." />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="mask-icon" href="/apple-logo.svg" color="#333333">
+
+<link rel="stylesheet" href="/assets/styles/global.dist.css?45192119196" type="text/css" />
+<link rel="stylesheet" href="/assets/styles/dark-mode.css?44192119196" type="text/css" media="(prefers-color-scheme: dark)" data-color-scheme="dark" />
+
+<script src="/assets/scripts/lib/jquery/jquery-3.6.0.min.js?45192141144"></script>
+<script src="/assets/scripts/settings.js?11082121158"></script>
+<script src="/assets/scripts/language-locales.js?11082121158"></script>
+
+<script async src="/assets/scripts/lib/jquery/jquery.retinate.js?22062120158"></script>
+<script async src="/assets/scripts/global.js?26062125044"></script>
+<script async src="/assets/scripts/global-logout.js?26062125044"></script>
+
+	<link rel="stylesheet" href="https://www.apple.com/wss/fonts?family=SF+Pro&v=2" type="text/css" />
+<link rel="stylesheet" href="https://www.apple.com/wss/fonts?family=SF+Pro+Icons&v=1" type="text/css" />
+<link rel="stylesheet" href="https://www.apple.com/wss/fonts?family=SF+Mono&v=2" type="text/css" />
+<link rel="stylesheet" href="https://www.apple.com/wss/fonts?family=Apple+Icons&amp;v=1" type="text/css" />
+
+	<title>Notifications Overview - Apple Developer</title>
+	<meta name="omni_page" content="Notifications (English)" />
+	<meta name="Description" content="Find the essential documentation and sample code for using local and push notifications in your iOS and Mac apps." />
+
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:site_name" content="Apple Developer" />
+	<meta property="og:type" content="website" />
+	<meta name="og:image" content="https://developer.apple.com/news/images/og/notifications-og.jpg" />
+	<meta property="og:title" content="Notifications - Apple Developer" />
+	<meta property="og:description" content="Find the essential documentation and sample code for using local and push notifications in your iOS and Mac apps." />
+	<meta property="og:url" content="https://developer.apple.com/notifications/" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://developer.apple.com/news/images/og/notifications-og-twitter.jpg" />
+	<meta name="twitter:title" content="Notifications - Apple Developer" />
+	<meta name="twitter:description" content="Find the essential documentation and sample code for using local and push notifications in your iOS and Mac apps." />
+	<meta name="twitter:url" content="https://developer.apple.com/notifications/" />
+
+	<link rel="stylesheet" href="/assets/styles/router-strip.css" type="text/css" />
+	<link rel="stylesheet" href="/notifications/styles/notifications.css" type="text/css" />
+</head>
+<body>
+
+	<link rel="stylesheet" href="/assets/styles/globalnav.css?30062125044" type="text/css" />
+
+<link rel="stylesheet" href="/assets/styles/suggest-lang.css?16222138151" type="text/css" />
+<div id="suggest-lang" class="ribbon hide">
+	<div class="ribbon-content-wrapper">
+		<div class="ribbon-content row">
+			<div class="column large-12 large-centered">
+				<a id="suggest-closer" class="icon icon-after icon-reset"></a>
+				<p><a href="#" id="suggest-link" class="ribbon-link more">View in English</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/assets/scripts/suggest-lang.js?46012143159"></script>
+<aside id="ac-gn-segmentbar" class="ac-gn-segmentbar" lang="en-US" dir="ltr">
+</aside>
+<input type="checkbox" id="ac-gn-menustate" class="ac-gn-menustate" />
+<nav id="ac-globalnav" class="no-js" role="navigation" aria-label="Global" data-hires="false" data-analytics-region="global nav" lang="en-US" dir="ltr"
+    data-www-domain="www.apple.com"
+    data-store-locale="us"
+    data-store-root-path="/us"
+    data-store-api="/[storefront]/shop/bag/status"
+    data-search-locale="en_US"
+    data-search-locale="en_US"
+    data-search-suggestions-api="/search-services/suggestions/"
+    data-search-defaultlinks-api="/search-services/suggestions/defaultlinks/"
+    data-search-suggestions-enabled="false">
+	<div class="ac-gn-content">
+		<ul class="ac-gn-header">
+			<li class="ac-gn-item ac-gn-menuicon">
+				<label class="ac-gn-menuicon-label" for="ac-gn-menustate" aria-hidden="true">
+					<span class="ac-gn-menuicon-bread ac-gn-menuicon-bread-top">
+						<span class="ac-gn-menuicon-bread-crust ac-gn-menuicon-bread-crust-top"></span>
+					</span>
+					<span class="ac-gn-menuicon-bread ac-gn-menuicon-bread-bottom">
+						<span class="ac-gn-menuicon-bread-crust ac-gn-menuicon-bread-crust-bottom"></span>
+					</span>
+				</label>
+				<a href="#ac-gn-menustate" role="button" class="ac-gn-menuanchor ac-gn-menuanchor-open" id="ac-gn-menuanchor-open">
+					<span class="ac-gn-menuanchor-label">Global Nav Open Menu</span>
+				</a>
+				<a href="#" role="button" class="ac-gn-menuanchor ac-gn-menuanchor-close" id="ac-gn-menuanchor-close">
+					<span class="ac-gn-menuanchor-label">Global Nav Close Menu</span>
+				</a>
+			</li>
+			<li class="ac-gn-item ac-gn-apple">
+				<a class="ac-gn-link ac-gn-link-apple-developer" href="/" data-analytics-title="appledeveloper home" id="ac-gn-firstfocus-small">
+					<span class="ac-gn-link-text">Apple Developer</span>
+				</a>
+			</li>
+		</ul>
+		<div class="ac-gn-search-placeholder-container" role="search">
+			<div class="ac-gn-search ac-gn-search-small">
+				<a id="ac-gn-link-search-small" class="ac-gn-link" href="/search/" data-analytics-title="search" data-analytics-click="search" data-analytics-intrapage-link aria-label="Search Developer">
+					<div class="ac-gn-search-placeholder-bar">
+						<div class="ac-gn-search-placeholder-input">
+							<div class="ac-gn-search-placeholder-input-text" aria-hidden="true">
+								<div class="ac-gn-link-search ac-gn-search-placeholder-input-icon"></div>
+								<span class="ac-gn-search-placeholder">Search Developer</span>
+							</div>
+						</div>
+						<div class="ac-gn-searchview-close ac-gn-searchview-close-small ac-gn-search-placeholder-searchview-close">
+							<span class="ac-gn-searchview-close-cancel" aria-hidden="true">Cancel</span>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		<ul class="ac-gn-list">
+			<li class="ac-gn-item ac-gn-apple">
+				<a class="ac-gn-link ac-gn-link-apple-developer" href="/" data-analytics-title="appledeveloper home" id="ac-gn-firstfocus">
+					<span class="ac-gn-link-text">Apple Developer</span>
+					</a>
+			</li>
+			<li class="ac-gn-item ac-gn-item-menu ac-gn-discover">
+				<a class="ac-gn-link ac-gn-link-discover" href="/discover/" data-analytics-title="discover">
+					<span class="ac-gn-link-text">Discover</span>
+					</a>
+			</li>
+			<li class="ac-gn-item ac-gn-item-menu ac-gn-design">
+				<a class="ac-gn-link ac-gn-link-design" href="/design/" data-analytics-title="design">
+					<span class="ac-gn-link-text">Design</span>
+					</a>
+			</li>
+			<li class="ac-gn-item ac-gn-item-menu ac-gn-develop">
+				<a class="ac-gn-link ac-gn-link-develop" href="/develop/" data-analytics-title="develop">
+					<span class="ac-gn-link-text">Develop</span>
+					</a>
+			</li>
+			<li class="ac-gn-item ac-gn-item-menu ac-gn-distribute">
+				<a class="ac-gn-link ac-gn-link-distribute" href="/distribute/" data-analytics-title="distribute">
+					<span class="ac-gn-link-text">Distribute</span>
+					</a>
+			</li>
+			<li class="ac-gn-item ac-gn-item-menu ac-gn-dsupport">
+				<a class="ac-gn-link ac-gn-link-dsupport" href="/support/" data-analytics-title="dsupport">
+					<span class="ac-gn-link-text">Support</span>
+					</a>
+			</li>
+			<li class="ac-gn-item ac-gn-item-menu ac-gn-account">
+				<a class="ac-gn-link ac-gn-link-account" href="/account/" data-analytics-title="account">
+					<span class="ac-gn-link-text">Account</span>
+					</a>
+			</li>
+			<li class="ac-gn-item ac-gn-item-menu ac-gn-search" role="search">
+				<a id="ac-gn-link-search" class="ac-gn-link ac-gn-link-search" href="/search/" data-analytics-title="search" data-analytics-click="search" data-analytics-intrapage-link aria-label="Search Developer"></a>
+			</li>
+		</ul>
+		<aside id="ac-gn-searchview" class="ac-gn-searchview" role="search" data-analytics-region="search">
+			<div class="ac-gn-searchview-content">
+				<div class="ac-gn-searchview-bar">
+					<div class="ac-gn-searchview-bar-wrapper">
+						<form id="ac-gn-searchform" class="ac-gn-searchform" action="/search/" method="get">
+							<div class="ac-gn-searchform-wrapper">
+								<input id="ac-gn-searchform-input" class="ac-gn-searchform-input" type="text" name="q" aria-label="Search Developer" placeholder="Search Developer" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-owns="quicklinks suggestions" />
+								<button id="ac-gn-searchform-submit" class="ac-gn-searchform-submit" type="submit" disabled aria-label="Submit Search"></button>
+								<button id="ac-gn-searchform-reset" class="ac-gn-searchform-reset" type="reset" disabled aria-label="Clear Search">
+										<span class="ac-gn-searchform-reset-background"></span>
+									</button>
+							</div>
+						</form>
+						<button id="ac-gn-searchview-close-small" class="ac-gn-searchview-close ac-gn-searchview-close-small" aria-label="Cancel Search">
+								<span class="ac-gn-searchview-close-cancel" aria-hidden="true">
+									Cancel
+								</span>
+							</button>
+					</div>
+				</div>
+				<aside id="ac-gn-searchresults" class="ac-gn-searchresults hidden" data-string-quicklinks="Quick Links" data-string-suggestions="Suggested Searches" data-string-noresults="">
+                    <section class="ac-gn-searchresults-section ac-gn-searchresults-section-defaultlinks">
+                        <div class="ac-gn-searchresults-section-wrapper">
+							<div class="search-group-checkbox hidden"><input id="group-input" type="checkbox" name="group-filter" value="hig">Limit search to <span id="group-search-label"></span></div>
+                            <h3 class="ac-gn-searchresults-header ac-gn-searchresults-animated">Quick Links</h3>
+                            <ul class="ac-gn-searchresults-list" id="defaultlinks" role="listbox">
+                            </ul>
+                            <span role="status" class="ac-gn-searchresults-count" aria-live="polite">5 Quick Links</span>
+                        </div>
+                    </section>
+                </aside>
+			</div>
+			<button id="ac-gn-searchview-close" class="ac-gn-searchview-close" aria-label="Cancel Search">
+					<span class="ac-gn-searchview-close-wrapper">
+						<span class="ac-gn-searchview-close-left"></span>
+						<span class="ac-gn-searchview-close-right"></span>
+					</span>
+				</button>
+		</aside>
+			</div>
+</nav>
+<div class="ac-gn-blur"></div>
+<div id="ac-gn-curtain" class="ac-gn-curtain"></div>
+<div id="ac-gn-placeholder" class="ac-nav-placeholder"></div>
+<script src="/assets/scripts/ac-globalnav.built.js?26062125044"></script>
+<link rel="stylesheet" href="/assets/styles/search.css?17042142133">
+<script src="/assets/scripts/search.js?36232135133"></script>
+
+	<!-- metrics -->
+<script>
+    /* RSID: */
+    var s_account="awdappledeveloper"
+</script>	
+<script src="/assets/metrics/scripts/analytics.js?10202020"></script>
+<script>
+    s.pageName= AC && AC.Tracking && AC.Tracking.pageName();
+    s.channel="www.en.developer"
+    s.channel="www.en.developer";
+
+    
+    /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+    var s_code=s.t();if(s_code)document.write(s_code)
+</script>
+<!-- /metrics -->
+
+	<main id="main" class="main" role="main">
+
+		<section class="section section-banner theme-dark bg-dusk">
+			<div class="section-content">
+				<div class="row">
+					<div class="column large-centered large-6 medium-8 small-12 text-center">
+						<p><a href="/news/?id=c88acm2b" class="more"><strong>Apple Push Notification Service Reminder</strong></a></p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section-hero">
+			<div class="section-content">
+				<div class="row">
+					<div class="column large-centered large-10 small-12 text-center">
+						<figure class="icon-hero center"></figure>
+						<h1 class="typography-headline">Notifications</h1>
+						<p class="typography-intro">Local and push notifications are great for keeping users informed with timely and relevant content, whether your app is running in the background or inactive. Notifications can display a message, play a distinctive sound, or update a badge on your <span class="nowrap">app icon.</span></p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section-resources bg-alt">
+			<div class="section-content">
+				<div class="row">
+					<div class="column large-centered large-8 medium-10 small-12 text-center">
+						<figure class="icon-xcode center"></figure>
+						<h2>Tools and resources</h2>
+						<p>Use <span class="nowrap">Xcode</span> and these resources to support notifications in your app.</p>
+						<p><a href="/download/" class="icon icon-after icon-downloadcircle">Download Xcode</a></p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</main>
+
+	<aside class="section developer-router-links">
+		<div class="section-content">
+			<div class="row">
+				<div class="column large-3 medium-6 small-12">
+					<a href="/design/human-interface-guidelines/ios/system-capabilities/notifications/" class="block text-center">
+					<figure class="router-icon router-icon-documentation"></figure>
+						<p><strong>Design Guidance</strong></p>
+						<p class="typography-subbody">Learn how to optimize the design and user experience of your app for notifications.</p>
+						<p class="typography-subbody"><span class="block-link more">Read documentation</span></p>
+					</a>
+				</div>
+				<div class="column large-3 medium-6 small-12">
+					<a href="/documentation/usernotifications/" class="block text-center">
+					<figure class="router-icon router-icon-documentation"></figure>
+						<p><strong>Developer Guidance</strong></p>
+						<p class="typography-subbody">Get details on the UserNotifications framework used to implement notifications.</p>
+						<p class="typography-subbody"><span class="block-link more">Read documentation</span></p>
+					</a>
+				</div>
+				<div class="column large-3 medium-6 small-12">
+					<a href="/videos/all-videos/?q=notifications" class="block text-center">
+					<figure class="router-icon router-icon-videos"></figure>
+						<p><strong>Videos</strong></p>
+						<p class="typography-subbody">See the latest in notifications with video presentations and tutorials.</p>
+						<p class="typography-subbody"><span class="block-link more">Watch videos</span></p>
+					</a>
+				</div>
+				<div class="column large-3 medium-6 small-12">
+					<a href="/forums/tags/usernotifications/" class="block text-center">
+					<figure class="router-icon router-icon-forums"></figure>
+						<p><strong>Developer Forums</strong></p>
+						<p class="typography-subbody">Ask questions and discuss notifications with Apple engineers and other developers.</p>
+						<p class="typography-subbody"><span class="block-link more">View forum</span></p>
+					</a>
+				</div>
+			</div>
+		</div>
+	</aside>
+
+	<link rel="stylesheet" href="/assets/styles/footer.dist.css?13082121158">
+<footer id="footer" class="footer" role="contentinfo" aria-labelledby="footer-label">
+    <div class="footer-content">
+        <h2 class="footer-label" id="footer-label">Developer Footer</h2>
+	<nav class="footer-breadcrumbs" aria-label="Breadcrumbs">
+		<a href="/" class="home footer-breadcrumbs-home"><span aria-hidden="true" class="footer-breadcrumbs-home-icon"></span><span class="footer-breadcrumbs-home-label">Developer</span></a>
+		<div class="footer-breadcrumbs-path">
+			<ol class="footer-breadcrumbs-list">
+				<li class="footer-breadcrumbs-item">Notifications</li>
+			</ol>
+		</div>
+	</nav>
+	        <nav class="footer-directory with-5-columns" aria-label="Apple Developer Directory" role="navigation">
+    <!--googleoff: all-->
+    <div class="footer-directory-column">
+        <input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-discover" />
+        <div class="footer-directory-column-section">
+            <label class="footer-directory-column-section-label" for="footer-directory-column-section-state-discover">
+                <h3 class="footer-directory-column-section-title"><a href="/discover/">Discover</a></h3>
+            </label>
+            <a href="#footer-directory-column-section-state-discover" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+            <a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+            <ul class="footer-directory-column-section-list">
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/ios/">iOS</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/ipados/">iPadOS</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/macos/">macOS</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/tvos/">tvOS</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/watchos/">watchOS</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/safari/">Safari and Web</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/games/">Games</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/business/">Business</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/education/">Education</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/wwdc/">WWDC</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-directory-column">
+        <input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-design" />
+        <div class="footer-directory-column-section">
+            <label class="footer-directory-column-section-label" for="footer-directory-column-section-state-design">
+                <h3 class="footer-directory-column-section-title"><a href="/design/">Design</a></h3>
+            </label>
+            <a href="#footer-directory-column-section-state-design" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+            <a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+            <ul class="footer-directory-column-section-list">
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/design/human-interface-guidelines/">Human Interface Guidelines</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/design/resources/">Resources</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/videos/design/">Videos</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/design/awards/">Apple Design Awards</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/fonts/">Fonts</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/accessibility/">Accessibility</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/localization/">Localization</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/accessories/">Accessories</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-directory-column">
+        <input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-develop" />
+        <div class="footer-directory-column-section">
+            <label class="footer-directory-column-section-label" for="footer-directory-column-section-state-develop">
+                <h3 class="footer-directory-column-section-title"><a href="/develop/">Develop</a></h3>
+            </label>
+            <a href="#footer-directory-column-section-state-develop" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+            <a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+            <ul class="footer-directory-column-section-list">
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/xcode/">Xcode</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/swift/">Swift</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/swift-playgrounds/">Swift Playgrounds</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/testflight/">TestFlight</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/documentation/">Documentation</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/videos/">Videos</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/download/">Downloads</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-directory-column">
+        <input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-distribute" />
+        <div class="footer-directory-column-section">
+            <label class="footer-directory-column-section-label" for="footer-directory-column-section-state-distribute">
+                <h3 class="footer-directory-column-section-title"><a href="/distribute/">Distribute</a></h3>
+            </label>
+            <a href="#footer-directory-column-section-state-distribute" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+            <a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+            <ul class="footer-directory-column-section-list">
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/programs/">Developer Program</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/app-store/">App Store</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/app-store/review/">App Review</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/macos/distribution/">Mac Software</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/business/distribute/">Apps for Business</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/safari/extensions/">Safari Extensions</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/app-store/promote/">Marketing Resources</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/softwarelicensing/">Trademark Licensing</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-directory-column">
+        <input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-support" />
+        <div class="footer-directory-column-section">
+            <label class="footer-directory-column-section-label" for="footer-directory-column-section-state-support">
+                <h3 class="footer-directory-column-section-title"><a href="/support/">Support</a></h3>
+            </label>
+            <a href="#footer-directory-column-section-state-support" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+            <a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+            <ul class="footer-directory-column-section-list">
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/support/articles/">Articles</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="https://developer.apple.com/forums/">Developer Forums</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/bug-reporting/">Feedback &amp; Bug&nbsp;Reporting</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/system-status/">System Status</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/contact/">Contact Us</a></li>
+            </ul>
+        </div>
+        <input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-account" />
+        <div class="footer-directory-column-section">
+            <label class="footer-directory-column-section-label" for="footer-directory-column-section-state-account">
+                <h3 class="footer-directory-column-section-title"><a href="/account/">Account</a></h3>
+            </label>
+            <a href="#footer-directory-column-section-state-account" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+            <a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+            <ul class="footer-directory-column-section-list">
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/account/ios/certificate/">Certificates, Identifiers &amp; Profiles</a></li>
+                <li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="https://appstoreconnect.apple.com/">App Store Connect</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--googleon: all-->
+</nav>
+        <section class="footer-mini" vocab="http://schema.org/" typeof="Organization">
+	<div class="footer-mini-news">
+		<div class="copy">
+			To view the latest developer news, visit <a href="/news/">News and Updates</a>.
+		</div>
+		<div class="content">
+			<div class="color-scheme-toggle"
+				role="radiogroup"
+				tabindex="0"
+				aria-label="Select a color scheme preference">
+
+				<label data-color-scheme-option="light">
+
+					<input type="radio" value="light"
+						onchange="window.setPreferredColorScheme(event.target.value)" />
+
+					<div class="text">Light</div>
+
+				</label>
+
+				<label data-color-scheme-option="dark">
+
+					<input type="radio" value="dark"
+						onchange="window.setPreferredColorScheme(event.target.value)" />
+
+					<div class="text">Dark</div>
+
+				</label>
+
+				<label data-color-scheme-option="auto">
+
+					<input type="radio" value="auto"
+						onchange="window.setPreferredColorScheme(event.target.value)" />
+
+					<div class="text">Auto</div>
+
+				</label>
+
+			</div>
+			<script async src="/assets/scripts/color-scheme-toggle.js"></script>
+		</div>
+	</div>
+	<link rel="stylesheet" href="/assets/styles/language-dropdown.css?14182115158">
+	<div class="language-dropdown dropdown-container hidden">
+		<select class="dropdown" aria-label="Language Dropdown"></select>
+		<span class="dropdown-icon icon icon-chevrondown" aria-hidden="true"></span>
+	</div>
+	<script async src="/assets/scripts/lib/jquery/jquery.language-dropdown.js?26062125044"></script>
+	<div class="footer-mini-legal">
+		<div class="footer-mini-legal-copyright">Copyright ©  2021 <a href="https://www.apple.com">Apple Inc.</a> All rights reserved.</div>
+		<div class="footer-mini-legal-links">
+			<a class="footer-mini-legal-link" href="https://www.apple.com/legal/internet-services/terms/site.html" class="first">Terms of Use</a>
+			<a class="footer-mini-legal-link" href="https://www.apple.com/legal/privacy/en-ww/">Privacy Policy</a>
+			<a class="footer-mini-legal-link" href="/support/terms/">Agreements and Guidelines</a>
+		</div>
+	</div>
+</section>
+
+    </div>
+</footer>
+</body>
+</html>
