@@ -46,9 +46,11 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1134,29 +1136,29 @@ public class Editor extends JFrame implements RunnerListener {
     menu.setMnemonic(KeyEvent.VK_H);
 
     JMenuItem item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(event -> Base.showArduinoGettingStarted());
+    item.addActionListener(event -> Base.openURL("https://www.arduino.cc/en/Guide"));
     menu.add(item);
 
     item = new JMenuItem(tr("Environment"));
-    item.addActionListener(event -> Base.showEnvironment());
+    item.addActionListener(event -> Base.openURL("https://www.arduino.cc/en/Guide/Environment"));
     menu.add(item);
 
     item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(event -> Base.showTroubleshooting());
+    item.addActionListener(event -> Base.openURL("https://support.arduino.cc/hc/en-us"));
     menu.add(item);
 
     item = new JMenuItem(tr("Reference"));
-    item.addActionListener(event -> Base.showReference());
+    item.addActionListener(event -> Base.openURL("https://www.arduino.cc/reference/en/"));
     menu.add(item);
 
     menu.addSeparator();
 
     item = newJMenuItemShift(tr("Find in Reference"), 'F');
-    item.addActionListener(event -> handleFindReference(event));
+    item.addActionListener(event -> handleFindReference(getCurrentTab().getCurrentKeyword()));
     menu.add(item);
 
     item = new JMenuItem(tr("Frequently Asked Questions"));
-    item.addActionListener(event -> Base.showFAQ());
+    item.addActionListener(event -> Base.openURL("https://support.arduino.cc/hc/en-us"));
     menu.add(item);
 
     item = new JMenuItem(tr("Visit Arduino.cc"));
@@ -1553,20 +1555,25 @@ public class Editor extends JFrame implements RunnerListener {
     tabs.remove(index);
   }
 
+
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-  void handleFindReference(ActionEvent e) {
-    String text = getCurrentTab().getCurrentKeyword();
 
+  void handleFindReference(String text) {
     String referenceFile = base.getPdeKeywords().getReference(text);
+    String q;
     if (referenceFile == null) {
-      statusNotice(I18n.format(tr("No reference available for \"{0}\""), text));
+      q = text;
+    } else if (referenceFile.startsWith("Serial_")) {
+      q = referenceFile.substring(7);
     } else {
-      if (referenceFile.startsWith("Serial_")) {
-        Base.showReference("Serial/" + referenceFile.substring("Serial_".length()));
-      } else {
-        Base.showReference("Reference/" + referenceFile);
-      }
+      q = referenceFile;
+    }
+    try {
+      Base.openURL("https://www.arduino.cc/search?tab=&q="
+                   + URLEncoder.encode(q, "UTF-8"));
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
     }
   }
 

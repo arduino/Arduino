@@ -247,7 +247,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     menu.add(item);
 
     final JMenuItem referenceItem = new JMenuItem(tr("Find in Reference"));
-    referenceItem.addActionListener(editor::handleFindReference);
+    referenceItem.addActionListener(ev -> editor.handleFindReference(getCurrentKeyword()));
     menu.add(referenceItem);  
 
     final JMenuItem openURLItem = new JMenuItem(tr("Open URL"));

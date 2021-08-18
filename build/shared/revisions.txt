@@ -1,5 +1,8 @@
 ARDUINO 1.8.15 Not yet release
 
+[ide]
+* Removed the very outdated off-line documentation.
+
 [wifi-firmware]
 * Added latest firmwares (up to version 1.4.8) for NINA-based boards
 
