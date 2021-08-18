@@ -1452,6 +1452,7 @@ public class Editor extends JFrame implements RunnerListener {
       codePanel.removeAll();
       codePanel.add(tabs.get(index), BorderLayout.CENTER);
       tabs.get(index).requestFocusInWindow(); // get the caret blinking
+      tabs.get(index).applyPreferences();
       // For some reason, these are needed. Revalidate says it should be
       // automatically called when components are added or removed, but without
       // it, the component switched to is not displayed. repaint() is needed to
