@@ -1,29 +1,219 @@
 ; FTDIBUS.INF
 ; 
-; Copyright © 2000-2011 Future Technology Devices International Limited
+; Copyright © 2000-2021 Future Technology Devices International Limited
 ; 
-; USB serial converter driver installation file for Windows 2000, XP, Server 2003, Vista, Server 2008,
-; Windows 7 and Server 2008 R2 (x86 and x64).
+; USB serial converter driver installation file for Windows 7, Windows 8, Windows 8.1, Windows 10,
+; Server 2008 R2, Server 2012 R2 and Server 2016.
 ; 
 ; 
-; THIS SOFTWARE IS PROVIDED BY FUTURE TECHNOLOGY DEVICES INTERNATIONAL LIMITED ``AS IS'' AND ANY EXPRESS 
-; OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-; FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL FUTURE TECHNOLOGY DEVICES INTERNATIONAL LIMITED
-; BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-; BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-; INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
-; THE POSSIBILITY OF SUCH DAMAGE. 
- 
-; FTDI DRIVERS MAY BE USED ONLY IN CONJUNCTION WITH PRODUCTS BASED ON FTDI PARTS.
- 
-; FTDI DRIVERS MAY BE DISTRIBUTED IN ANY FORM AS LONG AS LICENSE INFORMATION IS NOT MODIFIED.
-
-; IF A CUSTOM VENDOR ID AND/OR PRODUCT ID OR DESCRIPTION STRING ARE USED, IT IS THE RESPONSIBILITY OF
-; THE PRODUCT MANUFACTURER TO MAINTAIN ANY CHANGES AND SUBSEQUENT WHQL RE-CERTIFICATION AS A RESULT OF
-; MAKING THESE CHANGES.
+; IMPORTANT NOTICE: PLEASE READ CAREFULLY BEFORE INSTALLING THE RELEVANT 
+; SOFTWARE: This licence agreement (Licence) is a legal agreement between you (Licensee or 
+; you) and Future Technology Devices International Limited of 2 Seaward Place, Centurion Business 
+; Park, Glasgow  G41 1HH, Scotland (UK Company Number SC136640) (Licensor or we) for use of 
+; driver software provided by the Licensor(Software).
+; 
+; BY INSTALLING OR USING THIS SOFTWARE YOU AGREE TO THE TERMS OF THIS LICENCE 
+; WHICH WILL BIND YOU.  IF YOU DO NOT AGREE TO THE TERMS OF THIS LICENCE, WE ARE 
+; UNWILLING TO LICENSE THE SOFTWARE TO YOU AND YOU MUST DISCONTINUE 
+; INSTALLATION OF THE SOFTWARE NOW.
+; 
+; 1.	GRANT AND SCOPE OF LICENCE
+; 
+; 1.1	In consideration of you agreeing to abide by the terms of this Licence, the Licensor hereby 
+;		grants to you a non-exclusive, non-transferable, royalty free licence to use the Software on 
+;		the terms of this Licence.
+; 
+; 1.2	In this Licence a "Genuine FTDI Component" means an item of hardware that was 
+;		manufactured for, and sold by, the Licensor or a member of the Licensor's group of 
+;		companies. It does not include any counterfeit or fake products. 
+; 
+; 1.3	If you are a manufacturer of a device that includes a Genuine FTDI Component (each a 
+;		"Device") then you may install the Software onto that device. If you are a seller or distributor 
+;		of a Device then you may distribute the Software with the Device. If you are a user of a 
+;		Device then you may install the Software on the Device, or onto a computer system in order 
+;		to use the Device.
+; 
+; 1.4	In each of those cases you may:
+; 
+;		1.4.1	install and use the Software for your purposes only; and
+; 
+;		1.4.2	only use the Software in conjunction with products based on and/or incorporating a 
+; 				Genuine FTDI Component.
+; 
+; 1.5	The Software will not function properly on or with a component that is not a Genuine FTDI 
+;		Component. Use of the Software as a driver for, or installation of the Software onto,  a 
+;		component that is not a Genuine FTDI Component, including without limitation counterfeit 
+;		components, MAY IRRETRIEVABLY DAMAGE THAT COMPONENT.  It is the Licensee's 
+;		responsibility to make sure that all chips it installs the Software on, or uses the Software as a 
+;		driver for, are Genuine FTDI Components. If in doubt then contact the Licensor.  
+; 
+; 2.	If a custom vendor ID and/or product ID or description string are used, it is the responsibility of 
+;		the product manufacturer to maintain any changes and subsequent WHQL re-certification as 
+;		a result of making these changes. 
+; 
+; 3.	LICENSEE'S UNDERTAKINGS
+; 
+; 3.1	Except as expressly set out in this Licence or as permitted by any local law, you undertake:
+; 
+;		3.1.1	not to copy the Software, except where such copying is incidental to normal use of 
+; 				the Software or where it is necessary for the purpose of back-up or operational 
+;				security;
+; 
+;		3.1.2	not to rent, lease, sub-license, loan, translate, merge, adapt, vary or modify the 
+; 				Software or any part of it; 
+; 
+;	 	3.1.3	not to make alterations to, or modifications of, the whole or any part of the Software 
+; 				nor permit the Software or any part of it to be combined with, or become 
+; 				incorporated in, any other programs;
+; 
+; 		3.1.4	not to disassemble, de-compile, reverse engineer or create derivative works based 
+;				on the whole or any part of the Software;
+; 
+;	 	3.1.5	to keep all copies of the Software secure;
+; 
+;		3.1.6	to include the copyright notice of the Licensor on all entire and partial copies of the 
+; 				Software in any form; and
+; 
+;		3.1.7	not to provide, or otherwise make available, the Software in any form, in whole or in 
+; 				part (including, but not limited to, program listings, object and source program 
+; 				listings, object code and source code) to any person.
+; 
+; 4.	INTELLECTUAL PROPERTY RIGHTS
+; 
+; 4.1	You acknowledge that all intellectual property rights in the Software throughout the world 
+; 		belong to the Licensor, that rights in the Software are licensed (not sold) to you, and that you 
+; 		have no rights in, or to, the Software other than the right to use them in accordance with the 
+; 		terms of this Licence.
+; 
+; 5.	WARRANTY
+; 
+; 5.1	To the maximum extent permitted by applicable law, the software is provided "as is".
+; 
+; 5.2	All implied warranties, implied conditions and/or implied licences are excluded from this 
+; 		Licence, including but not limited to implied warranties of quality and/or fitness for purpose (in 
+; 		all cases) to the fullest extent permitted by law.
+; 
+; 5.3	You acknowledge that the Software has not been developed to meet your individual 
+; 		requirements and that the Software may not be uninterrupted or free of bugs or errors.
+; 
+; 6.	LICENSOR'S LIABILITY
+; 
+; 6.1	To the maximum extent permitted by applicable law, in no event shall the Licensor be liable 
+; 		for any: 
+; 
+; 		6.1.1	special loss or damage; 
+; 
+;	 	6.1.2	incidental loss or damage; 
+; 
+; 		6.1.3	indirect or consequential loss or damage:
+; 
+;	 	6.1.4	loss of income;
+; 
+; 		6.1.5	loss of business; 
+; 
+;	 	6.1.6	loss of profits; 
+;	
+; 		6.1.7	loss of revenue;
+; 
+;	 	6.1.8	loss of contracts;
+; 
+; 		6.1.9	business interruption;
+; 
+;	 	6.1.10	loss of the use of money or anticipated savings;
+; 
+; 		6.1.11	loss of information;
+; 
+;	 	6.1.12	loss of opportunity;
+; 
+; 		6.1.13	loss of  goodwill or reputation; and/or
+; 
+;	 	6.1.14	loss of, damage to or corruption of data; 
 ;
-
+;		(in each case) of any kind howsoever arising and whether caused by delict (including 
+;		negligence), breach of contract or otherwise.
+; 
+; 6.2	FTDI's total liability to you in relation to the Software shall not exceed 500 US Dollars.
+; 
+; 6.3	Nothing in this Licence limits or excludes liability for death or personal injury or for fraud.
+; 
+; 7.	TERMINATION
+; 
+; 7.1	The Licensor may terminate this Licence immediately if:
+; 
+;	 	7.1.1	you fail to comply with any of the terms and conditions of the Licence; or
+; 
+; 		7.1.2	you commence or participate in any legal proceedings against the Licensor.
+; 
+; 7.2	Upon termination:
+; 
+;	 	7.2.1	all rights granted to you under this Licence shall cease;
+; 
+; 		7.2.2	you must cease all activities authorised by this Licence; and
+; 
+;	 	7.2.3	you must immediately delete or remove the Software from all computer equipment 
+;	 			in your possession and immediately destroy all copies of the Software then in your 
+; 				possession, custody or control.
+; 
+; 8.	TRANSFER OF RIGHTS AND OBLIGATIONS
+; 
+; 8.1	You may not transfer, assign, charge or otherwise dispose of this Licence, or any of your 
+;	 	rights or obligations arising under it.
+; 
+; 8.2	The Licensor may transfer, assign, charge, sub-contract or otherwise dispose of this Licence, 
+; 		or any of his rights or obligations arising under it, at any time during the term of the Licence.
+; 
+; 9.	WAIVER
+; 
+; 9.1	If the Licensor fails, at any time during the term of this Licence, to insist on strict performance 
+;	 	of any of your obligations under this Licence, or if the Licensor fails to exercise any of the 
+; 		rights or remedies to which he is entitled under this Licence, this shall not constitute a waiver 
+;	 	of such rights or remedies and shall not relieve you from compliance with such obligations.
+; 
+; 9.2	A waiver by the Licensor of any default shall not constitute a waiver of any subsequent 
+; 		default.
+; 
+; 9.3	No waiver by the Licensor of any of these terms and conditions shall be effective unless it is 
+;	 	expressly stated to be a waiver and is communicated to you in writing.
+; 
+; 10.	SEVERABILITY
+; 
+; 		If any of the terms of this Licence are determined by any competent authority to be invalid, 
+;	 	unlawful or unenforceable to any extent, such term, condition or provision will to that extent be 
+; 		severed from the remaining terms, conditions and provisions which will continue to be valid to 
+;	 	the fullest extent permitted by law.
+; 
+; 11.	ENTIRE AGREEMENT
+; 
+; 11.1	This Licence constitutes the whole agreement between us and supersedes any previous 
+; 		arrangement, understanding or agreement between us, relating to the licensing of the 
+;	 	Software.
+; 
+; 11.2	Each party acknowledges that in entering into this Licence it does not rely on any statement, 
+;	 	representation, warranty or understanding other than those expressly set out in this Licence.  
+; 		Each party agrees that it will have no remedy in respect of any statement, representation, 
+;	 	warranty or understanding that is not expressly set out in this Licence. Each party agrees that 
+; 		its only remedy in respect of those representations, statements, assurances and warranties 
+;	 	that are set out in this Licence will be for breach of contract in accordance with the terms of 
+; 		this Licence. 
+; 
+; 11.3	The parties agree that nothing in this Licence will limit or exclude any liability they may have 
+;	 	for fraud.
+; 
+; 12.	MISCELLANEOUS
+; 
+; 12.1	This Licence does not create a partnership or joint venture between the parties to it, nor 
+;	 	authorise a party to act as agent for the other.  
+; 
+; 12.2	This Licence does not create any legal rights enforceable by any third party. 
+; 
+; 12.3	This Licence may only be varied by express written legal agreement between the parties.
+; 
+; 13.	LAW AND JURISDICTION
+; 
+;	 	This Licence, its subject matter or its formation (including non-contractual disputes or claims) 
+; 		shall be governed by and construed in accordance with Scots law and submitted to the non-
+;	 	exclusive jurisdiction of the Scottish courts.
+; 
 
 [Version]
 Signature="$Windows NT$"
@@ -33,7 +223,7 @@ Class=USB
 ClassGUID={36fc9e60-c465-11cf-8056-444553540000}
 Provider=%FTDI%
 CatalogFile=ftdibus.cat
-DriverVer=03/18/2011,2.08.14
+DriverVer=07/05/2021,2.12.36.4
 
 [SourceDisksNames]
 1=%DriversDisk%,,,
@@ -58,7 +248,6 @@ FtdiBus.NTamd64.Copy = 10,system32\drivers
 FtdiBus.NTamd64.Copy2 = 10,system32
 FtdiBus.NTamd64.Copy3 = 10,syswow64
 
-
 [Manufacturer]
 %Ftdi%=FtdiHw,NTamd64
 
@@ -71,6 +260,77 @@ FtdiBus.NTamd64.Copy3 = 10,syswow64
 %USB\VID_0403&PID_6011&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6011&MI_02
 %USB\VID_0403&PID_6011&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6011&MI_03
 %USB\VID_0403&PID_6014.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6014
+%USB\VID_0403&PID_6015.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6015
+%USB\VID_0403&PID_601B&REV_1400.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601B&REV_1400
+%USB\VID_0403&PID_601B&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601B&MI_00
+%USB\VID_0403&PID_601B&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601B&MI_01
+%USB\VID_0403&PID_601B&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601B&MI_02
+%USB\VID_0403&PID_601B&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601B&MI_03
+%USB\VID_0403&PID_601C&REV_1700.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601C&REV_1700
+%USB\VID_0403&PID_601C&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601C&MI_00
+%USB\VID_0403&PID_601C&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601C&MI_01
+%USB\VID_0403&PID_601C&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601C&MI_02
+%USB\VID_0403&PID_601C&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_601C&MI_03
+%USB\VID_0403&PID_0FEC.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_0FEC
+%USB\VID_0403&PID_6031&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6031&MI_00
+%USB\VID_0403&PID_6031&REV_2400.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6031&REV_2400
+%USB\VID_0403&PID_6032&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6032&MI_00
+%USB\VID_0403&PID_6032&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6032&MI_01
+%USB\VID_0403&PID_6033&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6033&MI_00
+%USB\VID_0403&PID_6033&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6033&MI_01
+%USB\VID_0403&PID_6033&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6033&MI_02
+%USB\VID_0403&PID_6034&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6034&MI_00
+%USB\VID_0403&PID_6034&REV_2500.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6034&REV_2500
+%USB\VID_0403&PID_6035&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6035&MI_00
+%USB\VID_0403&PID_6035&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6035&MI_01
+%USB\VID_0403&PID_6036&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6036&MI_00
+%USB\VID_0403&PID_6036&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6036&MI_01
+%USB\VID_0403&PID_6036&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6036&MI_02
+%USB\VID_0403&PID_6037&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6037&MI_00
+%USB\VID_0403&PID_6037&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6037&MI_01
+%USB\VID_0403&PID_6037&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6037&MI_02
+%USB\VID_0403&PID_6037&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6037&MI_03
+%USB\VID_0403&PID_6038&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6038&MI_00
+%USB\VID_0403&PID_6038&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6038&MI_01
+%USB\VID_0403&PID_6038&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6038&MI_02
+%USB\VID_0403&PID_6038&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6038&MI_03
+%USB\VID_0403&PID_6038&MI_04.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6038&MI_04
+%USB\VID_0403&PID_6039&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6039&MI_00
+%USB\VID_0403&PID_6039&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6039&MI_01
+%USB\VID_0403&PID_6039&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6039&MI_02
+%USB\VID_0403&PID_6039&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6039&MI_03
+%USB\VID_0403&PID_6039&MI_04.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6039&MI_04
+%USB\VID_0403&PID_6039&MI_05.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6039&MI_05
+%USB\VID_0403&PID_603A&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603A&MI_00
+%USB\VID_0403&PID_603A&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603A&MI_01
+%USB\VID_0403&PID_603A&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603A&MI_02
+%USB\VID_0403&PID_603A&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603A&MI_03
+%USB\VID_0403&PID_603A&MI_04.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603A&MI_04
+%USB\VID_0403&PID_603A&MI_05.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603A&MI_05
+%USB\VID_0403&PID_603A&MI_06.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603A&MI_06
+%USB\VID_0403&PID_603E.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_603E
+%USB\VID_0403&PID_6040&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6040&MI_00
+%USB\VID_0403&PID_6040&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6040&MI_01
+%USB\VID_0403&PID_6041&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6041&MI_00
+%USB\VID_0403&PID_6041&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6041&MI_01
+%USB\VID_0403&PID_6041&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6041&MI_02
+%USB\VID_0403&PID_6041&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6041&MI_03
+%USB\VID_0403&PID_6042&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6042&MI_00
+%USB\VID_0403&PID_6042&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6042&MI_01
+%USB\VID_0403&PID_6043&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6043&MI_00
+%USB\VID_0403&PID_6043&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6043&MI_01
+%USB\VID_0403&PID_6043&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6043&MI_02
+%USB\VID_0403&PID_6043&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6043&MI_03
+%USB\VID_0403&PID_6044.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6044
+%USB\VID_0403&PID_6045.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6045
+%USB\VID_0403&PID_6047&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6047&MI_00
+%USB\VID_0403&PID_6047&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6047&MI_01
+%USB\VID_0403&PID_6048&MI_00.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6048&MI_00
+%USB\VID_0403&PID_6048&MI_01.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6048&MI_01
+%USB\VID_0403&PID_6048&MI_02.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6048&MI_02
+%USB\VID_0403&PID_6048&MI_03.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6048&MI_03
+%USB\VID_0403&PID_6049.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_6049
+%USB\VID_0403&PID_0000.DeviceDesc%=FtdiBus.NT,USB\VID_0403&PID_0000
 
 [FtdiHw.NTamd64]
 %USB\VID_0403&PID_6001.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6001
@@ -81,6 +341,77 @@ FtdiBus.NTamd64.Copy3 = 10,syswow64
 %USB\VID_0403&PID_6011&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6011&MI_02
 %USB\VID_0403&PID_6011&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6011&MI_03
 %USB\VID_0403&PID_6014.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6014
+%USB\VID_0403&PID_6015.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6015
+%USB\VID_0403&PID_601B&REV_1400.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601B&REV_1400
+%USB\VID_0403&PID_601B&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601B&MI_00
+%USB\VID_0403&PID_601B&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601B&MI_01
+%USB\VID_0403&PID_601B&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601B&MI_02
+%USB\VID_0403&PID_601B&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601B&MI_03
+%USB\VID_0403&PID_601C&REV_1700.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601C&REV_1700
+%USB\VID_0403&PID_601C&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601C&MI_00
+%USB\VID_0403&PID_601C&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601C&MI_01
+%USB\VID_0403&PID_601C&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601C&MI_02
+%USB\VID_0403&PID_601C&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_601C&MI_03
+%USB\VID_0403&PID_0FEC.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_0FEC
+%USB\VID_0403&PID_6031&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6031&MI_00
+%USB\VID_0403&PID_6031&REV_2400.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6031&REV_2400
+%USB\VID_0403&PID_6032&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6032&MI_00
+%USB\VID_0403&PID_6032&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6032&MI_01
+%USB\VID_0403&PID_6033&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6033&MI_00
+%USB\VID_0403&PID_6033&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6033&MI_01
+%USB\VID_0403&PID_6033&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6033&MI_02
+%USB\VID_0403&PID_6034&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6034&MI_00
+%USB\VID_0403&PID_6034&REV_2500.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6035&REV_2500
+%USB\VID_0403&PID_6035&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6035&MI_00
+%USB\VID_0403&PID_6035&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6035&MI_01
+%USB\VID_0403&PID_6036&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6036&MI_00
+%USB\VID_0403&PID_6036&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6036&MI_01
+%USB\VID_0403&PID_6036&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6036&MI_02
+%USB\VID_0403&PID_6037&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6037&MI_00
+%USB\VID_0403&PID_6037&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6037&MI_01
+%USB\VID_0403&PID_6037&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6037&MI_02
+%USB\VID_0403&PID_6037&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6037&MI_03
+%USB\VID_0403&PID_6038&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6038&MI_00
+%USB\VID_0403&PID_6038&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6038&MI_01
+%USB\VID_0403&PID_6038&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6038&MI_02
+%USB\VID_0403&PID_6038&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6038&MI_03
+%USB\VID_0403&PID_6038&MI_04.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6038&MI_04
+%USB\VID_0403&PID_6039&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6039&MI_00
+%USB\VID_0403&PID_6039&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6039&MI_01
+%USB\VID_0403&PID_6039&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6039&MI_02
+%USB\VID_0403&PID_6039&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6039&MI_03
+%USB\VID_0403&PID_6039&MI_04.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6039&MI_04
+%USB\VID_0403&PID_6039&MI_05.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6039&MI_05
+%USB\VID_0403&PID_603A&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603A&MI_00
+%USB\VID_0403&PID_603A&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603A&MI_01
+%USB\VID_0403&PID_603A&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603A&MI_02
+%USB\VID_0403&PID_603A&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603A&MI_03
+%USB\VID_0403&PID_603A&MI_04.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603A&MI_04
+%USB\VID_0403&PID_603A&MI_05.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603A&MI_05
+%USB\VID_0403&PID_603A&MI_06.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603A&MI_06
+%USB\VID_0403&PID_603E.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_603E
+%USB\VID_0403&PID_6040&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6040&MI_00
+%USB\VID_0403&PID_6040&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6040&MI_01
+%USB\VID_0403&PID_6041&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6041&MI_00
+%USB\VID_0403&PID_6041&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6041&MI_01
+%USB\VID_0403&PID_6041&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6041&MI_02
+%USB\VID_0403&PID_6041&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6041&MI_03
+%USB\VID_0403&PID_6042&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6042&MI_00
+%USB\VID_0403&PID_6042&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6042&MI_01
+%USB\VID_0403&PID_6043&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6043&MI_00
+%USB\VID_0403&PID_6043&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6043&MI_01
+%USB\VID_0403&PID_6043&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6043&MI_02
+%USB\VID_0403&PID_6043&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6043&MI_03
+%USB\VID_0403&PID_6044.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6044
+%USB\VID_0403&PID_6045.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6045
+%USB\VID_0403&PID_6047&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6047&MI_00
+%USB\VID_0403&PID_6047&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6047&MI_01
+%USB\VID_0403&PID_6048&MI_00.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6048&MI_00
+%USB\VID_0403&PID_6048&MI_01.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6048&MI_01
+%USB\VID_0403&PID_6048&MI_02.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6048&MI_02
+%USB\VID_0403&PID_6048&MI_03.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6048&MI_03
+%USB\VID_0403&PID_6049.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_6049
+%USB\VID_0403&PID_0000.DeviceDesc%=FtdiBus.NTamd64,USB\VID_0403&PID_0000
 
 [ControlFlags]
 ExcludeFromSelect=*
@@ -94,10 +425,10 @@ CopyFiles=FtdiBus.NTamd64.Copy,FtdiBus.NTamd64.Copy2,FtdiBus.NTamd64.Copy3
 AddReg=FtdiBus.NT.AddReg
 
 [FtdiBus.NT.Services]
-AddService = FTDIBUS, 0x00000002, FtdiBus.NT.AddService
+AddService = FTDIBUS, 0x00000002, FtdiBus.NT.AddService, FtdiBus.NT.EventLog_Inst
 
 [FtdiBus.NTamd64.Services]
-AddService = FTDIBUS, 0x00000002, FtdiBus.NT.AddService
+AddService = FTDIBUS, 0x00000002, FtdiBus.NT.AddService, FtdiBus.NT.EventLog_Inst
 
 [FtdiBus.NT.AddService]
 DisplayName = %SvcDesc%
@@ -106,18 +437,28 @@ StartType = 3 ; SERVICE_DEMAND_START
 ErrorControl = 1 ; SERVICE_ERROR_NORMAL
 ServiceBinary = %10%\system32\drivers\ftdibus.sys
 LoadOrderGroup = Base
-AddReg = FtdiBus.NT.AddService.AddReg
 
 [FtdiBus.NT.AddReg]
 HKR,,DevLoader,,*ntkern
 HKR,,NTMPDriver,,ftdibus.sys
 HKR,,EnumPropPages32,,"ftbusui.dll,FTBUSUIPropPageProvider"
 
-[FtdiBus.NT.AddService.AddReg]
-;HKR,Parameters,"LocIds",1,31,00,00,00,32,00,00,00,00
-;HKR,Parameters,"RetryResetCount",0x10001,50
+[FtdiBus.NT.EventLog_Inst]
+AddReg = FtdiBus.NT.EventLog_Inst.AddReg
 
+[FtdiBus.NT.EventLog_Inst.AddReg]
+HKR,,EventMessageFile,0x00020000,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\ftdibus.sys"
+HKR,,TypesSupported,0x00010001,7
 
+[FtdiBus.NT.HW] 
+AddReg=FtdiBus.NT.HW.AddReg 
+
+[FtdiBus.NTamd64.HW] 
+AddReg=FtdiBus.NT.HW.AddReg 
+
+[FtdiBus.NT.HW.AddReg] 
+;HKR,,"ConfigData",0x00010001,0x00000012 
+   
 [FtdiBus.NT.Copy]
 ftdibus.sys
 
@@ -149,5 +490,76 @@ USB\VID_0403&PID_6011&MI_01.DeviceDesc="USB Serial Converter B"
 USB\VID_0403&PID_6011&MI_02.DeviceDesc="USB Serial Converter C"
 USB\VID_0403&PID_6011&MI_03.DeviceDesc="USB Serial Converter D"
 USB\VID_0403&PID_6014.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_6015.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_601B&REV_1400.DeviceDesc="FT4222 Mode 3 Device"
+USB\VID_0403&PID_601B&MI_00.DeviceDesc="FT4222 Interface A"
+USB\VID_0403&PID_601B&MI_01.DeviceDesc="FT4222 Interface B"
+USB\VID_0403&PID_601B&MI_02.DeviceDesc="FT4222 Interface C"
+USB\VID_0403&PID_601B&MI_03.DeviceDesc="FT4222 Interface D"
+USB\VID_0403&PID_601C&REV_1700.DeviceDesc="FT4222H Mode 3 Device"
+USB\VID_0403&PID_601C&MI_00.DeviceDesc="FT4222H Interface A"
+USB\VID_0403&PID_601C&MI_01.DeviceDesc="FT4222H Interface B"
+USB\VID_0403&PID_601C&MI_02.DeviceDesc="FT4222H Interface C"
+USB\VID_0403&PID_601C&MI_03.DeviceDesc="FT4222H Interface D"
+USB\VID_0403&PID_0FEC.DeviceDesc="UMFT4222PROG"
+USB\VID_0403&PID_6031&MI_00.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_6031&REV_2400.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_6032&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6032&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6033&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6033&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6033&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6034&MI_00.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_6034&REV_2500.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_6035&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6035&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6036&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6036&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6036&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6037&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6037&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6037&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6037&MI_03.DeviceDesc="USB Serial Converter D"
+USB\VID_0403&PID_6038&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6038&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6038&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6038&MI_03.DeviceDesc="USB Serial Converter D"
+USB\VID_0403&PID_6038&MI_04.DeviceDesc="USB Serial Converter E"
+USB\VID_0403&PID_6039&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6039&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6039&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6039&MI_03.DeviceDesc="USB Serial Converter D"
+USB\VID_0403&PID_6039&MI_04.DeviceDesc="USB Serial Converter E"
+USB\VID_0403&PID_6039&MI_05.DeviceDesc="USB Serial Converter F"
+USB\VID_0403&PID_603A&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_603A&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_603A&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_603A&MI_03.DeviceDesc="USB Serial Converter D"
+USB\VID_0403&PID_603A&MI_04.DeviceDesc="USB Serial Converter E"
+USB\VID_0403&PID_603A&MI_05.DeviceDesc="USB Serial Converter F"
+USB\VID_0403&PID_603A&MI_06.DeviceDesc="USB Serial Converter G"
+USB\VID_0403&PID_603E.DeviceDesc="UMFTPD3A Programming Board"
+USB\VID_0403&PID_6040&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6040&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6041&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6041&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6041&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6041&MI_03.DeviceDesc="USB Serial Converter D"
+USB\VID_0403&PID_6042&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6042&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6043&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6043&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6043&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6043&MI_03.DeviceDesc="USB Serial Converter D"
+USB\VID_0403&PID_6044.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_6045.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_6047&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6047&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6048&MI_00.DeviceDesc="USB Serial Converter A"
+USB\VID_0403&PID_6048&MI_01.DeviceDesc="USB Serial Converter B"
+USB\VID_0403&PID_6048&MI_02.DeviceDesc="USB Serial Converter C"
+USB\VID_0403&PID_6048&MI_03.DeviceDesc="USB Serial Converter D"
+USB\VID_0403&PID_6049.DeviceDesc="USB Serial Converter"
+USB\VID_0403&PID_0000.DeviceDesc="USB Serial Converter"
 SvcDesc="USB Serial Converter Driver"
 ClassName="USB"
