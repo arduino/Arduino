@@ -1,4 +1,4 @@
-ARDUINO 1.8.15 Not yet release
+ARDUINO 1.8.16 Not yet released
 
 [ide]
 * Removed the very outdated off-line documentation.
@@ -6,6 +6,8 @@ ARDUINO 1.8.15 Not yet release
 [wifi-firmware]
 * Added latest firmwares (up to version 1.4.8) for NINA-based boards
 
+[drivers]
+* Updated FTDI drivers to version 2.12.36.4
 
 ARDUINO 1.8.15 2021.05.13
 
