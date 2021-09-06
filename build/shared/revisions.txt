@@ -6,6 +6,7 @@ ARDUINO 1.8.16 2021.09.06
 [ide]
 * Removed the very outdated off-line documentation.
 * Do not crash if a malformed boards index URL is entered in preferences.
+* Fixed font-resizing problem with multiple tabs open.
 
 [wifi-firmware]
 * Added latest firmwares (up to version 1.4.8) for NINA-based boards
