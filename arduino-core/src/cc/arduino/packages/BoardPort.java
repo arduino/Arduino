@@ -29,6 +29,8 @@
 
 package cc.arduino.packages;
 
+import java.util.Map;
+
 import processing.app.BaseNoGui;
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
@@ -176,8 +178,9 @@ public class BoardPort {
 
     for (int suffix = 0;; suffix++) {
       boolean found = true;
-      for (String prop : identificationProps.keySet()) {
-        String value = identificationProps.get(prop);
+      for (Map.Entry<String, String> identificationPropsEntry : identificationProps.entrySet()) {
+        String prop = identificationPropsEntry.getKey();
+        String value = identificationPropsEntry.getValue();
         prop += "." + suffix;
         if (!boardProps.containsKey(prop)) {
           return false;

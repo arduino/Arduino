@@ -161,7 +161,7 @@ public class PApplet {
    *      // list is now "apple, bear, cat"</PRE>
    */
   static public String join(String str[], String separator) {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     for (int i = 0; i < str.length; i++) {
       if (i != 0) buffer.append(separator);
       buffer.append(str[i]);

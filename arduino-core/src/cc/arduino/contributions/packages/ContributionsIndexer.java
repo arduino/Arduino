@@ -273,8 +273,9 @@ public class ContributionsIndexer {
         if (!versionsFile.isFile())
           continue;
         PreferencesMap toolsVersion = new PreferencesMap(versionsFile).subTree(pack.getName());
-        for (String name : toolsVersion.keySet()) {
-          String version = toolsVersion.get(name);
+        for (Map.Entry<String, String> toolsVersionEntry : toolsVersion.entrySet()) {
+          String name = toolsVersionEntry.getKey();
+          String version = toolsVersionEntry.getValue();
           ContributedTool tool = syncToolWithFilesystem(pack, toolFolder, name, version);
           if (tool != null)
             tool.setBuiltIn(true);
