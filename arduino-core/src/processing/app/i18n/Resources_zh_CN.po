@@ -31,6 +31,7 @@
 # Haichao Zhu <haichaozhu77@gmail.com>, 2017
 # hanchao <hanchao0123@hotmail.com>, 2013
 # Jacques S, 2015-2017
+# Wenqing Zhou, 2021
 # Wong Min <alpha080@gmail.com>, 2013
 # Yung Wei <oscarwei1988@gmail.com>, 2016
 # Zhuo Liu <lzhskywalker@gmail.com>, 2015
@@ -41,8 +42,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2019-03-28 04:50+0000\n"
-"Last-Translator: BrightLin <xiao89hui@qq.com>\n"
+"PO-Revision-Date: 2021-10-22 23:12+0000\n"
+"Last-Translator: Wenqing Zhou\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1302,7 +1303,7 @@ msgstr ""
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "无效的版本 {0}"
 
 #: Preferences.java:102
 msgid "Italian"

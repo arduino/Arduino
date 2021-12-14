@@ -23,15 +23,15 @@
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
 # AlexL <loginov.alex.valer@gmail.com>, 2015-2018
 # 28532b02ca9d20d69a31703daeea0bda_3873b52 <a8117a72c21fe4a094910f3a12007a5f_154053>, 2014
-# Егор Макаренко, 2015
-# Егор Макаренко, 2015
+# Egor Makarenko, 2015
+# Egor Makarenko, 2015
 # Alexandr Kropochev <Kropochev.a@gmail.com>, 2012
 # Mikhail Lebedev <mihaleb@ya.ru>, 2015
 # Oleg Ekhlakov <subspam@mail.ru>, 2014
 # Petr Beklemishev <pbekl@bk.ru>, 2014-2015
 # Petr Beklemishev <pbekl@bk.ru>, 2015
 # Александр Волков <allxxx@mail.ru>, 2016
-# Егор Макаренко, 2016
+# Egor Makarenko, 2016
 # Михаил Турусов <god_mihail@mail.ru>, 2015
 # Руслан <nasretdinov.r.r@ya.ru>, 2013
 # Jan Maslov <jan.s.maslov@gmail.com>, 2015

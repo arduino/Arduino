@@ -21,7 +21,7 @@
 # Translators:
 # Translators:
 # Salai Aung Myint Myat <ammyat95@gmail.com>, 2018
-# Yhal Htet Aung <jumoun@gmail.com>, 2015
+# Hahaha, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
