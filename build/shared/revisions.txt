@@ -1,4 +1,4 @@
-ARDUINO 1.8.17 Not yet released
+ARDUINO 1.8.17 2021.12.14 SECURITY HOTFIX RELEASE
 
 [ide]
 * Upgrade log4j to 2.15.0 - CVE-2021-44228 (thanks @rhowe)
