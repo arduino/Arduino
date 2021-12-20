@@ -65,9 +65,7 @@ public class HttpConnectionManager {
     userAgent = PreferencesData.get("http.user_agent", defaultUserAgent);
     int connectTimeoutFromConfig = 5000;
     try {
-      connectTimeoutFromConfig =
-        Integer.parseInt(
-          PreferencesData.get("http.connection_timeout_ms", "5000"));
+      connectTimeoutFromConfig = PreferencesData.getInteger("http.connection_timeout_ms", 5000);
     } catch (NumberFormatException e) {
       System.err.println("Error parsing http.connection_timeout_ms config: " + e.getMessage());
     }
@@ -75,9 +73,7 @@ public class HttpConnectionManager {
     // Set by default 20 max redirect to follow
     int maxRedirectNumberConfig = 20;
     try {
-      maxRedirectNumberConfig =
-        Integer.parseInt(
-          PreferencesData.get("http.max_redirect_number", "20"));
+      maxRedirectNumberConfig = PreferencesData.getInteger("http.max_redirect_number", 20);
     } catch (NumberFormatException e) {
       System.err.println("Error parsing http.max_redirect_number config: " + e.getMessage());
     }
