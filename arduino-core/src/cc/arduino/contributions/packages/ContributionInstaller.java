@@ -41,8 +41,6 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
@@ -64,8 +62,6 @@ import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class ContributionInstaller {
-  private static Logger log = LogManager.getLogger(ContributionInstaller.class);
-
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
 
@@ -271,8 +267,6 @@ public class ContributionInstaller {
         Files.delete(destFolder.getParentFile().toPath());
       } catch (Exception e) {
         // ignore
-        log.info("The directory is not empty there is another version installed. directory {}",
-          destFolder.getParentFile().toPath(),  e);
       }
     }
 
@@ -298,15 +292,12 @@ public class ContributionInstaller {
         // Extract the file name from the URL
         final URL packageIndexURL = new URL(packageIndexURLString);
 
-        log.info("Start download and signature check of={}", packageIndexURLs);
         downloader.downloadIndexAndSignature(progress, packageIndexURL, progressListener, signatureVerifier);
       } catch (Exception e) {
-        log.error(e.getMessage(), e);
         System.err.println(e.getMessage());
       }
     }
 
     progress.stepDone();
-    log.info("Downloaded package index URL={}", packageIndexURLs);
   }
 }

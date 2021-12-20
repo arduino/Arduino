@@ -31,9 +31,6 @@ package cc.arduino.utils.network;
 
 import cc.arduino.net.CustomProxySelector;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 
@@ -47,7 +44,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class HttpConnectionManager {
-  private static Logger log = LogManager.getLogger(HttpConnectionManager.class);
   private static final String userAgent;
   private static final int connectTimeout;
   private static final int maxRedirectNumber;
@@ -69,23 +65,17 @@ public class HttpConnectionManager {
     userAgent = PreferencesData.get("http.user_agent", defaultUserAgent);
     int connectTimeoutFromConfig = 5000;
     try {
-      connectTimeoutFromConfig =
-        Integer.parseInt(
-          PreferencesData.get("http.connection_timeout_ms", "5000"));
+      connectTimeoutFromConfig = PreferencesData.getInteger("http.connection_timeout_ms", 5000);
     } catch (NumberFormatException e) {
-      log.warn(
-        "Cannot parse the http.connection_timeout configuration switch to default {} milliseconds", connectTimeoutFromConfig, e.getCause());
+      System.err.println("Error parsing http.connection_timeout_ms config: " + e.getMessage());
     }
     connectTimeout = connectTimeoutFromConfig;
     // Set by default 20 max redirect to follow
     int maxRedirectNumberConfig = 20;
     try {
-      maxRedirectNumberConfig =
-        Integer.parseInt(
-          PreferencesData.get("http.max_redirect_number", "20"));
+      maxRedirectNumberConfig = PreferencesData.getInteger("http.max_redirect_number", 20);
     } catch (NumberFormatException e) {
-      log.warn(
-        "Cannot parse the http.max_redirect_number configuration switch to default {}", maxRedirectNumberConfig, e.getCause());
+      System.err.println("Error parsing http.max_redirect_number config: " + e.getMessage());
     }
     maxRedirectNumber = maxRedirectNumberConfig;
   }
@@ -116,18 +106,13 @@ public class HttpConnectionManager {
   private HttpURLConnection makeConnection(URL requestURL, int movedTimes,
                                            Consumer<HttpURLConnection> beforeConnection) throws IOException, URISyntaxException, ScriptException, NoSuchMethodException {
     if (movedTimes > maxRedirectNumber) {
-      log.warn("Too many redirect " + requestURL);
       throw new IOException("Too many redirect " + requestURL);
     }
 
-    Proxy proxy = new CustomProxySelector(PreferencesData.getMap())
-      .getProxyFor(requestURL.toURI());
-    log.debug("Using proxy {}", proxy);
+    Proxy proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(requestURL.toURI());
 
-    final String requestId = UUID.randomUUID().toString()
-      .toUpperCase().replace("-", "").substring(0, 16);
-    HttpURLConnection connection = (HttpURLConnection) requestURL
-      .openConnection(proxy);
+    final String requestId = UUID.randomUUID().toString().toUpperCase().replace("-", "").substring(0, 16);
+    HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection(proxy);
 
     // see https://github.com/arduino/Arduino/issues/10264
     // Workaround for https://bugs.openjdk.java.net/browse/JDK-8163921
@@ -150,19 +135,11 @@ public class HttpConnectionManager {
     beforeConnection.accept(connection);
 
     // Connect
-    log.info("Connect to {}, method={}, request id={}", requestURL, connection.getRequestMethod(), requestId);
-
     connection.connect();
     int resp = connection.getResponseCode();
-    log.info("Request complete URL=\"{}\", method={}, response code={}, request id={}, headers={}",
-      requestURL, connection.getRequestMethod(), resp, requestId, StringUtils.join(connection.getHeaderFields()));
 
-    if (resp == HttpURLConnection.HTTP_MOVED_PERM
-      || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
-
+    if (resp == HttpURLConnection.HTTP_MOVED_PERM || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
       URL newUrl = new URL(connection.getHeaderField("Location"));
-      log.info("The response code was a 301,302 so try again with the new URL " + newUrl);
-
       return this.makeConnection(newUrl, movedTimes + 1, beforeConnection);
     }
 

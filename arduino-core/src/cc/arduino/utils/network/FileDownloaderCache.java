@@ -38,8 +38,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 import processing.app.helpers.FileUtils;
@@ -64,8 +62,6 @@ import java.util.stream.Collectors;
 
 public class FileDownloaderCache {
   private final static String CACHE_ENABLE_PREFERENCE_KEY = "cache.enable";
-  private final static Logger log = LogManager
-    .getLogger(FileDownloaderCache.class);
   private final static Map<String, FileCached> cachedFiles = Collections
     .synchronizedMap(new HashMap<>());
   private final static String cacheFolder;
@@ -73,9 +69,6 @@ public class FileDownloaderCache {
 
   static {
     enableCache = Boolean.valueOf(PreferencesData.get(CACHE_ENABLE_PREFERENCE_KEY, "true"));
-    if (!enableCache) {
-      log.info("The cache is disable cache.enable=false");
-    }
     PreferencesData.set(CACHE_ENABLE_PREFERENCE_KEY, Boolean.toString(enableCache));
 
     final File settingsFolder;
@@ -86,10 +79,8 @@ public class FileDownloaderCache {
     } else {
       enableCache = false;
       cacheFolder = null;
-      log.error("The cache will disable because the setting folder is null, cannot generate the cache path");
     }
     final Path pathCacheInfo = getCachedInfoPath();
-    log.info("Cache folder {}", cacheFolder);
     try {
       if (Files.exists(pathCacheInfo)) {
         ObjectMapper mapper = new ObjectMapper();
@@ -109,31 +100,26 @@ public class FileDownloaderCache {
             .collect(Collectors.toMap(FileCached::getRemoteURL, Function.identity()))
           )
         );
-        log.info("Number of file already in the cache {}", cachedFiles.size());
 
       }
     } catch (Exception e) {
-      log.error("Cannot initialized the cache", e);
+      System.err.println("Cannot initialized the cache: " + e.getMessage());
     }
   }
 
   public static Optional<FileCached> getFileCached(final URL remoteURL)
-    throws URISyntaxException, NoSuchMethodException, ScriptException,
-    IOException {
+      throws URISyntaxException, NoSuchMethodException, ScriptException, IOException {
     return getFileCached(remoteURL, true);
   }
 
   public static Optional<FileCached> getFileCached(final URL remoteURL, boolean enableCache)
-    throws URISyntaxException, NoSuchMethodException, ScriptException,
-    IOException {
+      throws URISyntaxException, NoSuchMethodException, ScriptException, IOException {
     // Return always and empty file if the cache is not enable
     if (!(enableCache && FileDownloaderCache.enableCache)) {
-      log.info("The cache is not enable.");
       return Optional.empty();
     }
     final String[] splitPath = remoteURL.getPath().split("/");
     if (splitPath.length == 0) {
-      log.warn("The remote path as no file name {}", remoteURL);
       return Optional.empty();
     }
     // Create the path where the cached file should exist
@@ -146,19 +132,14 @@ public class FileDownloaderCache {
       .orElseGet(() -> new FileCached(remoteURL.toString(), cacheFilePath.toString()));
 
     // If the file is change of the cache is disable run the HEAD request to check if the file is changed
-    log.info("Get file cached is expire {}, exist {}, info {} ", fileCached.isExpire(), fileCached.exists(), fileCached);
     if (fileCached.isExpire() || !fileCached.exists()) {
       // Update remote etag and cache control header
       final Optional<FileCached> fileCachedInfoUpdated =
         FileDownloaderCache.updateCacheInfo(remoteURL, (remoteETagClean, cacheControl) -> {
           // Check cache control data
           if (cacheControl.isNoCache() || cacheControl.isMustRevalidate() || cacheControl.isNoStore()) {
-            log.warn("The file {} must not be cache due to cache control header {}",
-              remoteURL, cacheControl);
             return Optional.empty();
           }
-          log.info("Update cached info of {}, createdAt {}, previous eTag {}, last eTag {}, cache control header {} ",
-            remoteURL, fileCached.createdAt, fileCached.eTag, remoteETagClean, cacheControl);
           final FileCached fileCachedUpdateETag = new FileCached(
             remoteURL.toString(),
             cacheFilePath.toString(),
@@ -180,20 +161,18 @@ public class FileDownloaderCache {
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
     // Update the headers of the cached file
-    final HttpURLConnection headRequest = new HttpConnectionManager(
-      remoteURL).makeConnection((connection) -> {
+    final HttpURLConnection headRequest = new HttpConnectionManager(remoteURL).makeConnection((connection) -> {
       try {
         connection.setRequestMethod("HEAD");
       } catch (ProtocolException e) {
-        log.error("Invalid protocol", e);
+        System.err.println(e.getMessage());
       }
     });
     final int responseCode = headRequest.getResponseCode();
     headRequest.disconnect();
     // Something bad is happening return a conservative true to try to download the file
     if (responseCode < 200 || responseCode >= 300) {
-      log.warn("The head request return a bad response code " + responseCode);
-      // if something bad happend
+      // if something bad happened
       return Optional.empty();
     }
     // Get all the useful headers
@@ -204,7 +183,7 @@ public class FileDownloaderCache {
       final CacheControl cacheControl = CacheControl.valueOf(cacheControlHeader);
       return getNewFile.apply(remoteETagClean, cacheControl);
     }
-    log.warn("The head request do not return the ETag {} or the Cache-Control {}", remoteETag, cacheControlHeader);
+    // the head request do not return the ETag or the Cache-Control
     return Optional.empty();
   }
 
@@ -223,7 +202,6 @@ public class FileDownloaderCache {
     if (Files.notExists(cachedFileInfo)) {
       Files.createDirectories(cachedFileInfo.getParent());
     }
-    log.info("Update cache file info in {}, number of cached files is {}", cachedFileInfo.toFile(), cachedFiles.size());
     // Write to cache.json
     mapper.writeValue(cachedFileInfo.toFile(), objectNode);
   }
@@ -287,19 +265,16 @@ public class FileDownloaderCache {
     @JsonIgnore
     public boolean isChange() {
       // Check if the file is expire
-      boolean isChange = false;
+      boolean isChanged = false;
       if (isExpire()) {
-        log.debug("The file \"{}\" is expire. Expire time: {}", localPath,
-          this.getExpiresTime().format(DateTimeFormatter.ISO_DATE_TIME));
-        isChange = true;
+        isChanged = true;
       }
 
       if (lastETag != null && !lastETag.equals(eTag)) {
-        // If are different means that the file is change
-        log.debug("The file \"{}\" is changed last ETag != now Etag ({}!={})", localPath, lastETag, eTag);
-        isChange = true;
+        // Different ETag means that the file is changed
+        isChanged = true;
       }
-      return isChange;
+      return isChanged;
     }
 
     @JsonIgnore
@@ -327,7 +302,6 @@ public class FileDownloaderCache {
       final String md5 = this.calculateMD5();
       final String eTag;
       if (lastETag == null) {
-        log.warn("The eTag was not calculate this time, is not the right behaviour fileCached={}, md5={}", this, md5);
         eTag = this.eTag;
       } else {
         eTag = this.lastETag;
@@ -340,10 +314,8 @@ public class FileDownloaderCache {
         md5,
         this.cacheControl
       );
-      log.info("Update cache file: {}", newFileCached);
       cachedFiles.put(remoteURL, newFileCached);
       updateCacheFilesInfo();
-
     }
 
     public synchronized void invalidateCache() throws IOException {
@@ -363,7 +335,6 @@ public class FileDownloaderCache {
       try {
         return !Objects.isNull(getMD5()) && Objects.equals(calculateMD5(), getMD5());
       } catch (Exception e) {
-        log.error("Fail to calculate the MD5. file={}", this, e);
         return false;
       }
     }

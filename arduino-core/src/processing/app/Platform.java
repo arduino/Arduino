@@ -52,7 +52,6 @@ import static processing.app.I18n.tr;
  * know if name is proper Java package syntax.)
  */
 public class Platform {
-  // DO NOT USE log4j here otherwise the root path of the logs will no be initialize correctly
   /**
    * Set the default L & F. While I enjoy the bounty of the sixteen possible
    * exception types that this UIManager method might throw, I feel that in

@@ -32,8 +32,6 @@ package processing.app.helpers;
 import cc.arduino.utils.network.HttpConnectionManager;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.debug.TargetBoard;
@@ -48,7 +46,6 @@ import java.util.Map;
 import static processing.app.I18n.tr;
 
 public class BoardCloudResolver {
-  private static Logger log = LogManager.getLogger(BoardCloudResolver.class);
 
   public synchronized void getBoardBy(String vid, String pid) {
     // this method is less useful in Windows < WIN10 since you need drivers to be already installed
@@ -61,12 +58,10 @@ public class BoardCloudResolver {
         .makeConnection();
       int code = httpConnection.getResponseCode();
       if (code == 404) {
-        log.warn("Fail to get the Vid Pid information from the builder response code={}", code);
         return;
       }
       InputStream is = httpConnection.getInputStream();
       BoardCloudAPIid board = mapper.readValue(is, BoardCloudAPIid.class);
-      log.info("Board info from the cloud {}", board);
       // Launch a popup with a link to boardmanager#board.getName()
       // replace spaces with &
       String realBoardName = board.getName().replaceAll("\\(.*?\\)", "").trim();
@@ -76,8 +71,6 @@ public class BoardCloudResolver {
     } catch (Exception e) {
       // No connection no problem, fail silently
       //e.printStackTrace();
-      log.warn("Error during get board information by vid, pid", e);
-
     }
   }
 

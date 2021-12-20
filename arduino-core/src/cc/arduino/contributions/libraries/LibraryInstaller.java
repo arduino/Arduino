@@ -38,8 +38,6 @@ import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
 import cc.arduino.utils.network.FileDownloader;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
@@ -57,8 +55,6 @@ import java.util.Optional;
 import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
-  private static Logger log = LogManager.getLogger(LibraryInstaller.class);
-
   private final Platform platform;
   private final GPGDetachedSignatureVerifier signatureVerifier;
 
@@ -97,10 +93,7 @@ public class LibraryInstaller {
         }
       } else {
         FileDownloader.invalidateFiles(libraryGzURL, libraryURL, signatureUrl);
-        log.error("Fail to verify the signature of {} the cached files have been removed", libraryURL);
       }
-    } else {
-      log.info("The domain is not selected to verify the signature. library index: {}", signatureUrl);
     }
 
     // Step 2: Parse index
