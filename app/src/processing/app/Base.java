@@ -220,12 +220,6 @@ public class Base {
     parser.parseArgumentsPhase1();
     commandLine = !parser.isGuiMode();
 
-    // This configure the logs root folder
-    if (parser.isGuiMode()) {
-        System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
-    }
-    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
-
     BaseNoGui.checkInstallationFolder();
 
     // If no path is set, get the default sketchbook folder for this platform

@@ -80,10 +80,6 @@
 	   includeAntRuntime="false"
 	   debug="true"
 	   classpathref="class.path" />
-    <!-- If you want to add files in the jars -->
-    <copy todir="bin" overwrite="true" verbose="true">
-      <fileset dir="src" includes="log4j2.xml" />
-    </copy>
   </target>
 
   <target name="test" depends="compile" description="Runs the test">
