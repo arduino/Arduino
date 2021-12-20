@@ -265,16 +265,16 @@ public class FileDownloaderCache {
     @JsonIgnore
     public boolean isChange() {
       // Check if the file is expire
-      boolean isChange = false;
+      boolean isChanged = false;
       if (isExpire()) {
-        isChange = true;
+        isChanged = true;
       }
 
       if (lastETag != null && !lastETag.equals(eTag)) {
         // Different ETag means that the file is changed
-        isChange = true;
+        isChanged = true;
       }
-      return isChange;
+      return isChanged;
     }
 
     @JsonIgnore
