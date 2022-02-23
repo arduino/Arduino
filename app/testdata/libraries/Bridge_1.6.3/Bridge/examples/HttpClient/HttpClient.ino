@@ -37,7 +37,7 @@ void loop() {
   HttpClient client;
 
   // Make a HTTP request:
-  client.get("http://www.arduino.cc/asciilogo.txt");
+  client.get("http://arduino.tips/asciilogo.txt");
 
   // if there are incoming bytes available
   // from the server, read them and print them:
