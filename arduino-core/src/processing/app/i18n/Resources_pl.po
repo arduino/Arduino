@@ -1192,7 +1192,7 @@ msgstr "NIEZGODNY"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
-msgstr "Zignoruj przypadek"
+msgstr "Zignoruj wielkość liter"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
 msgid "Ignoring library with bad name"
