@@ -1,6 +1,6 @@
 # SerialPlotter protocol
 
-One message can consist of multiply parts.
+One message can consist of multiple parts.
 One part can consist of one label, one label and a value or only a value.
 
 |  |  | 
@@ -31,11 +31,11 @@ There is a special case, the CSV header style.
 |-------|----|---------|-----|---------|----|
 |Label 1| \t | Label 2 | ... | Label n | \n |  
 
-But in this format, labels consisting of only numbers are not recognised as labels.  
+Note that in this format, labels consisting of only numbers are not recognised as labels.  
 It is safer to just use the normal label only message.
 
 ## Value only messages Value
-This is not recommended if you using a board with USB to UART converter.
+This is not recommended if you use a board with USB to UART converter.
 Because when the label is sent, before you had the SerialPlotter opened, then the label/labels get/gets never set.
 
 |         |    |         |     |         |    |
@@ -73,7 +73,7 @@ The output looks like this
 ```
 ## Single Trace with label
 
-This example sends the label once in the setup routine. Afterwards only the value is send.
+This example sends the label once in the setup routine. Afterwards only the value is sent.
 
 ```ino
 void setup() {
@@ -100,7 +100,7 @@ Label 1:\n
 14\n
 ```
 
-## Single Trace with label send every time
+## Single Trace with label sent every time
 
 This example sends the label every time together with the value.
 
@@ -126,7 +126,7 @@ Label 1:12\n
 Label 1:13\n
 Label 1:14\n
 ```
-## Two Traces with label send every time
+## Two Traces with label sent every time
 
 This example sends two values together with the labels.
 
