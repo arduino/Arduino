@@ -68,10 +68,10 @@ public class Sketch {
     if (pdeName.equals(fileName) || inoName.equals(fileName))
       return file;
 
-    if (altPdeFile.exists())
+    if (FileUtils.fileExistsCaseSensitive(altPdeFile, pdeName))
       return altPdeFile;
 
-    if (altInoFile.exists())
+    if (FileUtils.fileExistsCaseSensitive(altInoFile, inoName))
       return altInoFile;
 
     return null;
