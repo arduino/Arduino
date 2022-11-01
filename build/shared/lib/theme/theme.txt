@@ -41,15 +41,29 @@ plotting.bgcolor = #ffffff
 plotting.color = #ffffff
 plotting.gridcolor = #f0f0f0
 plotting.boundscolor = #000000
-plotting.graphcolor.size = 8
-plotting.graphcolor.00 = #0000FF
-plotting.graphcolor.01 = #FF0000
-plotting.graphcolor.02 = #009900
-plotting.graphcolor.03 = #FF9900
-plotting.graphcolor.04 = #CC00CC
-plotting.graphcolor.05 = #666666
-plotting.graphcolor.06 = #00CCFF
-plotting.graphcolor.07 = #000000
+plotting.graphcolor.size = 20
+# These are the python matplotlib tab20 colors
+# ``` for c in plt.cm.tab20.colors: print(matplotlib.colors.to_hex(c)) ```
+plotting.graphcolor.00 = #1F77B4
+plotting.graphcolor.01 = #AEC7E8
+plotting.graphcolor.02 = #FF7F0E
+plotting.graphcolor.03 = #FFBB78
+plotting.graphcolor.04 = #2CA02C
+plotting.graphcolor.05 = #98DF8A
+plotting.graphcolor.06 = #D62728
+plotting.graphcolor.07 = #FF9896
+plotting.graphcolor.08 = #9467BD
+plotting.graphcolor.09 = #C5B0D5
+plotting.graphcolor.10 = #8C564B
+plotting.graphcolor.11 = #C49C94
+plotting.graphcolor.12 = #E377C2
+plotting.graphcolor.13 = #F7B6D2
+plotting.graphcolor.14 = #7F7F7F
+plotting.graphcolor.15 = #C7C7C7
+plotting.graphcolor.16 = #BCBD22
+plotting.graphcolor.17 = #DBDB8D
+plotting.graphcolor.18 = #17BECF
+plotting.graphcolor.19 = #9EDAE5
 
 # GUI - LINESTATUS   
 linestatus.color = #ffffff
