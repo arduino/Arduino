@@ -34,7 +34,7 @@ import java.io.File;
 public class UserLibraryFolder {
 
   public enum Location {
-    SKETCHBOOK, CORE, REFERENCED_CORE, IDE_BUILTIN,
+    SKETCHBOOK, CORE, REFERENCED_CORE, IDE_BUILTIN, ADDITIONAL,
   }
 
   public File folder;

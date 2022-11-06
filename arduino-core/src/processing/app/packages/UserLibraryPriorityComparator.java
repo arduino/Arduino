@@ -38,7 +38,8 @@ public class UserLibraryPriorityComparator implements Comparator<UserLibrary> {
 
   private final static Map<Location, Integer> priorities = new HashMap<>();
   static {
-    priorities.put(Location.SKETCHBOOK, 4);
+    priorities.put(Location.SKETCHBOOK, 5);
+    priorities.put(Location.ADDITIONAL, 4);
     priorities.put(Location.CORE, 3);
     priorities.put(Location.REFERENCED_CORE, 2);
     priorities.put(Location.IDE_BUILTIN, 1);

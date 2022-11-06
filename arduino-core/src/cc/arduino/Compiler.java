@@ -49,8 +49,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -248,6 +250,18 @@ public class Compiler implements MessageConsumer {
 
     addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
     addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder().folder);
+
+    // adding several additional library directories, taken from preferences.txt
+    // additional_library_directories=path1[;path2[;...]]
+    Collection<String> additional_library_directories = splitAndTrim(PreferencesData.get("additional_library_directories"), ";");
+    for (String path : additional_library_directories) {
+	File fpath = new File(path);
+	addPathFlagIfPathExists(cmd, "-libraries", fpath);
+
+	if (!fpath.isDirectory()) {
+	    System.err.println(I18n.format(tr("Warning: additional_library_directories: directory '{0}' not found"), path));
+	}
+    }
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
     cmd.add("-fqbn=" + fqbn);
@@ -617,5 +631,14 @@ public class Compiler implements MessageConsumer {
       }
     }
     return null;
+  }
+
+  private Collection<String> splitAndTrim(String text, String separator) {
+    if ((text == null) || (text.length() == 0)) {
+      return Collections.emptyList() ;
+    }
+
+    Collection<String> parts = Arrays.asList(text.split(separator));
+    return parts.stream().map(String::trim).filter(part -> !part.isEmpty()).collect(Collectors.toList());
   }
 }
