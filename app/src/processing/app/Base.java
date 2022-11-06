@@ -829,7 +829,8 @@ public class Base {
     fd.setFilenameFilter(new FilenameFilter() {
       public boolean accept(File dir, String name) {
         return name.toLowerCase().endsWith(".ino")
-                || name.toLowerCase().endsWith(".pde");
+                || name.toLowerCase().endsWith(".pde")
+                || name.toLowerCase().endsWith(".inz");
       }
     });
 
