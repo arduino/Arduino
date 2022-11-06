@@ -22,23 +22,22 @@
 
 package processing.app;
 
-import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-import static processing.app.I18n.format;
-import static processing.app.I18n.tr;
+import jssc.SerialPort;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
+import jssc.SerialPortException;
 
 public class Serial implements SerialPortEventListener {
 
@@ -53,11 +52,9 @@ public class Serial implements SerialPortEventListener {
 
   private SerialPort port;
 
-  private CharsetDecoder bytesToStrings;
-  private static final int IN_BUFFER_CAPACITY = 128;
-  private static final int OUT_BUFFER_CAPACITY = 128;
-  private ByteBuffer inFromSerial = ByteBuffer.allocate(IN_BUFFER_CAPACITY);
-  private CharBuffer outToMessage = CharBuffer.allocate(OUT_BUFFER_CAPACITY);
+  private PipedOutputStream decoderInRaw;
+  private InputStreamReader decoderOutputUTF8;
+  private final int DECODER_BUFF_SIZE = 16384;
 
   public Serial() throws SerialException {
     this(PreferencesData.get("serial.port"),
@@ -189,42 +186,18 @@ public class Serial implements SerialPortEventListener {
 
   public void processSerialEvent(byte[] buf) {
     int next = 0;
-    // This uses a CharsetDecoder to convert from bytes to UTF-8 in
-    // a streaming fashion (i.e. where characters might be split
-    // over multiple reads). This needs the data to be in a
-    // ByteBuffer (inFromSerial, which we also use to store leftover
-    // incomplete characters for the nexst run) and produces a
-    // CharBuffer (outToMessage), which we then convert to char[] to
-    // pass onwards.
-    // Note that these buffers switch from input to output mode
-    // using flip/compact/clear
-    while (next < buf.length || inFromSerial.position() > 0) {
-      do {
-        // This might be 0 when all data was already read from buf
-        // (but then there will be data in inFromSerial left to
-        // decode).
-        int copyNow = Math.min(buf.length - next, inFromSerial.remaining());
-        inFromSerial.put(buf, next, copyNow);
-        next += copyNow;
-
-        inFromSerial.flip();
-        bytesToStrings.decode(inFromSerial, outToMessage, false);
-        inFromSerial.compact();
-
-        // When there are multi-byte characters, outToMessage might
-        // still have room, so add more bytes if we have any.
-      } while (next < buf.length && outToMessage.hasRemaining());
-
-      // If no output was produced, the input only contained
-      // incomplete characters, so we're done processing
-      if (outToMessage.position() == 0)
-        break;
-
-      outToMessage.flip();
-      char[] chars = new char[outToMessage.remaining()];
-      outToMessage.get(chars);
-      message(chars, chars.length);
-      outToMessage.clear();
+    int max = buf.length;
+    char chars[] = new char[DECODER_BUFF_SIZE];
+    try {
+      while (next < max) {
+        int w = Integer.min(max - next, chars.length);
+        decoderInRaw.write(buf, next, w);
+        next += w;
+        int n = decoderOutputUTF8.read(chars);
+        message(chars, n);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -295,10 +268,14 @@ public class Serial implements SerialPortEventListener {
    * before they are handed as Strings to {@Link #message(char[], int)}.
    */
   public synchronized void resetDecoding(Charset charset) {
-    bytesToStrings = charset.newDecoder()
-                      .onMalformedInput(CodingErrorAction.REPLACE)
-                      .onUnmappableCharacter(CodingErrorAction.REPLACE)
-                      .replaceWith("\u2e2e");
+    try {
+      decoderInRaw = new PipedOutputStream();
+      // add 16 extra bytes to make room for incomplete UTF-8 chars
+      decoderOutputUTF8 = new InputStreamReader(new PipedInputStream(decoderInRaw, DECODER_BUFF_SIZE + 16), charset);
+    } catch (IOException e) {
+      // Should never happen...
+      e.printStackTrace();
+    }
   }
 
   static public List<String> list() {
