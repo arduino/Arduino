@@ -37,6 +37,7 @@
     <cp>%EXEDIR%/lib/commons-logging-1.0.4.jar</cp>
     <cp>%EXEDIR%/lib/commons-net-3.3.jar</cp>
     <cp>%EXEDIR%/lib/commons-io-2.6.jar</cp>
+    <cp>%EXEDIR%/lib/flatlaf-0.27.jar</cp>
     <cp>%EXEDIR%/lib/jackson-annotations-2.9.5.jar</cp>
     <cp>%EXEDIR%/lib/jackson-core-2.9.5.jar</cp>
     <cp>%EXEDIR%/lib/jackson-databind-2.9.5.jar</cp>

@@ -61,6 +61,8 @@ import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextAreaDefaultInputMap;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.ZipDeflater;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -244,12 +246,19 @@ public class Base {
       Theme.init();
       System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
 
-      // Set the look and feel before opening the window
+      try {
+        UIManager.setLookAndFeel( new FlatLightLaf() );
+      } catch( Exception ex ) {
+        System.err.println( "Failed to initialize LaF" );
+      }
+
+      /*
       try {
         BaseNoGui.getPlatform().setLookAndFeel();
       } catch (Exception e) {
         // ignore
       }
+      */
 
       // Use native popups so they don't look so crappy on osx
       JPopupMenu.setDefaultLightWeightPopupEnabled(false);
