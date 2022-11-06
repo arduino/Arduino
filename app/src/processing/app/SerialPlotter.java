@@ -41,6 +41,8 @@ public class SerialPlotter extends AbstractMonitor {
 
   private final StringBuffer messageBuffer;
   private JComboBox<String> serialRates;
+  private JButton clearButton;
+  private JSpinner graphWidth;
   private Serial serial;
   private int serialRate, xCount;
 
@@ -50,15 +52,18 @@ public class SerialPlotter extends AbstractMonitor {
   private JComboBox<String> lineEndings;
 
   private ArrayList<Graph> graphs;
-  private final static int BUFFER_CAPACITY = 500;
+  private final static int BUFFER_CAPACITY_DEFAULT = 500;
+  private final static int BUFFER_CAPACITY_MAX = 5000;
+  private final static int BUFFER_CAPACITY_MIN = 10;
+  private int buffer_capacity = BUFFER_CAPACITY_DEFAULT;
 
   private static class Graph {
     public CircularBuffer buffer;
     private Color color;
     public String label;
 
-    public Graph(int id) {
-      buffer = new CircularBuffer(BUFFER_CAPACITY);
+    public Graph(int id, int capacity) {
+      buffer = new CircularBuffer(capacity);
       color = Theme.getColorCycleColor("plotting.graphcolor", id);
     }
 
@@ -156,12 +161,12 @@ public class SerialPlotter extends AbstractMonitor {
       }
 
       // handle data count
-      int cnt = xCount - BUFFER_CAPACITY;
-      if (xCount < BUFFER_CAPACITY) cnt = 0;
+      int cnt = xCount - buffer_capacity;
+      if (xCount < buffer_capacity) cnt = 0;
         
       double zeroTick = ticks.getTick(0);
       double lastTick = ticks.getTick(ticks.getTickCount() - 1);
-      double xTickRange = BUFFER_CAPACITY / ticks.getTickCount();
+      double xTickRange = buffer_capacity / ticks.getTickCount();
         
       for (int i = 0; i < ticks.getTickCount() + 1; i++) {
           String s;
@@ -177,7 +182,7 @@ public class SerialPlotter extends AbstractMonitor {
               s = String.valueOf((int)(xTickRange * i)+cnt);
               fBounds = fm.getStringBounds(s, g);
               sWidth = (int)fBounds.getWidth()/2;
-              xValue = (int)((bounds.width - xOffset - xPadding) * ((xTickRange * i) / BUFFER_CAPACITY) + xOffset);
+              xValue = (int)((bounds.width - xOffset - xPadding) * ((xTickRange * i) / buffer_capacity) + xOffset);
           }
           // draw graph x axis, ticks and labels
           g.setColor(boundsColor);
@@ -194,8 +199,8 @@ public class SerialPlotter extends AbstractMonitor {
       g.drawLine(xOffset, (int) transformY(zeroTick), bounds.width - xPadding, (int)transformY(zeroTick));
         
       g.setTransform(AffineTransform.getTranslateInstance(xOffset, 0));
-      float xstep = (float) (bounds.width - xOffset - xPadding) / (float) BUFFER_CAPACITY;
 
+      float xstep = (float) (bounds.width - xOffset - xPadding) / (float) buffer_capacity;
       // draw legend
       int legendXOffset = 0;
       for(int i = 0; i < graphs.size(); ++i) {
@@ -255,6 +260,10 @@ public class SerialPlotter extends AbstractMonitor {
 
     messageBuffer = new StringBuffer();
     graphs = new ArrayList<>();
+
+    graphWidth.addChangeListener(cl -> {commandNewSize((int)graphWidth.getValue()); } );
+    
+    clearButton.addActionListener(ae -> {commandClearGraph();});
   }
 
   protected void onCreateWindow(Container mainPane) {
@@ -272,10 +281,24 @@ public class SerialPlotter extends AbstractMonitor {
     for (String serialRateString : serialRateStrings) serialRates.addItem(serialRateString + " " + tr("baud"));
 
     serialRates.setMaximumSize(serialRates.getMinimumSize());
-
+	
+	  clearButton = new JButton(tr("Clear output"));
+	
+    graphWidth = new JSpinner(new SpinnerNumberModel(
+                               BUFFER_CAPACITY_DEFAULT, //initial value
+                               BUFFER_CAPACITY_MIN, //min
+                               BUFFER_CAPACITY_MAX, //max
+                               1));                //step
+    graphWidth.setMaximumSize(graphWidth.getMinimumSize());
+    JSpinner.NumberEditor editor = new JSpinner.NumberEditor(graphWidth);
+    editor.getFormat().setGroupingUsed(false);
+    graphWidth.setEditor(editor);
+    
     pane.add(Box.createHorizontalGlue());
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
+    pane.add(clearButton);
+    pane.add(graphWidth);
 
     mainPane.add(pane, BorderLayout.SOUTH);
 
@@ -381,12 +404,43 @@ public class SerialPlotter extends AbstractMonitor {
   }
 
   protected void onEnableWindow(boolean enable) {
+    serialRates.setEnabled(enable);
+    graphWidth.setEnabled(enable);
+    clearButton.setEnabled(enable);
     textField.setEnabled(enable);
     sendButton.setEnabled(enable);
   }
 
   private void onSerialRateChange(ActionListener listener) {
     serialRates.addActionListener(listener);
+  }
+
+  private void setNewBufferCapacity(int capacity){
+    if(buffer_capacity != capacity) {
+      if(capacity > BUFFER_CAPACITY_MAX) buffer_capacity = BUFFER_CAPACITY_MAX;
+      else if(capacity < BUFFER_CAPACITY_MIN) buffer_capacity = BUFFER_CAPACITY_MIN;
+      else buffer_capacity = capacity;
+
+      for(int i = 0; i < graphs.size(); i++) {
+        graphs.get(i).buffer.newCapacity(buffer_capacity);
+      }
+
+      xCount=0;
+    }
+  }
+
+  private void commandClearGraph()
+  {
+    graphs.clear();
+    xCount=0;
+  }
+
+  private void commandNewSize(int newSize)
+  {
+    setNewBufferCapacity(newSize);
+    if((int)graphWidth.getValue() != newSize) {
+      graphWidth.setValue(newSize);
+    }
   }
 
   public void message(final String s) {
@@ -413,6 +467,35 @@ public class SerialPlotter extends AbstractMonitor {
       int validParts = 0;
       int validLabels = 0;
       for(int i = 0; i < parts.length; ++i) {
+        // all commands start with #
+        if(parts[i].startsWith("#") && parts[i].length() > 1) {
+          String command = parts[i].substring(1, parts[i].length()).trim();
+          if("CLEAR".equals(command)) {
+            commandClearGraph();
+          }
+          else if(command.startsWith("SIZE:")) {
+            String[] subString = parts[i].split("[:]+");
+            int newSize = BUFFER_CAPACITY_DEFAULT;
+            if(subString.length > 1) {
+              try {
+                newSize = Integer.parseInt(subString[1]);
+              } catch (NumberFormatException e) {
+                // Ignore
+              }
+            }
+            commandNewSize(newSize);
+          }
+        } else {
+            try {
+            double value = Double.valueOf(parts[i]);
+            if(validParts >= graphs.size()) {
+              graphs.add(new Graph(validParts, buffer_capacity));
+            }
+            graphs.get(validParts).buffer.add(value);
+            validParts++;
+          } catch (NumberFormatException e) {
+            // ignore
+          }
         Double value = null;
         String label = null;
         
@@ -451,14 +534,14 @@ public class SerialPlotter extends AbstractMonitor {
         
         if(value != null) {
           if(validParts >= graphs.size()) {
-            graphs.add(new Graph(validParts));
+            graphs.add(new Graph(validParts, buffer_capacity));
           }
           graphs.get(validParts).buffer.add(value);
           validParts++;
         }
         if(label != null) {
           if(validLabels >= graphs.size()) {
-            graphs.add(new Graph(validLabels));
+            graphs.add(new Graph(validLabels, buffer_capacity));
           }
           graphs.get(validLabels).label = label;
           validLabels++;
@@ -467,9 +550,10 @@ public class SerialPlotter extends AbstractMonitor {
         else if(validLabels > validParts) validParts = validLabels;
       }
     }
-
+    }
     SwingUtilities.invokeLater(SerialPlotter.this::repaint);
   }
+
 
   public void open() throws Exception {
     super.open();
