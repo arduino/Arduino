@@ -84,7 +84,7 @@ public class FixEncoding implements Tool {
     try {
       reader = new BufferedReader(new FileReader(file));
 
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       String line;
       while ((line = reader.readLine()) != null) {
         buffer.append(line);
