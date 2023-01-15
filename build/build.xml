@@ -50,6 +50,16 @@
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linuxarm" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linuxaarch64" /></condition>
 
+  <condition property="download_os" value="macOS_64bit"><equals arg1="${platform}" arg2="macosx" /></condition>
+  <condition property="download_os" value="Windows_32bit"><equals arg1="${platform}" arg2="windows" /></condition>
+  <condition property="download_os" value="Linux_32bit"><equals arg1="${platform}" arg2="linux32" /></condition>
+  <condition property="download_os" value="Linux_64bit"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <condition property="download_os" value="Linux_ARMv6"><equals arg1="${platform}" arg2="linuxarm" /></condition>
+  <condition property="download_os" value="Linux_ARM64"><equals arg1="${platform}" arg2="linuxaarch64" /></condition>
+
+  <condition property="exec_ext" value=".exe"><isset property="windows" /></condition>
+  <property name="exec_ext" value="" />
+
   <condition property="arch-bits" value="32">
     <equals arg1="${platform}" arg2="linux32"/>
   </condition>
@@ -108,6 +118,7 @@
   <property name="WIFI101-FW-UPDATER_VERSION" value="0.12.0" />
   <!-- https://github.com/arduino/built-in-examples -->
   <property name="BUILT-IN-EXAMPLES-VERSION" value="1.9.1" />
+  <property name="CLANG-FORMAT-VERSION" value="12.0.0" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -219,6 +230,8 @@
 
     <antcall target="assemble-libraries" />
 
+    <antcall target="assemble-clang-format" />
+
     <!-- Add WiFi101 updater tool -->
     <antcall target="unzip">
       <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-${WIFI101-FW-UPDATER_VERSION}.zip" />
@@ -300,6 +313,26 @@
       <param name="dest_folder" value="${target.path}/hardware/arduino"/>
     </antcall>
     <copy file="../hardware/package_index_bundled.json" todir="${target.path}/hardware/" />
+  </target>
+
+  <!-- clang-format -->
+  <target name="assemble-clang-format" unless="light_bundle">
+    <property name="clang_arch_name" value="clang_${CLANG-FORMAT-VERSION}_${download_os}" />
+    <antcall target="unzip">
+      <param name="archive_file" value="${staging_folder}/${clang_arch_name}.zip"/>
+      <param name="archive_url" value="https://github.com/arduino/clang-static-binaries/releases/download/${CLANG-FORMAT-VERSION}/${clang_arch_name}.zip"/>
+      <param name="dest_folder" value="${staging_folder}/${clang_arch_name}/"/>
+      <param name="final_folder" value="${staging_folder}/${clang_arch_name}/clang-format"/>
+    </antcall>
+
+    <copy file="${staging_folder}/${clang_arch_name}/clang-format${exec_ext}" tofile="${staging_folder}/work/${staging_hardware_folder}/../clang-format${exec_ext}" overwrite="true"/>
+    <antcall target="make-file-executable">
+      <param name="file" value="${staging_folder}/work/${staging_hardware_folder}/../clang-format${exec_ext}" />
+    </antcall>
+
+    <delete dir="${staging_folder}/${clang_arch_name}"/>
+
+    <copy file="shared/clang-format-arduino" tofile="${staging_folder}/work/${staging_hardware_folder}/../.clang-format" />
   </target>
 
   <!-- - - - - - - - - -->
@@ -479,17 +512,6 @@
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
-    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.jnilib" />
-    <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" tofile="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
-    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
-
-    <antcall target="unzip">
       <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
       <param name="archive_url" value="https://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
       <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
@@ -666,16 +688,7 @@
     </chmod>
   </target>
 
-  <target name="linux-libastyle-x86" depends="linux-build" description="Download libastyle.so for x86/x64 arch">
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="linux/libastylej-2.05.1/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
-
+  <target name="linux-liblistserials-x86" depends="linux-build" description="Download liblistserials.so for x86/x64 arch">
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -688,19 +701,9 @@
     </antcall>
     <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
-
   </target>
 
-  <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="linux/libastylej-2.05.1/libastylej_arm.so" tofile="linux/work/lib/libastylej.so" />
-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
-
+  <target name="linux-liblistserials-arm" depends="linux-build" description="Download liblistserials.so for ARM">
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -713,10 +716,9 @@
     </antcall>
     <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/arm/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
-
   </target>
 
-  <target name="linuxarm-build" depends="linux-libastyle-arm" description="Build linux (32-bit) version">
+  <target name="linuxarm-build" depends="linux-liblistserials-arm" description="Build linux (32-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUXARM_BUNDLED_JVM}"/>
     </antcall>
@@ -734,16 +736,7 @@
     </antcall>
   </target>
 
-  <target name="linux-libastyle-aarch64" depends="linux-build" description="Download libastyle.so for AArch64">
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="linux/libastylej-2.05.1/libastylej_aarch64.so" tofile="linux/work/lib/libastylej.so" />
-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
-
+  <target name="linux-liblistserials-aarch64" depends="linux-build" description="Download liblistserials.so for AArch64">
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
@@ -758,7 +751,7 @@
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
   </target>
 
-  <target name="linuxaarch64-build" depends="linux-libastyle-aarch64" description="Build Linux (AArch64) version">
+  <target name="linuxaarch64-build" depends="linux-liblistserials-aarch64" description="Build Linux (AArch64) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUXAARCH64_BUNDLED_JVM}"/>
     </antcall>
@@ -776,7 +769,7 @@
     </antcall>
   </target>
 
-  <target name="linux32-build" depends="linux-libastyle-x86" description="Build linux (32-bit) version">
+  <target name="linux32-build" depends="linux-liblistserials-x86" description="Build linux (32-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
     </antcall>
@@ -794,7 +787,7 @@
     </antcall>
   </target>
 
-  <target name="linux64-build" depends="linux-libastyle-x86" description="Build linux (64-bit) version">
+  <target name="linux64-build" depends="linux-liblistserials-x86" description="Build linux (64-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX64_BUNDLED_JVM}"/>
     </antcall>
@@ -1055,13 +1048,6 @@
 
     <antcall target="windows-build-avr-toolchain" />
 
-    <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
-      <param name="dest_folder" value="${staging_folder}" />
-    </antcall>
-    <copy file="windows/libastylej-2.05.1/AStylej.dll" todir="windows/work/lib" />
     <copy file="windows/msvcp100.dll" todir="windows/work" />
     <copy file="windows/msvcr100.dll" todir="windows/work" />
 
