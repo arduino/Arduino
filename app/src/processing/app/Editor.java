@@ -46,11 +46,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -91,6 +89,7 @@ import cc.arduino.CompilerProgressListener;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.MonitorFactory;
 import cc.arduino.packages.Uploader;
+import cc.arduino.packages.formatter.clangformat.ClangFormat;
 import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
@@ -236,13 +235,15 @@ public class Editor extends JFrame implements RunnerListener {
   private UploadHandler uploadUsingProgrammerHandler;
   private Runnable timeoutUploadHandler;
 
-  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
+  private Map<String, Tool> internalToolCache = new HashMap<>();
+
+  final ClangFormat formatter;
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
     this.base = ibase;
     this.platform = platform;
-
+    this.formatter = new ClangFormat(this);
     Base.setIcon(this);
 
     // Install default actions for Run, Present, etc.
@@ -983,23 +984,18 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   private void addInternalTools(JMenu menu) {
-    JMenuItem item;
-
-    item = createToolMenuItem("cc.arduino.packages.formatter.AStyle");
-    if (item == null) {
-      throw new NullPointerException("Tool cc.arduino.packages.formatter.AStyle unavailable");
-    }
-    item.setName("menuToolsAutoFormat");
+    JMenuItem autoFormat = new JMenuItem(tr("Auto Format"));
+    autoFormat.setName("menuToolsAutoFormat");
+    autoFormat.addActionListener(event -> SwingUtilities.invokeLater(formatter));
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    item.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
-    menu.add(item);
+    autoFormat.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
+    menu.add(autoFormat);
 
-    //menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
-    //menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
+    // menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
+    // menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
     menu.add(createToolMenuItem("processing.app.tools.Archiver"));
     menu.add(createToolMenuItem("processing.app.tools.FixEncoding"));
   }
-
 
   private void selectSerialPort(String name) {
     if(portMenu == null) {
@@ -1136,29 +1132,29 @@ public class Editor extends JFrame implements RunnerListener {
     menu.setMnemonic(KeyEvent.VK_H);
 
     JMenuItem item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(event -> Base.openURL("https://www.arduino.cc/en/Guide"));
+    item.addActionListener(event -> Base.showArduinoGettingStarted());
     menu.add(item);
 
     item = new JMenuItem(tr("Environment"));
-    item.addActionListener(event -> Base.openURL("https://www.arduino.cc/en/Guide/Environment"));
+    item.addActionListener(event -> Base.showEnvironment());
     menu.add(item);
 
     item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(event -> Base.openURL("https://support.arduino.cc/hc/en-us"));
+    item.addActionListener(event -> Base.showTroubleshooting());
     menu.add(item);
 
     item = new JMenuItem(tr("Reference"));
-    item.addActionListener(event -> Base.openURL("https://www.arduino.cc/reference/en/"));
+    item.addActionListener(event -> Base.showReference());
     menu.add(item);
 
     menu.addSeparator();
 
     item = newJMenuItemShift(tr("Find in Reference"), 'F');
-    item.addActionListener(event -> handleFindReference(getCurrentTab().getCurrentKeyword()));
+    item.addActionListener(event -> handleFindReference(event));
     menu.add(item);
 
     item = new JMenuItem(tr("Frequently Asked Questions"));
-    item.addActionListener(event -> Base.openURL("https://support.arduino.cc/hc/en-us"));
+    item.addActionListener(event -> Base.showFAQ());
     menu.add(item);
 
     item = new JMenuItem(tr("Visit Arduino.cc"));
@@ -1452,10 +1448,8 @@ public class Editor extends JFrame implements RunnerListener {
     // This must be run in the GUI thread
     SwingUtilities.invokeLater(() -> {
       codePanel.removeAll();
-      EditorTab selectedTab = tabs.get(index);
-      codePanel.add(selectedTab, BorderLayout.CENTER);
-      selectedTab.applyPreferences();
-      selectedTab.requestFocusInWindow(); // get the caret blinking
+      codePanel.add(tabs.get(index), BorderLayout.CENTER);
+      tabs.get(index).requestFocusInWindow(); // get the caret blinking
       // For some reason, these are needed. Revalidate says it should be
       // automatically called when components are added or removed, but without
       // it, the component switched to is not displayed. repaint() is needed to
@@ -1557,25 +1551,20 @@ public class Editor extends JFrame implements RunnerListener {
     tabs.remove(index);
   }
 
-
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
+  void handleFindReference(ActionEvent e) {
+    String text = getCurrentTab().getCurrentKeyword();
 
-  void handleFindReference(String text) {
     String referenceFile = base.getPdeKeywords().getReference(text);
-    String q;
     if (referenceFile == null) {
-      q = text;
-    } else if (referenceFile.startsWith("Serial_")) {
-      q = referenceFile.substring(7);
+      statusNotice(I18n.format(tr("No reference available for \"{0}\""), text));
     } else {
-      q = referenceFile;
-    }
-    try {
-      Base.openURL("https://www.arduino.cc/search?tab=&q="
-                   + URLEncoder.encode(q, "UTF-8"));
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
+      if (referenceFile.startsWith("Serial_")) {
+        Base.showReference("Serial/" + referenceFile.substring("Serial_".length()));
+      } else {
+        Base.showReference("Reference/" + referenceFile);
+      }
     }
   }
 
@@ -1846,7 +1835,7 @@ public class Editor extends JFrame implements RunnerListener {
     SketchFile current = getCurrentTab().getSketchFile();
     String customFormat = PreferencesData.get("editor.custom_title_format");
     if (customFormat != null && !customFormat.trim().isEmpty()) {
-      Map<String, String> titleMap = new HashMap<String, String>();
+      Map<String, String> titleMap = new HashMap<>();
       titleMap.put("file", current.getFileName());
       String path = sketch.getFolder().getAbsolutePath();
       titleMap.put("folder", path);
@@ -1905,8 +1894,7 @@ public class Editor extends JFrame implements RunnerListener {
     boolean saved = false;
     try {
       if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
-        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
-        formatTool.run();
+        formatter.run();
       }
 
       boolean wasReadOnly = sketchController.isReadOnly();

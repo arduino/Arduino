@@ -39,6 +39,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.PopupMenuEvent;
@@ -197,15 +198,12 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
 
     menu.addSeparator();
 
-    JMenuItem item = editor.createToolMenuItem("cc.arduino.packages.formatter.AStyle");
-    if (item == null) {
-      throw new NullPointerException("Tool cc.arduino.packages.formatter.AStyle unavailable");
-    }
-    item.setName("menuToolsAutoFormat");
-
-    menu.add(item);
+    JMenuItem autoFormat = new JMenuItem(tr("Auto Format"));
+    autoFormat.addActionListener(event -> SwingUtilities.invokeLater(editor.formatter));
+    autoFormat.setName("menuToolsAutoFormat");
+    menu.add(autoFormat);
     
-    item = new JMenuItem(tr("Comment/Uncomment"), '/');
+    JMenuItem item = new JMenuItem(tr("Comment/Uncomment"), '/');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           handleCommentUncomment();
@@ -247,7 +245,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     menu.add(item);
 
     final JMenuItem referenceItem = new JMenuItem(tr("Find in Reference"));
-    referenceItem.addActionListener(ev -> editor.handleFindReference(getCurrentKeyword()));
+    referenceItem.addActionListener(editor::handleFindReference);
     menu.add(referenceItem);  
 
     final JMenuItem openURLItem = new JMenuItem(tr("Open URL"));
