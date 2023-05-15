@@ -69,6 +69,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     }
     if (autoscrollBox.isSelected()) {
       textArea.setCaretPosition(textArea.getDocument().getLength());
+      System.out.println("Finished!");
     }
   }
 
