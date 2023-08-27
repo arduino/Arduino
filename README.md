@@ -18,6 +18,8 @@ IDE can be downloaded for free at [https://arduino.cc](https://www.arduino.cc/en
 -  [The forums](https://forum.arduino.cc/)
 
 -  Follow us on [Twitter](https://twitter.com/arduino)
+-  Explore our [Instagram](https://www.instagram.com/arduino.cc/)
+-  Hit the Subscribe button at Youtube .[Youtube](https://www.youtube.com/c/arduino)
 -  And like us at [Facebook](https://www.facebook.com/official.arduino)
 
 ## Bug reports and technical discussions
