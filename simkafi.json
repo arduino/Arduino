@@ -1,0 +1,12 @@
+{
+  "name": "SimKafi",
+  "version": "1.1.0",
+  "description": "A comprehensive library for SIM900/SIM800 modules",
+  "keywords": ["SIM900", "Communication", "GPRS"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Askarkafi/SimKafi"
+  },
+  "platforms": ["espressif8266", "espressif32", "atmelavr"],
+  "frameworks": ["arduino"]
+}
