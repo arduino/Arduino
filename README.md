@@ -1,3 +1,4 @@
+**Notice:** This repository is for the **old Arduino IDE** which is no longer in active development. For the latest version, please visit the [new Arduino IDE repository](https://github.com/arduino/Arduino-ide). This helps in maintaining focus and directing efforts where they are most needed.
 <p align="center">
 	<img src="http://content.arduino.cc/brand/arduino-color.svg" width="50%" />
 </p>
@@ -21,6 +22,8 @@ IDE can be downloaded for free at [https://arduino.cc](https://www.arduino.cc/en
 -  And like us at [Facebook](https://www.facebook.com/official.arduino)
 
 ## Bug reports and technical discussions
+
+-  *Before submitting your issue* please check if your issue is related to the **old Arduino IDE** (this repository) or the **new Arduino IDE**. If your issue is related to the new Arduino IDE, please report it at [this link](https://github.com/arduino/Arduino-ide/issues).
 
 -  To report a *bug* in the software or to request *a simple enhancement* go to [Github Issues](https://github.com/arduino/Arduino/issues)
 
