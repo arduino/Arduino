@@ -2,7 +2,7 @@
     <img src="http://content.arduino.cc/brand/arduino-color.svg" width="50%" />
 </p>
 
-**Important Notice**: This repository contains the legacy Arduino IDE, which is no longer in active development. For the latest features and updates, please visit the [Arduino IDE 2](https://github.com/arduino/arduino-ide) repository. If you encounter issues related to the newer IDE, please report them there.
+**Important Notice**: This repository contains the legacy Arduino IDE 1.x, which is no longer in active development. For the latest features and updates, please visit the [Arduino IDE 2.x](https://github.com/arduino/arduino-ide) repository. If you encounter issues related to the newer IDE, please report them there.
 
 Arduino is an open-source physical computing platform based on a simple I/O board and a development environment that implements the Processing/Wiring language. Arduino can be used to develop stand-alone interactive objects or can be connected to software on your computer (e.g. Flash, Processing and MaxMSP). The boards can be assembled by hand or purchased preassembled; the open-source IDE can be downloaded for free at [https://arduino.cc](https://www.arduino.cc/en/Main/Software).
 
