@@ -888,9 +888,7 @@ public class BaseNoGui {
     // then trim any other character (\r) so saveStrings can print it in the correct
     // format for every OS
     String strArray[] = str.split("\n");
-    for (String item : strArray) {
-      item.trim();
-    }
+    Arrays.parallelSetAll(strArray, i -> strArray[i].trim());
     PApplet.saveStrings(temp, strArray);
 
     try {
