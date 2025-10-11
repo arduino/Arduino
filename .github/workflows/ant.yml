@@ -26,7 +26,7 @@ jobs:
       working-directory: ./app
       run: xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ant test -Drunning-from-github-action=1
     - name: Publish results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: html-results
         path: app/test-bin/results/html/
