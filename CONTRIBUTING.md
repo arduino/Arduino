@@ -8,7 +8,7 @@ Thanks for your interest in contributing to this free open source project! Ardui
 | - Bug fix<br/>- Enhancement | Pull Request (read the [pull request guidelines](#pull-requests)) |
 | Translations for the Arduino IDE | [transifex](https://www.transifex.com/mbanzi/arduino-ide-15/) |
 | Translations for the [Language Reference](https://www.arduino.cc/reference) | [Reference repositories](https://github.com/arduino?q=reference-) |
-| Monetary | - [Donate](https://www.arduino.cc/en/Main/Contribute)<br/>- [Buy official products](https://store.arduino.cc) |
+| Monetary | [Buy official products](https://store.arduino.cc) |
 
 
 ## Issues
