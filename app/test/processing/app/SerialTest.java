@@ -29,6 +29,7 @@
 
 package processing.app;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -45,6 +46,16 @@ public class SerialTest {
     }
 
     String output = "";
+  }
+
+  @Test
+  public void testSerialUTF8DecoderWithInvalidChars() throws Exception {
+    NullSerial s = new NullSerial();
+    byte[] testdata = new byte[] { '>', (byte) 0xC3, (byte) 0x28, '<' };
+    byte[] expected = new byte[] { '>', (byte) 0xEF, (byte) 0xBF, (byte) 0xBD, (byte) 0x28, '<' };
+    s.processSerialEvent(testdata);
+    byte[] res = s.output.getBytes("UTF-8");
+    assertArrayEquals(expected, res);
   }
 
   @Test
