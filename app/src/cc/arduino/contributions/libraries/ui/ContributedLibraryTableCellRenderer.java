@@ -36,14 +36,18 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 @SuppressWarnings("serial")
-public class ContributedLibraryTableCellRenderer implements TableCellRenderer {
+public class ContributedLibraryTableCellRenderer extends ContributedLibraryTableCellJPanel implements TableCellRenderer {
+  
 
   public Component getTableCellRendererComponent(JTable table, Object value,
                                                  boolean isSelected,
                                                  boolean hasFocus, int row,
                                                  int column) {
-    ContributedLibraryTableCellJPanel cell = new ContributedLibraryTableCellJPanel(table,
-        value, isSelected);
+    
+    update(table, value, isSelected);
+    
+    ContributedLibraryTableCellJPanel cell = this;
+    
     cell.setButtonsVisible(false);
 
     cell.setForeground(Color.BLACK);
