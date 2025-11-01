@@ -81,6 +81,17 @@ public class SketchTextAreaComponentDriver extends JComponentDriver {
 
     });
   }
+  
+  public SketchTextArea select(final SketchTextArea target, int selectionStart, int selectionEnd) {
+    return GuiActionRunner.execute(new GuiQuery<SketchTextArea>() {
+
+      protected SketchTextArea executeInEDT() {
+        target.select(selectionStart, selectionEnd);
+        return target;
+      }
+
+    });
+  }
 
   public Integer getCaretPosition(final SketchTextArea target) {
     focusAndWaitForFocusGain(target);

@@ -29,16 +29,21 @@
 
 package cc.arduino.packages.formatter;
 
+import static processing.app.I18n.tr;
+
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.Editor;
 import processing.app.helpers.FileUtils;
+import processing.app.syntax.SketchTextArea;
 import processing.app.tools.Tool;
 
 import java.io.File;
 import java.io.IOException;
-
-import static processing.app.I18n.tr;
+import java.util.regex.Pattern;
+import javax.swing.text.BadLocationException;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.Token;
 
 public class AStyle implements Tool {
 
@@ -76,19 +81,99 @@ public class AStyle implements Tool {
 
   @Override
   public void run() {
-    String originalText = editor.getCurrentTab().getText();
-    String formattedText = aStyleInterface.AStyleMain(originalText, formatterConfiguration);
 
-    if (formattedText.equals(originalText)) {
-      editor.statusNotice(tr("No changes necessary for Auto Format."));
-      return;
+    SketchTextArea textArea = editor.getCurrentTab().getTextArea();
+
+    String originalText = textArea.getSelectedText();
+
+    // If no selection use all file
+    if (originalText == null || originalText.isEmpty()) {
+
+      String formattedText = aStyleInterface.AStyleMain(textArea.getText(), formatterConfiguration);
+      editor.getCurrentTab().setText(formattedText);
+
+    } else {
+      try {
+
+        // apply indentation control keywords.
+        String FORMAT_ON = "\n// *INDENT-ON* DYN\n";
+        String FORMAT_OFF = "\n// *INDENT-OFF* DYN\n";
+
+        RSyntaxDocument content = (RSyntaxDocument) textArea.getDocument();
+
+        textArea.beginAtomicEdit();
+
+        int selStart = editor.getCurrentTab().getSelectionStart();
+        int selEnd = editor.getCurrentTab().getSelectionStop();
+        int lineStart = textArea.getLineOfOffset(selStart);
+        int lineEnd = textArea.getLineOfOffset(selEnd);
+
+        // Calculate offsets from begin and end of each line.
+        int fristLineOffset = textArea.getLineStartOffset(lineStart);
+        int lastLineOffset = textArea.getLineEndOffset(lineEnd);
+        
+        // Avoid multi-line comments
+        fristLineOffset = navigateOffComments(textArea, fristLineOffset); // try caech (invalid selection)
+        lastLineOffset = navigateOffComments(textArea, lastLineOffset); // try caech (invalid selection)
+    
+        // inserts change the length, use this to calculate new positios.
+        int offLength = FORMAT_OFF.length();
+        int onLength = FORMAT_ON.length();
+
+        content.insertString(0, FORMAT_OFF, null);
+        content.insertString(fristLineOffset + offLength, FORMAT_ON, null);
+        content.insertString(lastLineOffset + offLength + onLength, FORMAT_OFF,null);
+        originalText = content.getText(0, content.getLength());
+
+        String formattedText = aStyleInterface.AStyleMain(originalText, formatterConfiguration);
+
+        // Remove format tags
+        formattedText = formattedText.replaceAll(Pattern.quote(FORMAT_OFF), "");
+        formattedText = formattedText.replaceAll(Pattern.quote(FORMAT_ON), "");
+
+        textArea.setText(formattedText);
+        textArea.select(selStart, selStart);
+
+      } catch (BadLocationException e) {
+        editor.statusNotice(tr("Auto Format Error") + ": " + e.getLocalizedMessage());
+        e.printStackTrace();
+        return;
+      } finally {
+        textArea.endAtomicEdit();
+      }
+
     }
-
-    editor.getCurrentTab().setText(formattedText);
 
     // mark as finished
     editor.statusNotice(tr("Auto Format finished."));
   }
+  
+  private int navigateOffComments(SketchTextArea textArea, int offset) throws BadLocationException {
+
+    Token token = textArea.modelToToken(offset);
+
+    // if line is a multiline comment, go back !!
+    if (token != null && token.getType() == Token.COMMENT_MULTILINE) {
+
+      int lineStart = textArea.getLineOfOffset(offset);
+      token = textArea.getTokenListForLine(lineStart);
+
+      while (token.getType() == Token.COMMENT_MULTILINE) {
+        if (lineStart == 0)
+          break;
+        token = token.getNextToken();
+        if (token == null)
+          token = textArea.getTokenListForLine(--lineStart);
+      }
+
+      return token.getOffset();
+
+    } else {
+      return offset;
+    }
+    
+  }
+  
 
   @Override
   public String getMenuTitle() {
