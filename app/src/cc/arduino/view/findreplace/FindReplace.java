@@ -33,6 +33,7 @@ import processing.app.Base;
 import processing.app.Editor;
 import processing.app.EditorTab;
 import processing.app.helpers.OSUtils;
+import processing.app.syntax.SketchTextArea;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -40,7 +41,13 @@ import java.awt.event.WindowEvent;
 import javax.swing.JPopupMenu;
 import javax.swing.Action;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.Highlight;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static processing.app.I18n.tr;
@@ -80,6 +87,10 @@ public class FindReplace extends javax.swing.JFrame {
       public void windowActivated(WindowEvent e) {
         findField.requestFocusInWindow();
         findField.selectAll();
+      }
+
+      public void windowDeactivated(WindowEvent windowEvent) {
+          clearHighlights();
       }
     });
 
@@ -167,18 +178,18 @@ public class FindReplace extends javax.swing.JFrame {
     JPopupMenu menu = new JPopupMenu();
     Action cut = new DefaultEditorKit.CutAction();
     cut.putValue(Action.NAME, tr("Cut"));
-    menu.add( cut );
+    menu.add(cut);
 
     Action copy = new DefaultEditorKit.CopyAction();
     copy.putValue(Action.NAME, tr("Copy"));
-    menu.add( copy );
+    menu.add(copy);
 
     Action paste = new DefaultEditorKit.PasteAction();
     paste.putValue(Action.NAME, tr("Paste"));
-    menu.add( paste );
+    menu.add(paste);
 
-    findField.setComponentPopupMenu( menu );
-    replaceField.setComponentPopupMenu( menu );
+    findField.setComponentPopupMenu(menu);
+    replaceField.setComponentPopupMenu(menu);
 
     findButton.setText(tr("Find"));
     findButton.addActionListener(new java.awt.event.ActionListener() {
@@ -303,38 +314,85 @@ public class FindReplace extends javax.swing.JFrame {
   private javax.swing.JCheckBox wrapAroundBox;
   // End of variables declaration//GEN-END:variables
 
-  private boolean find(boolean wrap, boolean backwards, boolean searchTabs, int originTab) {
-    String search = findField.getText();
+  private List<Highlight> foundHighlights = new ArrayList<Highlight>();
+  private Highlight selectedHighlight = null;
+  private int selectedHighlightIndex = -1;
+  private String lastSearchText = "";
+  private String lastText = "";
 
-    if (search.length() == 0) {
+  private void clearHighlights() {
+    Highlighter highlighter = editor.getCurrentTab().getTextArea().getHighlighter();
+    for (Highlight highlight : foundHighlights) {
+      editor.getCurrentTab().getTextArea().getHighlighter().removeHighlight(highlight);
+    }
+    foundHighlights.clear();
+    selectedHighlight = null;
+    lastSearchText = "";
+    lastText = "";
+  }
+
+  private boolean find(boolean wrap, boolean backwards, boolean searchTabs, int originTab) {
+    String searchText = findField.getText();
+    int searchTextLength = searchText.length();
+
+    if (searchTextLength == 0) {
       return false;
     }
 
-    String text = editor.getCurrentTab().getText();
+    EditorTab currentTab = editor.getCurrentTab();
+    SketchTextArea textarea = currentTab.getTextArea();
+    String text = currentTab.getText();
 
     if (ignoreCaseBox.isSelected()) {
-      search = search.toLowerCase();
+      searchText = searchText.toLowerCase();
       text = text.toLowerCase();
     }
 
-    int nextIndex;
+    // search all indexes
+    if (!lastSearchText.equals(searchText) || !lastText.equals(text)) {
+      clearHighlights();
+
+      int index = text.indexOf(searchText, 0);
+      while (index >= 0) {
+        int endIndex = index + searchTextLength;
+
+        try {
+          foundHighlights.add((Highlight)textarea.getHighlighter().addHighlight(index, endIndex, 
+            new DefaultHighlighter.DefaultHighlightPainter(Color.yellow)));
+        } catch (BadLocationException e1) {
+          e1.printStackTrace();
+        }
+
+        index = text.indexOf(searchText, endIndex);
+      }
+
+      lastSearchText = searchText;
+      lastText = text;
+    }
+
+    Highlight nextHighlight = null;
     if (!backwards) {
-      // int selectionStart = editor.textarea.getSelectionStart();
       int selectionEnd = editor.getCurrentTab().getSelectionStop();
 
-      nextIndex = text.indexOf(search, selectionEnd);
+      for (Highlight h : foundHighlights) {
+        if (h.getStartOffset() < selectionEnd) {
+          continue;
+        }
+        nextHighlight = h;
+        break;
+      }
     } else {
-      // int selectionStart = editor.textarea.getSelectionStart();
       int selectionStart = editor.getCurrentTab().getSelectionStart() - 1;
 
-      if (selectionStart >= 0) {
-        nextIndex = text.lastIndexOf(search, selectionStart);
-      } else {
-        nextIndex = -1;
+      for (Highlight h : foundHighlights) {
+        if (h.getStartOffset() > selectionStart) {
+          break;
+        }
+        nextHighlight = h;
       }
     }
 
-    if (nextIndex == -1) {
+    if (nextHighlight == null) {
       // Nothing found on this tab: Search other tabs if required
       if (searchTabs) {
         int numTabs = editor.getTabs().size();
@@ -353,6 +411,8 @@ public class FindReplace extends javax.swing.JFrame {
               }
             }
 
+            clearHighlights();
+            
             if (backwards) {
               editor.selectPrevTab();
               this.setVisible(true);
@@ -370,15 +430,31 @@ public class FindReplace extends javax.swing.JFrame {
       }
 
       if (wrap) {
-        nextIndex = backwards ? text.lastIndexOf(search) : text.indexOf(search, 0);
+        nextHighlight = backwards ? foundHighlights.get(foundHighlights.size() - 1) : foundHighlights.get(0);
       }
     }
 
-    if (nextIndex != -1) {
-      EditorTab currentTab = editor.getCurrentTab();
-      currentTab.getTextArea().getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
-      currentTab.setSelection(nextIndex, nextIndex + search.length());
-      currentTab.getTextArea().getCaret().setSelectionVisible(true);
+    if (nextHighlight != null) {
+      Highlighter highlighter = textarea.getHighlighter();
+      int nextIndex = nextHighlight.getStartOffset();
+
+      try {
+        if (selectedHighlight != null) {
+          foundHighlights.add(selectedHighlightIndex, (Highlight)highlighter.addHighlight(selectedHighlight.getStartOffset(), selectedHighlight.getEndOffset(), selectedHighlight.getPainter()));
+        }
+        selectedHighlight = nextHighlight;
+        selectedHighlightIndex = foundHighlights.indexOf(selectedHighlight);
+        foundHighlights.remove(selectedHighlight);
+
+        highlighter.removeHighlight(selectedHighlight);
+
+      } catch (BadLocationException bl) {
+        bl.printStackTrace();
+      }
+
+      textarea.getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
+      currentTab.setSelection(nextIndex, nextIndex + searchTextLength);
+      textarea.getCaret().setSelectionVisible(true);
       return true;
     }
 
