@@ -741,6 +741,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (portMenu == null)
       portMenu = new JMenu(tr("Port"));
+      portMenu.setMnemonic('P');
     populatePortMenu();
     toolsMenu.add(portMenu);
     MenuScroller.setScrollerFor(portMenu);
@@ -1109,6 +1110,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     String lastProtocol = "";
     String lastProtocolLabel = "";
+    int i=0;
     for (BoardPort port : ports) {
       if (!port.getProtocol().equals(lastProtocol) || !port.getProtocolLabel().equals(lastProtocolLabel)) {
         if (!lastProtocol.isEmpty()) {
@@ -1124,12 +1126,13 @@ public class Editor extends JFrame implements RunnerListener {
 
       BoardPortJCheckBoxMenuItem item = new BoardPortJCheckBoxMenuItem(port);
       item.setSelected(address.equals(selectedPort));
+      Base.setMenuItemMnemonicNum10(item, i, false);
+      i++;
       portMenu.add(item);
     }
 
     portMenu.setEnabled(portMenu.getMenuComponentCount() > 0);
   }
-
 
   private JMenu buildHelpMenu() {
     JMenu menu = new JMenu(tr("Help"));

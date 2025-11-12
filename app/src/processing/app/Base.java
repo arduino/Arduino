@@ -1424,15 +1424,45 @@ public class Base {
     onBoardOrPortChange();
   }
 
+  public static void setMenuItemMnemonicAlphaNum(JMenuItem item, int i, Boolean repeat) {
+    char c;
+    // JMenu hotkeys treats lower and upper case the same,
+    // so we only do lower, then digits, for visibility
+    if (i>=26+10) {
+      if (!repeat) return;
+      i = i%(26+10);
+    }
+    if (i>=0 && i<26) {
+      c = (char)(i+'a');
+    } else if (i>=26 && i<(26+10)) {
+      c = (char)(i-26+'0');
+    } else {
+      return;
+    }
+    item.setText(c + ". " + item.getText());
+    item.setMnemonic(c);
+  }
+
+  public static void setMenuItemMnemonicNum10(JMenuItem item, int i, Boolean repeat) {
+    char c;
+    if (i>=0 && (repeat || i<10)) {
+      c = (char)((i%10)+'0');
+      item.setText(c + ". " + item.getText());
+      item.setMnemonic(c);
+    }
+  }
+
+
   public void rebuildBoardsMenu() throws Exception {
     boardsCustomMenus = new LinkedList<>();
 
     // The first custom menu is the "Board" selection submenu
     JMenu boardMenu = new JMenu(tr("Board"));
+    boardMenu.setMnemonic('B');
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
     MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
-    boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
+    JMenuItem menuItem = new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
       public void actionPerformed(ActionEvent actionevent) {
         String filterText = "";
         String dropdownItem = "";
@@ -1448,7 +1478,9 @@ public class Base {
           e.printStackTrace();
         }
       }
-    }));
+    });
+    menuItem.setMnemonic('M');
+    boardMenu.add(menuItem);
     boardsCustomMenus.add(boardMenu);
 
     // If there are no platforms installed we are done
@@ -1497,12 +1529,15 @@ public class Base {
         platformMenus.add(platformBoardsMenu);
 
         // Cycle through all boards of this platform
+        int i=0;
         for (TargetBoard board : targetPlatform.getBoards().values()) {
           if (board.getPreferences().get("hide") != null)
             continue;
           JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
                   buttonGroupsMap,
                   board, targetPlatform, targetPackage);
+          setMenuItemMnemonicAlphaNum(item, i, true);
+          i++;
           platformBoardsMenu.add(item);
           boardsButtonGroup.add(item);
         }
@@ -1515,16 +1550,26 @@ public class Base {
     if (platformMenus.size() == 1) {
       // When just one platform exists, add the board items directly,
       // rather than using a submenu
+      int i=0;
       for (Component boardItem : platformMenus.get(0).getMenuComponents()) {
+      	// For mnemonics, need to test single-platform setups:
+        // Eg. setMenuItemMnemonicAlphaNum((JMenuItem)boardItem, i, true); i++;
         boardMenu.add(boardItem);
         if (firstBoardItem == null)
           firstBoardItem = (JMenuItem)boardItem;
       }
     } else {
       // For multiple platforms, use submenus
+      // int i=0;
+      String keys="";
+      int i=0;
       for (JMenu platformMenu : platformMenus) {
         if (firstBoardItem == null && platformMenu.getItemCount() > 0)
           firstBoardItem = platformMenu.getItem(0);
+        // Ideally we'd exclude the manually-assigned "Board (M)anager" key
+        // when assigning a mnemonic to this item
+        setMenuItemMnemonicAlphaNum(platformMenu, i, true);
+        i++;
         boardMenu.add(platformMenu);
       }
     }
