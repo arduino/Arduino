@@ -168,6 +168,9 @@ public class Editor extends JFrame implements RunnerListener {
   /** Command-Option on Mac OS X, Ctrl-Alt on Windows and Linux */
   static final int SHORTCUT_ALT_KEY_MASK = ActionEvent.ALT_MASK |
     Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+  /** Command-Option on Mac OS X, Ctrl-Shift on Windows and Linux */
+  static final int SHORTCUT_SHIFT_KEY_MASK = ActionEvent.SHIFT_MASK |
+    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
   /**
    * true if this file has not yet been given a name by the user
@@ -669,7 +672,14 @@ public class Editor extends JFrame implements RunnerListener {
     item.addActionListener(event -> handleExport(false));
     sketchMenu.add(item);
 
-    item = newJMenuItemShift(tr("Upload Using Programmer"), 'U');
+//  Since CTRL+SHIFT+U is not working on iBus keyboard input method
+//  Lets redirect the shorcut for Linux to CTRL+ALT+U
+//  Leaving the preexisting behaviour for Windows & Mac OS
+    if (OSUtils.isLinux()) {
+      item = newJMenuItemAlt(tr("Upload Using Programmer"), 'U');
+    } else {
+      item = newJMenuItemShift(tr("Upload Using Programmer"), 'U');
+    }
     item.addActionListener(event -> handleExport(true));
     sketchMenu.add(item);
 
@@ -1349,7 +1359,7 @@ public class Editor extends JFrame implements RunnerListener {
   // Control + Shift + K seems to not be working on linux (Xubuntu 17.04, 2017-08-19)
   static public JMenuItem newJMenuItemShift(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_SHIFT_KEY_MASK));
     return menuItem;
   }
 
