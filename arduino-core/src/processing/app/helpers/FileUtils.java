@@ -309,4 +309,20 @@ public class FileUtils {
     return result;
   }
 
+  /**
+   * Checks for the existence of a file with the given name but accounts
+   * for case-sensitivity on case-insensitive file systems.
+   * https://stackoverflow.com/a/34730781
+   *
+   * @param file The file being checked
+   * @param name The actual name the file is expected to have
+   */
+  public static boolean fileExistsCaseSensitive(File file, String name) {
+    try {
+        return file.exists() && file.getCanonicalFile().getName().equals(name);
+    } catch (IOException e) {
+        return false;
+    }
+  }
+
 }
