@@ -57,6 +57,7 @@ import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.swing.UIManager;
 import javax.swing.text.StyleContext;
 
 import org.apache.batik.transcoder.Transcoder;
@@ -344,6 +345,28 @@ public class Theme {
 
     // clone the hash table
     defaults = new PreferencesMap(table);
+    
+    // Set the look and feel before opening the window
+    try {
+      String laf = defaults.get("ui.laf");
+      
+      if(laf != null && ! laf.trim().isEmpty()) {
+        
+        try {
+          UIManager.setLookAndFeel(laf);
+        } catch (Exception e) {
+          e.printStackTrace();
+          BaseNoGui.getPlatform().setLookAndFeel();
+        }
+        
+      }else {
+        BaseNoGui.getPlatform().setLookAndFeel();
+      }
+      
+    } catch (Exception e) {
+      // ignore
+    }
+    
   }
   
   static private ZippedTheme openZipTheme() {
