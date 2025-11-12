@@ -122,6 +122,13 @@ public class Base {
   private List<JMenu> boardsCustomMenus;
   private List<JMenuItem> programmerMenus;
 
+  // these variables help rebuild the "recently used boards"
+  // menu on board selection
+  private HashMap<String, JRadioButtonMenuItem> recentBoardItems;
+  private List<JRadioButtonMenuItem> recentBoardsToClear = new LinkedList<>();;
+  private JMenu boardMenu;
+  private int recentBoardsJMenuIndex;
+
   private PdeKeywords pdeKeywords;
   private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
 
@@ -1353,6 +1360,39 @@ public class Base {
       }
     }
 
+    // Update recent boards list in preferences
+    List<String> newRecentBoardIds = new ArrayList<String>();
+    String currentBoard = PreferencesData.get("board");  
+    for (String recentBoard : PreferencesData.getCollection("recent.boards")){
+      if (!recentBoard.equals(currentBoard)) {
+        newRecentBoardIds.add(recentBoard);
+      }
+    }
+    newRecentBoardIds.add(0, currentBoard);
+
+    int numBoards = 0;
+
+    if (PreferencesData.has("recent.num_boards")) {
+      numBoards = PreferencesData.getInteger("recent.num_boards");
+    }
+
+    while (newRecentBoardIds.size() > numBoards) {
+      newRecentBoardIds.remove(newRecentBoardIds.size() - 1);
+    }
+    PreferencesData.setCollection("recent.boards", newRecentBoardIds);
+
+    // If recent.num_boards is 0, interpret this as the feature
+    // being turned off. There's no need to rebuild the menu
+    // because it will be hidden
+    if (numBoards > 0) {
+      try {
+        rebuildRecentBoardsList();
+      } catch (Exception e) {
+        //TODO show error
+        e.printStackTrace();
+      }    
+    }
+
     // Update editors status bar
     for (Editor editor : editors) {
       editor.onBoardOrPortChange();
@@ -1426,9 +1466,10 @@ public class Base {
 
   public void rebuildBoardsMenu() throws Exception {
     boardsCustomMenus = new LinkedList<>();
+    recentBoardItems = new HashMap<String, JRadioButtonMenuItem>();
 
     // The first custom menu is the "Board" selection submenu
-    JMenu boardMenu = new JMenu(tr("Board"));
+    boardMenu = new JMenu(tr("Board"));
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
     MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
@@ -1451,12 +1492,30 @@ public class Base {
     }));
     boardsCustomMenus.add(boardMenu);
 
+    // Insert recently used boards menu and remember index for insertion later
+    // Check if the field exists, in case preferences got lost
+    if (!PreferencesData.has("recent.num_boards")){
+        // (default to 5)
+          PreferencesData.setInteger("recent.num_boards", 5);
+    }
+    if (PreferencesData.getInteger("recent.num_boards") > 0) {
+      // Insert menu label
+      boardMenu.add(new JSeparator());
+      JMenuItem label = new JMenuItem(tr("Recently Used Boards"));
+      label.setEnabled(false);
+      boardMenu.add(label);
+      recentBoardsJMenuIndex = boardMenu.getItemCount();
+    }
+
     // If there are no platforms installed we are done
     if (BaseNoGui.packages.size() == 0)
       return;
 
     // Separate "Install boards..." command from installed boards
     boardMenu.add(new JSeparator());
+    JMenuItem label = new JMenuItem(tr("All Installed Boards"));
+    label.setEnabled(false);
+    boardMenu.add(label);    
 
     // Generate custom menus for all platforms
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
@@ -1549,6 +1608,25 @@ public class Base {
     return platform.getId() + "_" + platform.getFolder();
   }
 
+  // clear the previous menu items from the "recently used boards"
+  // menu and repopulate with updated items
+  private void rebuildRecentBoardsList() throws Exception {
+    Collection<String> recentBoardIds = PreferencesData.getCollection("recent.boards");
+    String currentBoard = PreferencesData.get("board");
+    int idxAdv = 0;
+    for (JRadioButtonMenuItem itemToClear : recentBoardsToClear) {
+      boardMenu.remove(itemToClear);
+    }
+    recentBoardsToClear.clear();
+    for (String boardId : recentBoardIds) {
+      JRadioButtonMenuItem addItem = recentBoardItems.get(boardId);
+      boardMenu.add(addItem, recentBoardsJMenuIndex+idxAdv);
+      recentBoardsToClear.add(addItem);
+      addItem.setSelected(boardId.equals(currentBoard));
+      idxAdv++;
+    }
+  }
+
   private JRadioButtonMenuItem createBoardMenusAndCustomMenus(
           final List<JMenu> boardsCustomMenus, List<JMenuItem> menuItemsToClickAfterStartup,
           Map<String, ButtonGroup> buttonGroupsMap,
@@ -1578,6 +1656,23 @@ public class Base {
     action.putValue("b", board);
 
     JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
+
+    // create an action for the "recent boards" copy of this menu item
+    // which clicks the original menu item
+    Action actionClone = new AbstractAction(board.getName()) {
+      public void actionPerformed(ActionEvent actionevent) {
+        item.setSelected(true);
+        item.getAction().actionPerformed(new ActionEvent(this, -1, ""));
+      }
+    }; 
+
+    // No need to hog memory if recent boards feature is turned off
+    if (PreferencesData.getInteger("recent.num_boards") > 0) {
+      // create a menu item for the "recent boards" menu
+      JRadioButtonMenuItem itemClone = new JRadioButtonMenuItem(actionClone);
+      // populate list of menuitem copies
+      recentBoardItems.put(boardId, itemClone);
+    }
 
     if (selBoard.equals(boardId) && selPackage.equals(packageName)
             && selPlatform.equals(platformName)) {
