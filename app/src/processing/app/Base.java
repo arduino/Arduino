@@ -1941,6 +1941,15 @@ public class Base {
     PreferencesData.set("editor.font", StringUtils.join(pieces, ','));
     getEditors().forEach(Editor::applyPreferences);
   }
+  
+  public void toggleLineNumber() {
+    if (PreferencesData.getBoolean("editor.linenumbers")) {
+      PreferencesData.setBoolean("editor.linenumbers", false);
+    } else {
+      PreferencesData.setBoolean("editor.linenumbers", true);
+    }
+    getEditors().forEach(Editor::applyPreferences);
+  }
 
   /**
    * Adds a {@link MouseWheelListener} and {@link KeyListener} to the given
