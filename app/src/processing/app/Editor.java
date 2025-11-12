@@ -91,6 +91,7 @@ import cc.arduino.CompilerProgressListener;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.MonitorFactory;
 import cc.arduino.packages.Uploader;
+import cc.arduino.packages.formatter.clangformat.ClangFormat;
 import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
@@ -236,13 +237,15 @@ public class Editor extends JFrame implements RunnerListener {
   private UploadHandler uploadUsingProgrammerHandler;
   private Runnable timeoutUploadHandler;
 
-  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
+  private Map<String, Tool> internalToolCache = new HashMap<>();
+
+  final ClangFormat formatter;
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
     this.base = ibase;
     this.platform = platform;
-
+    this.formatter = new ClangFormat(this);
     Base.setIcon(this);
 
     // Install default actions for Run, Present, etc.
@@ -983,23 +986,18 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   private void addInternalTools(JMenu menu) {
-    JMenuItem item;
-
-    item = createToolMenuItem("cc.arduino.packages.formatter.AStyle");
-    if (item == null) {
-      throw new NullPointerException("Tool cc.arduino.packages.formatter.AStyle unavailable");
-    }
-    item.setName("menuToolsAutoFormat");
+    JMenuItem autoFormat = new JMenuItem(tr("Auto Format"));
+    autoFormat.setName("menuToolsAutoFormat");
+    autoFormat.addActionListener(event -> SwingUtilities.invokeLater(formatter));
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    item.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
-    menu.add(item);
+    autoFormat.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
+    menu.add(autoFormat);
 
-    //menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
-    //menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
+    // menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
+    // menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
     menu.add(createToolMenuItem("processing.app.tools.Archiver"));
     menu.add(createToolMenuItem("processing.app.tools.FixEncoding"));
   }
-
 
   private void selectSerialPort(String name) {
     if(portMenu == null) {
@@ -1846,7 +1844,7 @@ public class Editor extends JFrame implements RunnerListener {
     SketchFile current = getCurrentTab().getSketchFile();
     String customFormat = PreferencesData.get("editor.custom_title_format");
     if (customFormat != null && !customFormat.trim().isEmpty()) {
-      Map<String, String> titleMap = new HashMap<String, String>();
+      Map<String, String> titleMap = new HashMap<>();
       titleMap.put("file", current.getFileName());
       String path = sketch.getFolder().getAbsolutePath();
       titleMap.put("folder", path);
@@ -1905,8 +1903,7 @@ public class Editor extends JFrame implements RunnerListener {
     boolean saved = false;
     try {
       if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
-        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
-        formatTool.run();
+        formatter.run();
       }
 
       boolean wasReadOnly = sketchController.isReadOnly();

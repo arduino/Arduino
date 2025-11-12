@@ -58,8 +58,8 @@ public class AutoformatTest extends AbstractGUITest {
     String formattedText = editor.getText();
     assertEquals("void setup() {\n" +
             "  // put your setup code here, to run once:\n" +
-            "  int foo[] = { 1, 2, 3, 4, 5};\n" +
-            "  int foo[2][5] = {{1, 2, 3, 4, 5}, {6, 7, 8, 9, 10}};\n" +
+            "  int foo[] = { 1, 2, 3, 4, 5 };\n" +
+            "  int foo[2][5] = { { 1, 2, 3, 4, 5 }, { 6, 7, 8, 9, 10 } };\n" +
             "}\n" +
             "\n" +
             "void loop() {\n" +
