@@ -285,6 +285,21 @@ else
   fi
 fi
 updatedbs_f
+
+if [ ! -f "${HOME}/usr/share/applications/arduino.desktop " ]; then
+  touch arduino.desktop
+  chmod +x arduino.desktop
+  echo "[Desktop Entry]" >>  arduino.desktop
+  echo "Type=Application" >>  arduino.desktop
+  echo "Name=Arduino IDE" >>  arduino.desktop
+  echo "GenericName=Create physical computing projects" >>  arduino.desktop
+  echo "Exec=arduino" >>  arduino.desktop
+  echo "Icon=arduino" >>  arduino.desktop
+  echo "Terminal=false" >>  arduino.desktop
+  echo "Categories=Development;Engineering;Electronics;" >>  arduino.desktop
+  echo "MimeType=text/x-arduino" >>  arduino.desktop
+  echo "Keywords=embedded electronics;electronics;avr;microcontroller;" >>  arduino.desktop
+fi
 printf " done!\n"
 
 exit 0
