@@ -1771,7 +1771,9 @@ public class Editor extends JFrame implements RunnerListener {
     File file = Sketch.checkSketchFile(sketchFile);
 
     if (file == null) {
-      if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
+      if (fileName.endsWith(".inz")) {
+        file = sketchFile;
+      } else if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
 
         Base.showWarning(tr("Bad file selected"), tr("Arduino can only open its own sketches\n" +
           "and other files ending in .ino or .pde"), null);
