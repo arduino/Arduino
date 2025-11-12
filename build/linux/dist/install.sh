@@ -52,6 +52,9 @@ xdg_install_f() {
   # Install Arduino mime type
   xdg-mime install "${SCRIPT_PATH}/lib/${RESOURCE_NAME}.xml"
 
+  mkdir -p "${HOME}/.local/share/metainfo"
+  cp "${SCRIPT_PATH}/appdata.xml" "${HOME}/.local/share/metainfo/${RESOURCE_NAME}.appdata.xml"
+
   # Install icons for mime type
   xdg-icon-resource install --context mimetypes --size 16 "${SCRIPT_PATH}/lib/icons/16x16/apps/arduino.png" text-x-arduino
   xdg-icon-resource install --context mimetypes --size 24 "${SCRIPT_PATH}/lib/icons/24x24/apps/arduino.png" text-x-arduino
@@ -71,7 +74,6 @@ xdg_install_f() {
   fi
 
   # Add symlink for arduino so it's in users path
-  echo "" # Ensure password request message is on new line
   if ! ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino; then
       echo "Adding symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
@@ -112,7 +114,6 @@ simple_install_f() {
   fi
 
   # Add symlink for arduino so it's in users path
-  echo "" # Ensure password request message is on new line
   if ! ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino; then
       echo "Adding symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
@@ -157,8 +158,11 @@ xdg_uninstall_f() {
   # Remove Arduino MIME type
   xdg-mime uninstall "${SCRIPT_PATH}/lib/${RESOURCE_NAME}.xml"
 
+  if [ -f "${HOME}/.local/share/metainfo/${RESOURCE_NAME}.appdata.xml" ]; then
+    rm "${HOME}/.local/share/metainfo/${RESOURCE_NAME}.appdata.xml"
+  fi
+
   # Remove symlink for arduino
-  echo "" # Ensure password request message is on new line
   if [ -f /usr/local/bin/arduino ]; then
       rm /usr/local/bin/arduino || echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
@@ -195,7 +199,6 @@ simple_uninstall_f() {
   fi
 
   # Remove symlink for arduino
-  echo "" # Ensure password request message is on new line
   if [ -f /usr/local/bin/arduino ]; then
       rm /usr/local/bin/arduino || echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
