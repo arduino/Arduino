@@ -125,6 +125,9 @@ public class ContributionsSelfCheck extends TimerTask implements NotificationPop
 
     SwingUtilities.invokeLater(() -> {
       Editor ed = base.getActiveEditor();
+      if (ed == null) {
+        return;
+      }
       boolean accessibleIde = PreferencesData.getBoolean("ide.accessible");
       if (accessibleIde) {
         notificationPopup = new NotificationPopup(ed, hyperlinkListener, text, false, this, button1Name, button2Name);

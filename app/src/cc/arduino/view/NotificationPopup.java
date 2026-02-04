@@ -220,27 +220,32 @@ public class NotificationPopup extends JDialog {
     pack();
 
     updateLocation(parent);
-    ComponentAdapter parentMovedListener = new ComponentAdapter() {
-      @Override
-      public void componentMoved(ComponentEvent e) {
-        updateLocation(parent);
-      }
+    if (parent != null) {
+      ComponentAdapter parentMovedListener = new ComponentAdapter() {
+        @Override
+        public void componentMoved(ComponentEvent e) {
+          updateLocation(parent);
+        }
 
-      @Override
-      public void componentResized(ComponentEvent e) {
-        updateLocation(parent);
-      }
-    };
-    parent.addComponentListener(parentMovedListener);
-    addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosed(WindowEvent e) {
-        parent.removeComponentListener(parentMovedListener);
-      }
-    });
+        @Override
+        public void componentResized(ComponentEvent e) {
+          updateLocation(parent);
+        }
+      };
+      parent.addComponentListener(parentMovedListener);
+      addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosed(WindowEvent e) {
+          parent.removeComponentListener(parentMovedListener);
+        }
+      });
+    }
   }
 
   private void updateLocation(Frame parent) {
+    if (parent == null) {
+      return;
+    }
     Point parentLocation = parent.getLocation();
 
     int parentX = Double.valueOf(parentLocation.getX()).intValue();
