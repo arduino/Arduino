@@ -59,7 +59,7 @@ public class PresentMode {
     devices = environment.getScreenDevices();
     GraphicsDevice defaultDevice = environment.getDefaultScreenDevice();
 
-    Vector<String> names = new Vector<String>();
+    Vector<String> names = new Vector<>();
     for (int i = 0; i < devices.length; i++) {
       String name = String.valueOf(i + 1);
       if (devices[i] == defaultDevice) {
@@ -74,14 +74,14 @@ public class PresentMode {
         public void actionPerformed(ActionEvent e) {
           int index = selector.getSelectedIndex();
           //device = devices[index];
-          Preferences.setInteger("run.present.display", index + 1);
+          PreferencesData.setInteger("run.present.display", index + 1);
         }
       });
   }
 
 
   static public JComboBox getSelector() {
-    int deviceIndex = Preferences.getInteger("run.present.display") - 1;
+    int deviceIndex = PreferencesData.getInteger("run.present.display") - 1;
     selector.setSelectedIndex(deviceIndex);
     return selector;
   }

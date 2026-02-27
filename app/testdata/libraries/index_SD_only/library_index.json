@@ -1,0 +1,70 @@
+{
+  "libraries": [
+	{
+      "name": "SD",
+      "version": "1.1.1",
+      "author": "Arduino, SparkFun",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables reading and writing on SD cards.",
+      "paragraph": "Once an SD memory card is connected to the SPI interface of the Arduino or Genuino board you can create files and read/write on them. You can also move through directories on the SD card.",
+      "website": "http://www.arduino.cc/en/Reference/SD",
+      "category": "Data Storage",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/SD-1.1.1.zip",
+      "archiveFileName": "SD-1.1.1.zip",
+      "size": 59689,
+      "checksum": "SHA-256:231414a512e385ffd2c47d5bec547f8e3b7a3ace340769c7ff745e99d43f68fa"
+    },
+    {
+      "name": "SD",
+      "version": "1.2.0",
+      "author": "Arduino, SparkFun",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables reading and writing on SD cards.",
+      "paragraph": "Once an SD memory card is connected to the SPI interface of the Arduino or Genuino board you can create files and read/write on them. You can also move through directories on the SD card.",
+      "website": "http://www.arduino.cc/en/Reference/SD",
+      "category": "Data Storage",
+      "architectures": [
+        "avr",
+        "sam",
+        "samd",
+        "arc32"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/SD-1.2.0.zip",
+      "archiveFileName": "SD-1.2.0.zip",
+      "size": 59845,
+      "checksum": "SHA-256:9b43fc21676172ea8323a97497deb4502e506767935304145a97f8b261e75d64"
+    },
+    {
+      "name": "SD",
+      "version": "1.2.1",
+      "author": "Arduino, SparkFun",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables reading and writing on SD cards.",
+      "paragraph": "Once an SD memory card is connected to the SPI interface of the Arduino or Genuino board you can create files and read/write on them. You can also move through directories on the SD card.",
+      "website": "http://www.arduino.cc/en/Reference/SD",
+      "category": "Data Storage",
+      "architectures": [
+        "avr",
+        "sam",
+        "samd",
+        "arc32"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/SD-1.2.1.zip",
+      "archiveFileName": "SD-1.2.1.zip",
+      "size": 59849,
+      "checksum": "SHA-256:933a62abbe7bc18f736e26a33a63c70e76f971c7bd6954f745877c6a887d0b0e"
+    }
+  ]
+}

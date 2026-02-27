@@ -1,0 +1,2819 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Augustin Winther <augustin@winther.io>, 2019
+# Bjørn Andreas, 2014
+# Cristian Maglie <c.maglie@arduino.cc>, 2016
+# Kaare Jenssen, 2015
+# 81149148127a5edca7d06dcbfba79969, 2013
+# Rune Fauske <runfa@runfa.net>, 2013-2015
+# Rune Fauske <runfa@runfa.net>, 2012
+msgid ""
+msgstr ""
+"Project-Id-Version: Arduino IDE 1.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-29 10:24-0400\n"
+"PO-Revision-Date: 2019-01-28 17:36+0000\n"
+"Last-Translator: Augustin Winther <augustin@winther.io>\n"
+"Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/mbanzi/arduino-ide-15/language/nb_NO/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nb_NO\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Preferences.java:358 Preferences.java:374
+msgid "  (requires restart of Arduino)"
+msgstr "  (krever omstart av Arduino)"
+
+#: ../../../processing/app/debug/Compiler.java:529
+#, java-format
+msgid " Not used: {0}"
+msgstr "Ikke i bruk: {0}"
+
+#: ../../../processing/app/debug/Compiler.java:525
+#, java-format
+msgid " Used: {0}"
+msgstr "I bruk: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr "'Keyboard' ikke funnet. Har skissen din linjen '#include <Keyboard.h>'?"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr "'Mouse' ikke funnet. Har skissen din linjen '#include <Mouse.h>'?"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
+msgid ""
+"'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
+"information"
+msgstr "'arch' mappen er ikke lenger støttet! Se http://goo.gl/gfFJzU for mer informasjon."
+
+#: Preferences.java:478
+msgid "(edit only when Arduino is not running)"
+msgstr "(redigeres kun når Arduino ikke kjører)"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+msgid "(legacy)"
+msgstr "(legacy)"
+
+#: ../../../processing/app/helpers/CommandlineParser.java:149
+msgid "--curdir no longer supported"
+msgstr "--curdir er ikke støttet lenger"
+
+#: ../../../processing/app/Base.java:468
+msgid ""
+"--verbose, --verbose-upload and --verbose-build can only be used together "
+"with --verify or --upload"
+msgstr "--verbose, --verbose-upload og --verbose-build kan kun benyttes sammen med --verify eller --upload"
+
+#: Sketch.java:746
+msgid ".pde -> .ino"
+msgstr ".pde -> .ino"
+
+#: Editor.java:2053
+msgid ""
+"<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
+" font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
+"want to save changes to this sketch<BR> before closing?</b><p>If you don't "
+"save, your changes will be lost."
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Vil du lagre endringer i denne skissen<BR> før den lukkes?</b><p>Hvis du ikke lagrer, vil endringene gå tapt."
+
+#: Editor.java:2169
+#, java-format
+msgid "A folder named \"{0}\" already exists. Can't open sketch."
+msgstr "En mappe med følgende navn \"{0}\" eksisterer allerede. Kan ikke åpne skissen."
+
+#: Base.java:2690
+#, java-format
+msgid "A library named {0} already exists"
+msgstr "Et bibliotek med navnet {0} eksisterer allerede"
+
+#: UpdateCheck.java:103
+msgid ""
+"A new version of Arduino is available,\n"
+"would you like to visit the Arduino download page?"
+msgstr "En ny versjon av Arduino er tilgjengelig,\nønsker du å besøke nedlastingssiden for Arduino?"
+
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid "A newer {0} package is available"
+msgstr "Det finnes en nyere {0} pakke"
+
+#: ../../../../../app/src/processing/app/Base.java:2307
+msgid "A subfolder of your sketchbook is not a valid library"
+msgstr "En underkatalog av skisseboken er ikke et gyldig bibliotek"
+
+#: Editor.java:1116
+msgid "About Arduino"
+msgstr "Om Arduino"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr "Acoli"
+
+#: ../../../../../app/src/processing/app/Base.java:1177
+msgid "Add .ZIP Library..."
+msgstr "Legg til .ZIP Bibliotek..."
+
+#: Editor.java:650
+msgid "Add File..."
+msgstr "Legg til fil..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
+msgid "Additional Boards Manager URLs"
+msgstr "Flere 'Boards Manager' URLer"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
+msgid "Additional Boards Manager URLs: "
+msgstr "Flere 'Boards Manager' URLer:"
+
+#: ../../../../../app/src/processing/app/Preferences.java:161
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Aggressivt hurtigbuffer kompilert kjerne"
+
+#: ../../../processing/app/Preferences.java:96
+msgid "Albanian"
+msgstr "Albansk"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
+msgid "All"
+msgstr "Alle"
+
+#: tools/FixEncoding.java:77
+msgid ""
+"An error occurred while trying to fix the file encoding.\n"
+"Do not attempt to save this sketch as it may overwrite\n"
+"the old version. Use Open to re-open the sketch and try again.\n"
+msgstr "Det oppstod en feil under reparering av tegnkoding for filen.\nIkke forsøk å lagre denne skissen siden den kan overskrive\nden gamle versjonen. Benytt Åpne for å åpne skissen på nytt og prøv igjen.\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr "Det oppstod en feil under oppdatering av biblioteksindeks"
+
+#: ../../../processing/app/BaseNoGui.java:528
+msgid "An error occurred while uploading the sketch"
+msgstr "Det oppstod en feil under opplasting av skissen"
+
+#: ../../../processing/app/BaseNoGui.java:506
+#: ../../../processing/app/BaseNoGui.java:551
+#: ../../../processing/app/BaseNoGui.java:554
+msgid "An error occurred while verifying the sketch"
+msgstr "Det oppstod en feil under verifisering av skissen"
+
+#: ../../../processing/app/BaseNoGui.java:521
+msgid "An error occurred while verifying/uploading the sketch"
+msgstr "Det oppstod en feil under opplasting/verifisering av skissen"
+
+#: Base.java:228
+msgid ""
+"An unknown error occurred while trying to load\n"
+"platform-specific code for your machine."
+msgstr "En ukjent feil oppstod under lasting av\nplattformspesifik kode for din maskin."
+
+#: Preferences.java:85
+msgid "Arabic"
+msgstr "Arabisk"
+
+#: Preferences.java:86
+msgid "Aragonese"
+msgstr "Aragonesisk"
+
+#: tools/Archiver.java:48
+msgid "Archive Sketch"
+msgstr "Arkiver skisse"
+
+#: tools/Archiver.java:109
+msgid "Archive sketch as:"
+msgstr "Arkiver skissen som:"
+
+#: tools/Archiver.java:139
+msgid "Archive sketch canceled."
+msgstr "Arkivering av skissen avbrutt."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "Arkivering av bygget kjerne (hurtigbuffrer) i: {0}"
+
+#: tools/Archiver.java:75
+msgid ""
+"Archiving the sketch has been canceled because\n"
+"the sketch couldn't save properly."
+msgstr "Arkivering av skissen ble avbrutt fordi\nskissen ikke kunne lagres."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr "Arduino"
+
+#: ../../../processing/app/I18n.java:83
+msgid "Arduino ARM (32-bits) Boards"
+msgstr "Arduino ARM (32-bits) Kort"
+
+#: ../../../processing/app/I18n.java:82
+msgid "Arduino AVR Boards"
+msgstr "Arduino AVR kort"
+
+#: Editor.java:2137
+msgid ""
+"Arduino can only open its own sketches\n"
+"and other files ending in .ino or .pde"
+msgstr "Arduino kan kun åpne sine egne skisser\nog filer med endingen .ino eller .pde"
+
+#: Base.java:1682
+msgid ""
+"Arduino cannot run because it could not\n"
+"create a folder to store your settings."
+msgstr "Arduino kan ikke kjøre fordi det ikke var mulig\nå opprette en mappe for dine innstillinger."
+
+#: Base.java:1889
+msgid ""
+"Arduino cannot run because it could not\n"
+"create a folder to store your sketchbook."
+msgstr "Arduino kan ikke kjøre fordi det ikke var mulig\nå opprette en mappe til å lagre skisseboken din."
+
+#: ../../../processing/app/EditorStatus.java:471
+msgid "Arduino: "
+msgstr "Arduino:"
+
+#: Sketch.java:588
+#, java-format
+msgid "Are you sure you want to delete \"{0}\"?"
+msgstr "Er du sikker på at du vil slette \"{0}\"?"
+
+#: Sketch.java:587
+msgid "Are you sure you want to delete this sketch?"
+msgstr "Er du sikker på at du vil slette denne skissen?"
+
+#: ../../../processing/app/Base.java:356
+msgid "Argument required for --board"
+msgstr "Verdi er påkrevd for --board"
+
+#: ../../../processing/app/Base.java:363
+msgid "Argument required for --port"
+msgstr "Verdi er påkrevd for --port"
+
+#: ../../../processing/app/Base.java:377
+msgid "Argument required for --pref"
+msgstr "Verdi er påkrevd for --pref"
+
+#: ../../../processing/app/Base.java:384
+msgid "Argument required for --preferences-file"
+msgstr "Verdi er påkrevd for --preferences-file"
+
+#: ../../../processing/app/helpers/CommandlineParser.java:76
+#: ../../../processing/app/helpers/CommandlineParser.java:83
+#, java-format
+msgid "Argument required for {0}"
+msgstr "Verdi er påkrevd for {0}"
+
+#: ../../../processing/app/Preferences.java:137
+msgid "Armenian"
+msgstr "Armensk"
+
+#: ../../../processing/app/Preferences.java:138
+msgid "Asturian"
+msgstr "Asturiansk"
+
+#: ../../../processing/app/debug/Compiler.java:145
+msgid "Authorization required"
+msgstr "Tilatelse er påkrevd"
+
+#: tools/AutoFormat.java:91
+msgid "Auto Format"
+msgstr "Autoformater"
+
+#: tools/AutoFormat.java:944
+msgid "Auto Format finished."
+msgstr "Autoformatering ferdig."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr "Automatiske proxy instillinger"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr "Automatisk"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr "Automatisk proxy konfigurasjons URL:"
+
+#: SerialMonitor.java:110
+msgid "Autoscroll"
+msgstr "Bla automatisk"
+
+#: Editor.java:2619
+#, java-format
+msgid "Bad error line: {0}"
+msgstr "Stygg feil på linje: {0}"
+
+#: Editor.java:2136
+msgid "Bad file selected"
+msgstr "Ugyldig fil valgt"
+
+#: ../../../processing/app/Preferences.java:149
+msgid "Basque"
+msgstr "Baskisk"
+
+#: ../../../processing/app/Preferences.java:139
+msgid "Belarusian"
+msgstr "Hviterussisk"
+
+#: ../../../processing/app/Base.java:1433
+#: ../../../processing/app/Editor.java:707
+msgid "Board"
+msgstr "Kort"
+
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr "Kort info"
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr "Kort ved {0} er ikke tilgjengelig"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
+#, java-format
+msgid "Board {0} (platform {1}, package {2}) is unknown"
+msgstr "Kort  {0} (platform {1}, package {2}) er ukjent"
+
+#: ../../../processing/app/debug/TargetBoard.java:42
+#, java-format
+msgid ""
+"Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
+" {3}"
+msgstr "Kort {0}:{1}:{2} definerer ikke en ''build.board'' innstilling. Automatisk satt til: {3}"
+
+#: ../../../processing/app/EditorStatus.java:472
+msgid "Board: "
+msgstr "Kort"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Boards Manager"
+msgstr "Kort Administrasjon"
+
+#: ../../../../../app/src/processing/app/Base.java:1320
+msgid "Boards Manager..."
+msgstr "Kort Administrasjon"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
+msgid "Boards included in this package:"
+msgstr "Kort i denne pakken"
+
+#: ../../../processing/app/debug/Compiler.java:1273
+#, java-format
+msgid "Bootloader file specified but missing: {0}"
+msgstr "Fil for oppstartslaster er spesifiesert, men mangler: {0}"
+
+#: ../../../processing/app/Preferences.java:140
+msgid "Bosnian"
+msgstr "Bosnisk"
+
+#: SerialMonitor.java:112
+msgid "Both NL & CR"
+msgstr "Både NL & CR"
+
+#: Preferences.java:81
+msgid "Browse"
+msgstr "Bla i gjennom"
+
+#: ../../../processing/app/Sketch.java:1530
+msgid "Build options changed, rebuilding all"
+msgstr "Innstillinger for bygging er endret, bygger alt på nytt"
+
+#: ../../../../../app/src/processing/app/Base.java:1210
+msgid "Built-in Examples"
+msgstr "Innebygde Eksempler"
+
+#: ../../../processing/app/Preferences.java:80
+msgid "Bulgarian"
+msgstr "Bulgarsk"
+
+#: ../../../processing/app/Preferences.java:141
+msgid "Burmese (Myanmar)"
+msgstr "Burma (Myanmar)"
+
+#: Editor.java:708
+msgid "Burn Bootloader"
+msgstr "Skriv oppstartslaster"
+
+#: Editor.java:2504
+msgid "Burning bootloader to I/O Board (this may take a minute)..."
+msgstr "Skriver oppstartslaster til I/O kort (dette kan ta et minutt..."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr "CRC stemmer ikke overens, filen er ødelagt. Det kan være et midlertidig problem, prøv igjen senere."
+
+#: ../../../processing/app/Base.java:379
+#, java-format
+msgid "Can only pass one of: {0}"
+msgstr "Kan bare videresende en av: {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr "Kan ikke aktivere eksternt redigeringsprogram"
+
+#: ../../../processing/app/BaseNoGui.java:504
+#: ../../../processing/app/BaseNoGui.java:549
+msgid "Can't find the sketch in the specified path"
+msgstr "Finner ikke skissen i den oppgitte stien"
+
+#: ../../../processing/app/Preferences.java:92
+msgid "Canadian French"
+msgstr "Kanadisk fransk"
+
+#: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
+#: Editor.java:2064 Editor.java:2145 Editor.java:2465
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: ../../../processing/app/Base.java:465
+msgid "Cannot specify any sketch files"
+msgstr "Kan ikke oppgi noen skissefiler"
+
+#: SerialMonitor.java:112
+msgid "Carriage return"
+msgstr "Vognretur"
+
+#: Preferences.java:87
+msgid "Catalan"
+msgstr "Katalansk"
+
+#: Preferences.java:419
+msgid "Check for updates on startup"
+msgstr "Se etter oppdateringer ved oppstart"
+
+#: ../../../processing/app/Preferences.java:142
+msgid "Chinese (China)"
+msgstr "Kinesisk (Kina)"
+
+#: ../../../processing/app/Preferences.java:144
+msgid "Chinese (Taiwan)"
+msgstr "Kinesisk (Taiwan)"
+
+#: ../../../processing/app/Preferences.java:143
+msgid "Chinese (Taiwan) (Big5)"
+msgstr "Kinesisk (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr "Tom output"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
+msgid "Click for a list of unofficial boards support URLs"
+msgstr "Klikk for en liste med linker til støttesider for uoffisielle kort "
+
+#: Editor.java:521 Editor.java:2024
+msgid "Close"
+msgstr "Lukk"
+
+#: Editor.java:1208 Editor.java:2749
+msgid "Comment/Uncomment"
+msgstr "Kommenter/Fjern kommentar"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr "Kommunikasjon"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
+msgid "Compiler warnings: "
+msgstr "Kompilatoradvarsler:"
+
+#: Sketch.java:1608 Editor.java:1890
+msgid "Compiling sketch..."
+msgstr "Kompilerer skisse..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr "Bidratt"
+
+#: Editor.java:1157 Editor.java:2707
+msgid "Copy"
+msgstr "Kopier"
+
+#: Editor.java:1177 Editor.java:2723
+msgid "Copy as HTML"
+msgstr "Kopier som HTML"
+
+#: ../../../processing/app/EditorStatus.java:455
+msgid "Copy error messages"
+msgstr "Kopier feilmeldinger"
+
+#: Editor.java:1165 Editor.java:2715
+msgid "Copy for Forum"
+msgstr "Kopier for Forum"
+
+#: Sketch.java:1089
+#, java-format
+msgid "Could not add ''{0}'' to the sketch."
+msgstr "Kunne ikke legge ''{0}'' til skissen."
+
+#: Editor.java:2188
+msgid "Could not copy to a proper location."
+msgstr "Kunne ikke kopiere til en riktig plassering."
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr "Kunne ikke opprette katalog \"{0}\""
+
+#: Editor.java:2179
+msgid "Could not create the sketch folder."
+msgstr "Kunne ikke opprette skissemappen."
+
+#: Editor.java:2206
+msgid "Could not create the sketch."
+msgstr "Kunne ikke opprette skissen."
+
+#: Sketch.java:617
+#, java-format
+msgid "Could not delete \"{0}\"."
+msgstr "Kunne ikke slette \"{0}\"."
+
+#: Sketch.java:1066
+#, java-format
+msgid "Could not delete the existing ''{0}'' file."
+msgstr "Kunne ikke slette den eksisterende ''{0}'' filen."
+
+#: ../../../processing/app/debug/TargetPlatform.java:74
+#, java-format
+msgid "Could not find boards.txt in {0}. Is it pre-1.5?"
+msgstr "Fant ikke boards.txt i {0}. Er filen pre-1.5?"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
+#, java-format
+msgid "Could not find tool {0}"
+msgstr "Fant ikke verktøyet {0}"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:278
+#, java-format
+msgid "Could not find tool {0} from package {1}"
+msgstr "Fant ikke verktøyet {0} fra pakken {1}"
+
+#: Base.java:1934
+#, java-format
+msgid ""
+"Could not open the URL\n"
+"{0}"
+msgstr "Kunne ikke åpne URLen\n{0}"
+
+#: Base.java:1958
+#, java-format
+msgid ""
+"Could not open the folder\n"
+"{0}"
+msgstr "Kunne ikke åpne mappen\n{0}"
+
+#: Sketch.java:1769
+msgid ""
+"Could not properly re-save the sketch. You may be in trouble at this point,\n"
+"and it might be time to copy and paste your code to another text editor."
+msgstr "Skissen kunne ikke lagres på nytt. Det kan tenkes at du er ille ute nå\nog det er på tide å kopiere og lime inn kildekoden i et annet redigeringsprogram."
+
+#: Sketch.java:1768
+msgid "Could not re-save sketch"
+msgstr "Kunne ikke lagre skissen på nytt"
+
+#: Theme.java:52
+msgid ""
+"Could not read color theme settings.\n"
+"You'll need to reinstall Arduino."
+msgstr "Kan ikke lese innstillinger for fargeskjema.\nDu må installere Arduino på nytt."
+
+#: Preferences.java:219
+msgid ""
+"Could not read default settings.\n"
+"You'll need to reinstall Arduino."
+msgstr "Kunne ikke lese standard innstillinger.\nDu må installere Arduino på nytt."
+
+#: Base.java:2482
+#, java-format
+msgid "Could not remove old version of {0}"
+msgstr "Kunne ikke fjerne gammel versjon av {0}"
+
+#: Base.java:2492
+#, java-format
+msgid "Could not replace {0}"
+msgstr "Kunne ikke erstatte {0}"
+
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr "Klarte ikke å skrive innstillinger fil: {0} "
+
+#: tools/Archiver.java:74
+msgid "Couldn't archive sketch"
+msgstr "Kunne ikke arkivere skisse"
+
+#: Sketch.java:1647
+msgid "Couldn't determine program size: {0}"
+msgstr "Kunne ikke bestemme størrelsen av programmet: {0}"
+
+#: Sketch.java:616
+msgid "Couldn't do it"
+msgstr "Kunne ikke gjøre det"
+
+#: debug/BasicUploader.java:209
+msgid ""
+"Couldn't find a Board on the selected port. Check that you have the correct "
+"port selected.  If it is correct, try pressing the board's reset button "
+"after initiating the upload."
+msgstr "Fant ikke et kort tilkoblet den valgte porten. Sjekk at du har valgt riktig port. Hvis porten er riktig, prøv å trykke resetknappen på kortet etter at du har startet opplastingen."
+
+#: ../../../processing/app/Preferences.java:82
+msgid "Croatian"
+msgstr "Kroatisk"
+
+#: Editor.java:1149 Editor.java:2699
+msgid "Cut"
+msgstr "Klipp ut"
+
+#: ../../../../../app/src/processing/app/Preferences.java:119
+msgid "Czech (Czech Republic)"
+msgstr "Tsjekkisk (Tsjekkisk Republikk)"
+
+#: ../../../../../app/src/processing/app/Preferences.java:120
+msgid "Danish (Denmark)"
+msgstr "Dansk (Danmark)"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr "Databehandling"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr "Datalagring"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "Reduser skriftstørrelse"
+
+#: Editor.java:1224 Editor.java:2765
+msgid "Decrease Indent"
+msgstr "Mindre innrykk"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
+msgid "Default"
+msgstr "Standard"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr "Standard tema"
+
+#: EditorHeader.java:314 Sketch.java:591
+msgid "Delete"
+msgstr "Slett"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr "Enhetskontroll"
+
+#: debug/Uploader.java:199
+msgid ""
+"Device is not responding, check the right serial port is selected or RESET "
+"the board right before exporting"
+msgstr "Enheten svarer ikke, sjekk at riktig serieport er valgt eller RESET kortet like før eksportering"
+
+#: tools/FixEncoding.java:57
+msgid "Discard all changes and reload sketch?"
+msgstr "Forkast alle endringer og last skissen på nytt?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr "Skjerm"
+
+#: ../../../processing/app/Preferences.java:438
+msgid "Display line numbers"
+msgstr "Vis linjenummer"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+#, java-format
+msgid ""
+"Do you want to remove {0}?\n"
+"If you do so you won't be able to use {0} any more."
+msgstr "Ønsker du å ta bort {0}?\nI så fall vil du ikke kunne benytte {0} lenger."
+
+#: Editor.java:2064
+msgid "Don't Save"
+msgstr "Ikke lagre"
+
+#: Editor.java:2275 Editor.java:2311
+msgid "Done Saving."
+msgstr "Lagret"
+
+#: Editor.java:2510
+msgid "Done burning bootloader."
+msgstr "Skriving av oppstartslaster er ferdig"
+
+#: ../../../processing/app/BaseNoGui.java:507
+#: ../../../processing/app/BaseNoGui.java:552
+msgid "Done compiling"
+msgstr "Kompilering er ferdig"
+
+#: Editor.java:1911 Editor.java:1928
+msgid "Done compiling."
+msgstr "Kompilering er ferdig."
+
+#: Editor.java:2564
+msgid "Done printing."
+msgstr "Utskrift ferdig."
+
+#: ../../../processing/app/BaseNoGui.java:514
+msgid "Done uploading"
+msgstr "Opplasting er ferdig"
+
+#: Editor.java:2395 Editor.java:2431
+msgid "Done uploading."
+msgstr "Opplasting ferdig."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
+#, java-format
+msgid "Downloaded {0}kb of {1}kb."
+msgstr "Lastet ned {0}kb av {1}kb."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
+msgid "Downloading boards definitions."
+msgstr "Laster ned definisjoner for kort"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
+msgid "Downloading libraries index..."
+msgstr "Laster ned indeks for biblioteker"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
+#, java-format
+msgid "Downloading library: {0}"
+msgstr "Laster ned bibliotek: {0}"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
+msgid "Downloading platforms index..."
+msgstr "Laster ned platformindeks..."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
+#, java-format
+msgid "Downloading tools ({0}/{1})."
+msgstr "Laster ned verktøy ({0}/{1})."
+
+#: Preferences.java:91
+msgid "Dutch"
+msgstr "Nederlandsk"
+
+#: ../../../processing/app/Preferences.java:144
+msgid "Dutch (Netherlands)"
+msgstr "Nederlandsk (Nederland)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr "Edison hjelp"
+
+#: Editor.java:1130
+msgid "Edit"
+msgstr "Rediger"
+
+#: Preferences.java:370
+msgid "Editor font size: "
+msgstr "Skriftstørrelse for redigeringsprogrammet: "
+
+#: Preferences.java:353
+msgid "Editor language: "
+msgstr "Redigeringsspråk: "
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
+msgid "Enable Code Folding"
+msgstr "Aktiver Code Folding"
+
+#: Preferences.java:92
+msgid "English"
+msgstr "Engelsk"
+
+#: ../../../processing/app/Preferences.java:145
+msgid "English (United Kingdom)"
+msgstr "Engelsk (Storbrittania)"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
+msgid "Enter a comma separated list of urls"
+msgstr "Skriv inn en kommaseparert liste med lenker"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
+msgid "Enter additional URLs, one for each row"
+msgstr "Legg til ytterligere lenker, en for hver rad"
+
+#: Editor.java:1062
+msgid "Environment"
+msgstr "Miljø"
+
+#: Base.java:2147 Preferences.java:256 Sketch.java:475 Sketch.java:481
+#: Sketch.java:496 Sketch.java:503 Sketch.java:526 Sketch.java:543
+#: Editor.java:2167 Editor.java:2178 Editor.java:2188 Editor.java:2206
+msgid "Error"
+msgstr "Feil"
+
+#: Sketch.java:1065 Sketch.java:1088
+msgid "Error adding file"
+msgstr "Feil ved tillegging av fil"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr "Feil ved kompilering for kort {0}."
+
+#: debug/Compiler.java:369
+msgid "Error compiling."
+msgstr "Feil ved kompilering."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
+#, java-format
+msgid "Error downloading {0}"
+msgstr "Feil under nedlasting {0}"
+
+#: Base.java:1674
+msgid "Error getting the Arduino data folder."
+msgstr "Feil oppstod ved henting av datamappe for Arduino"
+
+#: Serial.java:593
+#, java-format
+msgid "Error inside Serial.{0}()"
+msgstr "Feil i Serial.{0}()"
+
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr "Feil ved innlasting av tema {0}: {1}"
+
+#: ../../../processing/app/debug/TargetPlatform.java:95
+#: ../../../processing/app/debug/TargetPlatform.java:106
+#: ../../../processing/app/debug/TargetPlatform.java:117
+#, java-format
+msgid "Error loading {0}"
+msgstr "Feil ved innlasting {0}"
+
+#: Serial.java:181
+#, java-format
+msgid "Error opening serial port ''{0}''."
+msgstr "Feil ved åpning av serieport ''{0}''."
+
+#: ../../../processing/app/Serial.java:119
+#, java-format
+msgid ""
+"Error opening serial port ''{0}''. Try consulting the documentation at "
+"http://playground.arduino.cc/Linux/All#Permission"
+msgstr "Feil under åpning av serieport \"{0}\". Undersøk rådene i dokumentasjonen her http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr "Feil ved analyse av biblioteksindeks: {0}\nPrøv å åpne Bibliotek Administrasjon for å oppdatere bibliotekets indeks."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr "Feil ved avlesning av biblioteksindeks: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr "Feil ved  avlesning av pakkeindeks-mappen: {0}\n(kanskje et tillatelsesproblem?)"
+
+#: Preferences.java:277
+msgid "Error reading preferences"
+msgstr "Feil under lesing av innstillinger"
+
+#: Preferences.java:279
+#, java-format
+msgid ""
+"Error reading the preferences file. Please delete (or move)\n"
+"{0} and restart Arduino."
+msgstr "Feil ved lesing av filen med innstillinger. Vennligst slett (eller flytt)\n{0} og start Arduino på nytt."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
+msgid "Error running post install script"
+msgstr "Feil under kjøring av skript etter installasjon"
+
+#: ../../../cc/arduino/packages/DiscoveryManager.java:25
+msgid "Error starting discovery method: "
+msgstr "Det oppstod en feil under start av deteksjonsprosessen:"
+
+#: Serial.java:125
+#, java-format
+msgid "Error touching serial port ''{0}''."
+msgstr "Feil under tilgang til serieporten \"{0}\"."
+
+#: Editor.java:2512 Editor.java:2516 Editor.java:2520
+msgid "Error while burning bootloader."
+msgstr "Feil oppstod under skriving av oppstartslaster."
+
+#: ../../../processing/app/Editor.java:2555
+msgid "Error while burning bootloader: missing '{0}' configuration parameter"
+msgstr "Feil under skriving av oppstartslaster: mangler konfigurasjonsparameter '{0}"
+
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr "Feil under skriving av oppstartslaster: Vennligst velg en seriell port."
+
+#: ../../../../../app/src/processing/app/Editor.java:1940
+msgid "Error while compiling: missing '{0}' configuration parameter"
+msgstr "Feil under kompilering: mangler '{0}' konfigurasjons parameter "
+
+#: Editor.java:2567
+msgid "Error while printing."
+msgstr "Feil under utskrift."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr "Feil under oppsett av serielle portparametere: {0} {1} {2} {3}"
+
+#: ../../../processing/app/BaseNoGui.java:528
+msgid "Error while uploading"
+msgstr "Det oppstod en feil under opplastingen"
+
+#: ../../../processing/app/Editor.java:2409
+#: ../../../processing/app/Editor.java:2449
+msgid "Error while uploading: missing '{0}' configuration parameter"
+msgstr "Det oppstod en feil under opplasting: mangler '{0}' konfigurasjonsparameter"
+
+#: ../../../processing/app/BaseNoGui.java:506
+#: ../../../processing/app/BaseNoGui.java:551
+#: ../../../processing/app/BaseNoGui.java:554
+msgid "Error while verifying"
+msgstr "Feil under verifisering"
+
+#: ../../../processing/app/BaseNoGui.java:521
+msgid "Error while verifying/uploading"
+msgstr "Feil under verifisering/opplasting"
+
+#: Preferences.java:93
+msgid "Estonian"
+msgstr "Estisk"
+
+#: Editor.java:516
+msgid "Examples"
+msgstr "Eksempler"
+
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr "Eksempler for hvilket som helst kort"
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
+msgstr "Eksempler for {0}"
+
+#: ../../../../../app/src/processing/app/Base.java:1244
+msgid "Examples from Custom Libraries"
+msgstr "Eksempler fra Egendefinerte Bibliotek"
+
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr "Eksempler fra andre biblioteker"
+
+#: ../../../../../app/src/processing/app/Editor.java:753
+msgid "Export canceled, changes must first be saved."
+msgstr "Eksportering-kansellert, endringer må først lagres."
+
+#: ../../../../../app/src/processing/app/Editor.java:750
+msgid "Export compiled Binary"
+msgstr "Eksporter kompilert Binær-fil"
+
+#: ../../../processing/app/Base.java:416
+#, java-format
+msgid "Failed to open sketch: \"{0}\""
+msgstr "Klarte ikke åpne skissen: \"{0}\""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr "Kunne ikke gi nytt navn til \"{0}\" til \"{1}\""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr "Kunne ikke gi nytt navn til skissemappen"
+
+#: Editor.java:491
+msgid "File"
+msgstr "Fil"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr "Filnavnet {0} er ugyldig: ignorert"
+
+#: Preferences.java:94
+msgid "Filipino"
+msgstr "Filippinsk"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
+msgid "Filter your search..."
+msgstr "Filtrer søket ditt..."
+
+#: FindReplace.java:124 FindReplace.java:127
+msgid "Find"
+msgstr "Finn"
+
+#: Editor.java:1249
+msgid "Find Next"
+msgstr "Finn neste"
+
+#: Editor.java:1259
+msgid "Find Previous"
+msgstr "Finn forrige"
+
+#: Editor.java:1086 Editor.java:2775
+msgid "Find in Reference"
+msgstr "Finn i referanse"
+
+#: Editor.java:1234
+msgid "Find..."
+msgstr "Finn..."
+
+#: FindReplace.java:80
+msgid "Find:"
+msgstr "Finn:"
+
+#: ../../../processing/app/Preferences.java:147
+msgid "Finnish"
+msgstr "Finsk"
+
+#: tools/FixEncoding.java:41 tools/FixEncoding.java:58
+#: tools/FixEncoding.java:79
+msgid "Fix Encoding & Reload"
+msgstr "Fiks tegnkoding & Last på nytt"
+
+#: ../../../processing/app/BaseNoGui.java:318
+msgid ""
+"For information on installing libraries, see: "
+"http://www.arduino.cc/en/Guide/Libraries\n"
+msgstr "For mer informasjon om installering av bibliotek, se http://www.arduino.cc/en/Guide/Libraries\n"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
+#, java-format
+msgid "Forcing reset using 1200bps open/close on port {0}"
+msgstr "Tvinger restart ved 1200bps åpning/lukking på port {0}"
+
+#: Preferences.java:95
+msgid "French"
+msgstr "Fransk"
+
+#: Editor.java:1097
+msgid "Frequently Asked Questions"
+msgstr "Ofte spurte spørsmål"
+
+#: Preferences.java:96
+msgid "Galician"
+msgstr "Galisisk"
+
+#: ../../../../../app/src/processing/app/Preferences.java:176
+msgid "Galician (Spain)"
+msgstr "Galisisk (Spania)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr "Galileo Hjelp"
+
+#: ../../../processing/app/Preferences.java:94
+msgid "Georgian"
+msgstr "Georgisk"
+
+#: Preferences.java:97
+msgid "German"
+msgstr "Tysk"
+
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr "Få Kort info"
+
+#: Editor.java:1054
+msgid "Getting Started"
+msgstr "Kom i Gang"
+
+#: ../../../processing/app/Sketch.java:1646
+#, java-format
+msgid ""
+"Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
+"for local variables. Maximum is {1} bytes."
+msgstr "Globale variabler bruker  {0} bytes ({2}%%) av dynamisk minne, som etterlater {3} bytes til lokale variabler. Maks er  {1} bytes."
+
+#: ../../../processing/app/Sketch.java:1651
+#, java-format
+msgid "Global variables use {0} bytes of dynamic memory."
+msgstr "Globale variabler bruker {0} bytes av dynamisk minne."
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr "Gå til linje"
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr "Gå til linje..."
+
+#: Preferences.java:98
+msgid "Greek"
+msgstr "Gresk"
+
+#: ../../../processing/app/Preferences.java:95
+msgid "Hebrew"
+msgstr "Hebraisk"
+
+#: Editor.java:1015
+msgid "Help"
+msgstr "Hjelp"
+
+#: Preferences.java:99
+msgid "Hindi"
+msgstr "Hindi"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr "Tjener navn:"
+
+#: Sketch.java:295
+msgid ""
+"How about saving the sketch first \n"
+"before trying to rename it?"
+msgstr "Hva med å lagre skissen før \ndu prøver å omdøpe den?"
+
+#: Sketch.java:882
+msgid "How very Borges of you"
+msgstr "Dette var surrealistisk"
+
+#: Preferences.java:100
+msgid "Hungarian"
+msgstr "Ungarsk"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr "UFORENLIG"
+
+#: FindReplace.java:96
+msgid "Ignore Case"
+msgstr "Ikke skill mellom store og små bokstaver"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr "Ignorerer bibliotek med dårlig navn"
+
+#: Base.java:1436
+msgid "Ignoring sketch with bad name"
+msgstr "Overser skisse med ugyldig navn"
+
+#: ../../../processing/app/Sketch.java:736
+msgid ""
+"In Arduino 1.0, the default file extension has changed\n"
+"from .pde to .ino.  New sketches (including those created\n"
+"by \"Save-As\") will use the new extension.  The extension\n"
+"of existing sketches will be updated on save, but you can\n"
+"disable this in the Preferences dialog.\n"
+"\n"
+"Save sketch and update its extension?"
+msgstr "Fra Arduino 1.0 har standard filtypen blitt endret\nfra .pde til .ino. Nye skisser (også de oppretten via \n\"Lagre som\") vil benytte den nye filtypen. Eksisterende\nskisser vil bli oppdatert med den nye filtype ved lagring.\nDette kan deaktiveres i dialogen for innstillinger.\n\nLagre skissen og oppdater filtypen?"
+
+#: ../../../../../app/src/processing/app/Editor.java:778
+msgid "Include Library"
+msgstr "Inkluder Bibliotek"
+
+#: ../../../processing/app/BaseNoGui.java:768
+#: ../../../processing/app/BaseNoGui.java:771
+msgid "Incorrect IDE installation folder"
+msgstr "Feil IDE installasjons mappe"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "Øk skriftstørrelse"
+
+#: Editor.java:1216 Editor.java:2757
+msgid "Increase Indent"
+msgstr "Mer innrykk"
+
+#: Preferences.java:101
+msgid "Indonesian"
+msgstr "Indonesisk"
+
+#: ../../../../../app/src/processing/app/Base.java:295
+msgid "Initializing packages..."
+msgstr "Initialiserer pakkene..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:75
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:81
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:289
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:78
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
+msgid "Install"
+msgstr "Installer"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
+msgid "Installation completed!"
+msgstr "Installasjonen er fullført!"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
+msgid "Installed"
+msgstr "Installert"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
+msgid "Installing boards..."
+msgstr "Installerer kort..."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
+#, java-format
+msgid "Installing library: {0}:{1}"
+msgstr "Installere bibliotek: {0}: {1}"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
+#, java-format
+msgid "Installing tools ({0}/{1})..."
+msgstr "Installerer verktøy ({0}/{1})..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
+msgid "Installing..."
+msgstr "Installerer..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr "Grensesnitt størrelse:"
+
+#: ../../../processing/app/Base.java:1204
+#, java-format
+msgid "Invalid library found in {0}: {1}"
+msgstr "Ugyldig bibliotek i {0}: {1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
+#, java-format
+msgid "Invalid quoting: no closing [{0}] char found."
+msgstr "Ugyldig tegnbruk: Ingen lukking av [{0}] funnet."
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr "Ugyldig versjon '{0}' for biblioteket i: {1}"
+
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
+#, java-format
+msgid "Invalid version {0}"
+msgstr "Ugyldig versjon {0}"
+
+#: Preferences.java:102
+msgid "Italian"
+msgstr "Italiensk"
+
+#: Preferences.java:103
+msgid "Japanese"
+msgstr "Japansk"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr "Kazakh"
+
+#: Preferences.java:104
+msgid "Korean"
+msgstr "Koreansk"
+
+#: Preferences.java:105
+msgid "Latvian"
+msgstr "Latvisk"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
+msgid "Library Manager"
+msgstr "Bibliotek Administrasjon"
+
+#: ../../../../../app/src/processing/app/Base.java:2349
+msgid "Library added to your libraries. Check \"Include library\" menu"
+msgstr "Biblioteket er lagt til i dine bibliotek. Sjekk \"Inkluder Bibliotek\" menyen"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr "Biblioteket kan ikke bruke både 'src' og 'utility' mapper. Dobbeltsjekk {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
+#, java-format
+msgid "Library is already installed: {0}:{1}"
+msgstr "Biblioteket er allerede installert: {0}: {1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr "Linje nummer:"
+
+#: Preferences.java:106
+msgid "Lithuaninan"
+msgstr "Litauisk"
+
+#: ../../../../../app/src/processing/app/Base.java:132
+msgid "Loading configuration..."
+msgstr "Laster konfigurasjon..."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+#, java-format
+msgid "Looking for recipes like {0}*{1}"
+msgstr "Ser etter mottakere som {0}*{1}"
+
+#: ../../../processing/app/Sketch.java:1684
+msgid "Low memory available, stability problems may occur."
+msgstr "Lite minne tilgjengelig, stabilitetsproblemer kan inntreffe."
+
+#: ../../../../../app/src/processing/app/Base.java:1168
+msgid "Manage Libraries..."
+msgstr "Administrer Bibliotek..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr "Manuell proxy konfigurasjon"
+
+#: Preferences.java:107
+msgid "Marathi"
+msgstr "Marathi"
+
+#: Base.java:2112
+msgid "Message"
+msgstr "Melding"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
+#, java-format
+msgid "Missing '{0}' from library in {1}"
+msgstr "Mangler '{0}' fra biblioteket i {1}"
+
+#: ../../../processing/app/BaseNoGui.java:455
+msgid "Mode not supported"
+msgstr "Modus er ikke støttet"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
+msgid "More"
+msgstr "Mer informasjon"
+
+#: Preferences.java:449
+msgid "More preferences can be edited directly in the file"
+msgstr "Flere instillinger kan redigeres direkte i filen"
+
+#: Editor.java:2156
+msgid "Moving"
+msgstr "Flytter"
+
+#: ../../../processing/app/BaseNoGui.java:484
+msgid "Multiple files not supported"
+msgstr "Mange filer er ikke støttet"
+
+#: ../../../processing/app/debug/Compiler.java:520
+#, java-format
+msgid "Multiple libraries were found for \"{0}\""
+msgstr "Mange bibliotek ble funnet for \"{0}\""
+
+#: ../../../processing/app/Base.java:395
+msgid "Must specify exactly one sketch file"
+msgstr "Du må spesifisere nøyaktig -en- skissefil"
+
+#: Sketch.java:282
+msgid "Name for new file:"
+msgstr "Navn på ny fil:"
+
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr "Nativ seriell port, kan ikke hente informasjon"
+
+#: ../../../processing/app/Preferences.java:149
+msgid "Nepali"
+msgstr "Nepalsk"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr "Nettverk"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr "Nettverksport, kan ikke hente informasjon"
+
+#: ../../../../../app/src/processing/app/Editor.java:65
+msgid "Network ports"
+msgstr "Nettverks-porter"
+
+#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
+msgid "Network upload using programmer not supported"
+msgstr "Nettverksopplasting ved bruk av Programmerer er ikke støttet"
+
+#: EditorToolbar.java:41 Editor.java:493
+msgid "New"
+msgstr "Ny"
+
+#: EditorHeader.java:292
+msgid "New Tab"
+msgstr "Ny Fane"
+
+#: SerialMonitor.java:112
+msgid "Newline"
+msgstr "Linjeskift"
+
+#: EditorHeader.java:340
+msgid "Next Tab"
+msgstr "Neste Fane"
+
+#: Preferences.java:78 UpdateCheck.java:108
+msgid "No"
+msgstr "Nei"
+
+#: ../../../processing/app/debug/Compiler.java:158
+msgid "No authorization data found"
+msgstr "Ingen autorisasjonsdata funnet"
+
+#: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
+msgid "No changes necessary for Auto Format."
+msgstr "Ingen endringer nødvendig for autoformatering."
+
+#: ../../../processing/app/BaseNoGui.java:665
+msgid "No command line parameters found"
+msgstr "Ingen kommandolinje parametere funnet"
+
+#: ../../../processing/app/debug/Compiler.java:200
+msgid "No compiled sketch found"
+msgstr "Ingen kompilert skisse funnet"
+
+#: Editor.java:373
+msgid "No files were added to the sketch."
+msgstr "Ingen filer ble lagt til skissen."
+
+#: Platform.java:167
+msgid "No launcher available"
+msgstr "Ikke noe startprogram tilgjengelig"
+
+#: SerialMonitor.java:112
+msgid "No line ending"
+msgstr "Ingen linjeslutt"
+
+#: ../../../processing/app/BaseNoGui.java:665
+msgid "No parameters"
+msgstr "Ingen parametere"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr "Ingen proxy"
+
+#: Base.java:541
+msgid "No really, time for some fresh air for you."
+msgstr "Ærlig talt, nå er det på tide med litt frisk luft."
+
+#: Editor.java:1872
+#, java-format
+msgid "No reference available for \"{0}\""
+msgstr "Ingen referanse tilgjengelig for \"{0}\""
+
+#: ../../../processing/app/BaseNoGui.java:504
+#: ../../../processing/app/BaseNoGui.java:549
+msgid "No sketch"
+msgstr "Ingen skisse"
+
+#: ../../../processing/app/BaseNoGui.java:428
+msgid "No sketchbook"
+msgstr "Ingen skissebok"
+
+#: ../../../processing/app/Sketch.java:204
+msgid "No valid code files found"
+msgstr "Ingen gyldige kode-filer funnet"
+
+#: ../../../processing/app/debug/TargetPackage.java:63
+#, java-format
+msgid "No valid hardware definitions found in folder {0}."
+msgstr "Inge gyldige maksinvare-definisasjoner funnet i mappe {0}."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
+msgid "None"
+msgstr "Ingen"
+
+#: ../../../processing/app/Preferences.java:108
+msgid "Norwegian Bokmål"
+msgstr "Norsk bokmål"
+
+#: ../../../processing/app/Sketch.java:1656
+msgid ""
+"Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
+"for tips on reducing your footprint."
+msgstr "Ikke nok minne; se\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size for tips til hvordan man kan redusere størrelsen"
+
+#: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
+#: Editor.java:2145 Editor.java:2465
+msgid "OK"
+msgstr "Greit"
+
+#: Sketch.java:992 Editor.java:376
+msgid "One file added to the sketch."
+msgstr "En fil ble lagt til skissen."
+
+#: ../../../processing/app/BaseNoGui.java:455
+msgid "Only --verify, --upload or --get-pref are supported"
+msgstr "Bare --verify, --upload eller --get-pref er støttet"
+
+#: EditorToolbar.java:41
+msgid "Open"
+msgstr "Åpne"
+
+#: ../../../../../app/src/processing/app/Editor.java:625
+msgid "Open Recent"
+msgstr "Åpne Nylig Brukt"
+
+#: Editor.java:2688
+msgid "Open URL"
+msgstr "Åpne URL"
+
+#: Base.java:636
+msgid "Open an Arduino sketch..."
+msgstr "Åpne en Arduino skisse..."
+
+#: Base.java:903 Editor.java:501
+msgid "Open..."
+msgstr "Åpne..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr "Annen"
+
+#: Editor.java:563
+msgid "Page Setup"
+msgstr "Sideoppsett"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr "Partner"
+
+#: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
+msgid "Password:"
+msgstr "Passord:"
+
+#: Editor.java:1189 Editor.java:2731
+msgid "Paste"
+msgstr "Lim inn"
+
+#: Preferences.java:109
+msgid "Persian"
+msgstr "Persisk"
+
+#: ../../../processing/app/Preferences.java:161
+msgid "Persian (Iran)"
+msgstr "Perser"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
+#, java-format
+msgid "Platform {0} (package {1}) is unknown"
+msgstr "Plattform {0} (package {1}) er ukjent"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+msgid "Please confirm boards deletion"
+msgstr "Vennligst bekreft sletting av kort"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
+msgid "Please confirm library deletion"
+msgstr "Vennligst bekreft sletting av bibliotek"
+
+#: debug/Compiler.java:408
+msgid "Please import the SPI library from the Sketch > Import Library menu."
+msgstr "Vennligst importer SPI biblioteket fra Skisse > Importer bibliotek menyen."
+
+#: ../../../processing/app/debug/Compiler.java:529
+msgid "Please import the Wire library from the Sketch > Import Library menu."
+msgstr "Vennligst importer Wire biblioteket fra Skisse -> Importer Bibliotek menyen"
+
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr "Vennligst velg en port for å få informasjon om kort"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
+msgid "Please select a programmer from Tools->Programmer menu"
+msgstr "Vennligst velg en programmerer (ISP) fra Verktøy -> Programmerer menyen"
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr "Plotter er ikke tilgjengelig mens seriell monitor er åpen"
+
+#: Preferences.java:110
+msgid "Polish"
+msgstr "Polsk"
+
+#: ../../../processing/app/Editor.java:718
+msgid "Port"
+msgstr "Port"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr "Port nummer:"
+
+#: ../../../processing/app/Preferences.java:151
+msgid "Portugese"
+msgstr "Portugisisk"
+
+#: ../../../processing/app/Preferences.java:127
+msgid "Portuguese (Brazil)"
+msgstr "Portugisisk (Brasil)"
+
+#: ../../../processing/app/Preferences.java:128
+msgid "Portuguese (Portugal)"
+msgstr "Portugisisk (Portugal) "
+
+#: Preferences.java:295 Editor.java:583
+msgid "Preferences"
+msgstr "Innstillinger"
+
+#: ../../../../../app/src/processing/app/Base.java:297
+msgid "Preparing boards..."
+msgstr "Forbereder kort..."
+
+#: FindReplace.java:123 FindReplace.java:128
+msgid "Previous"
+msgstr "Forrige"
+
+#: EditorHeader.java:326
+msgid "Previous Tab"
+msgstr "Forrige Fane"
+
+#: Editor.java:571
+msgid "Print"
+msgstr "Skriv ut"
+
+#: Editor.java:2571
+msgid "Printing canceled."
+msgstr "Utskrift avbrutt."
+
+#: Editor.java:2547
+msgid "Printing..."
+msgstr "Skriver ut..."
+
+#: Base.java:1957
+msgid "Problem Opening Folder"
+msgstr "Problem ved åpning av mappe"
+
+#: Base.java:1933
+msgid "Problem Opening URL"
+msgstr "Problemer ved åpning av URL"
+
+#: Base.java:227
+msgid "Problem Setting the Platform"
+msgstr "Problemer under valg av plattform"
+
+#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
+msgid "Problem accessing board folder /www/sd"
+msgstr "Problemer med tilgang til kort-mappen /www/sd"
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "Problemer med å få tilgang til filer i mappen \"{0}\""
+
+#: Base.java:1673
+msgid "Problem getting data folder"
+msgstr "Problem ved henting av datamappe"
+
+#: debug/Uploader.java:209
+msgid ""
+"Problem uploading to board.  See "
+"http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
+msgstr "Problemer ved opplasting til kortet. Se http://www.arduino.cc/en/Guide/Troubleshooting#upload for forslag."
+
+#: Sketch.java:355 Sketch.java:362 Sketch.java:373
+msgid "Problem with rename"
+msgstr "Omdøping feilet"
+
+#: ../../../processing/app/I18n.java:86
+msgid "Processor"
+msgstr "Prosessor"
+
+#: Editor.java:704
+msgid "Programmer"
+msgstr "Programmerer"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
+#, java-format
+msgid "Progress {0}"
+msgstr "Fremdrift {0}"
+
+#: Base.java:783 Editor.java:593
+msgid "Quit"
+msgstr "Avslutt"
+
+#: ../../../../../app/src/processing/app/Base.java:1233
+msgid "RETIRED"
+msgstr "UTE AV PRODUKSJON"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr "Anbefalt"
+
+#: Editor.java:1138 Editor.java:1140 Editor.java:1390
+msgid "Redo"
+msgstr "Gjør om"
+
+#: Editor.java:1078
+msgid "Reference"
+msgstr "Referanse"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
+msgid "Remove"
+msgstr "Fjern"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
+#, java-format
+msgid "Removing library: {0}:{1}"
+msgstr "Fjerner bibliotek: {0}: {1}"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
+msgid "Removing..."
+msgstr "Fjerner..."
+
+#: EditorHeader.java:300
+msgid "Rename"
+msgstr "Døp om"
+
+#: FindReplace.java:121 FindReplace.java:130 Sketch.java:1046
+msgid "Replace"
+msgstr "Erstatt"
+
+#: FindReplace.java:122 FindReplace.java:129
+msgid "Replace & Find"
+msgstr "Erstatt & Finn"
+
+#: FindReplace.java:120 FindReplace.java:131
+msgid "Replace All"
+msgstr "Erstatt alle"
+
+#: Sketch.java:1043
+#, java-format
+msgid "Replace the existing version of {0}?"
+msgstr "Erstatt den eksisterende versjonen av {0}?"
+
+#: FindReplace.java:81
+msgid "Replace with:"
+msgstr "Erstatt med:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "Ute av produksjon"
+
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr "Prøv på nytt med en annen seriell port?"
+
+#: Preferences.java:113
+msgid "Romanian"
+msgstr "Rumensk"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
+#, java-format
+msgid "Running recipe: {0}"
+msgstr "Kjører oppskrift: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
+#, java-format
+msgid "Running: {0}"
+msgstr "Kjører: {0}"
+
+#: Preferences.java:114
+msgid "Russian"
+msgstr "Russisk"
+
+#: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:529
+#: Editor.java:2064 Editor.java:2468
+msgid "Save"
+msgstr "Lagre"
+
+#: Editor.java:537
+msgid "Save As..."
+msgstr "Lagre som..."
+
+#: Editor.java:2317
+msgid "Save Canceled."
+msgstr "Lagring avbrutt"
+
+#: Editor.java:2020
+#, java-format
+msgid "Save changes to \"{0}\"?  "
+msgstr "Lagre endringer i \"{0}\"? "
+
+#: Sketch.java:825
+msgid "Save sketch folder as..."
+msgstr "Lagre skissemappe som..."
+
+#: ../../../../../app/src/processing/app/Preferences.java:425
+msgid "Save when verifying or uploading"
+msgstr "Lagre når du verifiserer og laster opp"
+
+#: Editor.java:2270 Editor.java:2308
+msgid "Saving..."
+msgstr "Lagrer..."
+
+#: ../../../processing/app/FindReplace.java:131
+msgid "Search all Sketch Tabs"
+msgstr "Søk alle Skisse Faner"
+
+#: Base.java:1909
+msgid "Select (or create new) folder for sketches..."
+msgstr "Velg (eller opprett ny) mappe for skisser..."
+
+#: Editor.java:1198 Editor.java:2739
+msgid "Select All"
+msgstr "Velg alt"
+
+#: Base.java:2636
+msgid "Select a zip file or a folder containing the library you'd like to add"
+msgstr "Velg en zipfil eller en mappe som inneholder biblioteket du ønsker å legge til"
+
+#: Sketch.java:975
+msgid "Select an image or other data file to copy to your sketch"
+msgstr "Velg et bilde eller en annen datafil som skal kopieres til skissen"
+
+#: Preferences.java:330
+msgid "Select new sketchbook location"
+msgstr "Velg en ny plassering for skisseboken"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
+msgid "Select version"
+msgstr "Velg versjon"
+
+#: ../../../processing/app/debug/Compiler.java:146
+msgid "Selected board depends on '{0}' core (not installed)."
+msgstr "Valgt kort avhenger av '{0}' kjerne (ikke installert)"
+
+#: ../../../../../app/src/processing/app/Base.java:374
+msgid "Selected board is not available"
+msgstr "Valgt kort er ikke tilgjengelig"
+
+#: ../../../../../app/src/processing/app/Base.java:423
+msgid "Selected library is not available"
+msgstr "Valg bibliotek er ikke tilgjengelig"
+
+#: SerialMonitor.java:93
+msgid "Send"
+msgstr "Send"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr "Sensorer"
+
+#: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
+msgid "Serial Monitor"
+msgstr "Seriell overvåker"
+
+#: ../../../../../app/src/processing/app/Editor.java:804
+msgid "Serial Plotter"
+msgstr "Seriell Plotter"
+
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr "Seriell monitor støttes ikke på nettverksporter som {0} for {1} i denne versjonen"
+
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr "Seriell monitor er ikke tilgjengelig mens plotteren er åpen"
+
+#: Serial.java:194
+#, java-format
+msgid ""
+"Serial port ''{0}'' not found. Did you select the right one from the Tools >"
+" Serial Port menu?"
+msgstr "Fant ikke serieporten ''{0}''. Valgte du den riktige fra Verktøy > Serieport menyen?"
+
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr "Seriell port ikke valgt."
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
+#, java-format
+msgid "Serial port {0} not found."
+msgstr "Seriell port {0} ikke funnet."
+
+#: ../../../../../app/src/processing/app/Editor.java:65
+msgid "Serial ports"
+msgstr "Seriell porter"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
+#, java-format
+msgid "Setting build path to {0}"
+msgstr "Setter bygge-adresse til {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr "Instillinger"
+
+#: Base.java:1681
+msgid "Settings issues"
+msgstr "Problemer med innstillinger"
+
+#: Editor.java:641
+msgid "Show Sketch Folder"
+msgstr "Vis skissemappe"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr "Vis tidsstempel"
+
+#: Preferences.java:387
+msgid "Show verbose output during: "
+msgstr "Vis detaljert informasjon under: "
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr "Signal Inngang/Utgang"
+
+#: Editor.java:607
+msgid "Sketch"
+msgstr "Skisse"
+
+#: Sketch.java:1754
+msgid "Sketch Disappeared"
+msgstr "Skissen forsvant"
+
+#: Base.java:1411
+msgid "Sketch Does Not Exist"
+msgstr "Skissen eksisterer ikke"
+
+#: Sketch.java:274 Sketch.java:303 Sketch.java:577 Sketch.java:966
+msgid "Sketch is Read-Only"
+msgstr "Skissen er skrivebeskyttet"
+
+#: Sketch.java:294
+msgid "Sketch is Untitled"
+msgstr "Skissen har ikke navn"
+
+#: Sketch.java:720
+msgid "Sketch is read-only"
+msgstr "Skissen er skrivebeskyttet"
+
+#: Sketch.java:1653
+msgid ""
+"Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
+"tips on reducing it."
+msgstr "Skissen er for stor. Se http://www.arduino.cc/en/Guide/Troubleshooting#size for forslag til hvordan størrelsen kan reduseres"
+
+#: ../../../processing/app/Sketch.java:1639
+#, java-format
+msgid ""
+"Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
+"bytes."
+msgstr "Skissen bruker {0} bytes ({2}%%) av program lagrings minnet. Maks er {1} bytes"
+
+#: Editor.java:510
+msgid "Sketchbook"
+msgstr "Skissebok"
+
+#: Base.java:258
+msgid "Sketchbook folder disappeared"
+msgstr "Mappen for skisser er forsvunnet"
+
+#: Preferences.java:315
+msgid "Sketchbook location:"
+msgstr "Skissebok plassering:"
+
+#: ../../../processing/app/BaseNoGui.java:428
+msgid "Sketchbook path not defined"
+msgstr "Skissebok mappen er ikke definert"
+
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr "Hopper over bidratt indeksfil {0}, det oppstod en analysefeil:"
+
+#: ../../../../../app/src/processing/app/Preferences.java:185
+msgid "Slovak"
+msgstr "Slovak"
+
+#: ../../../processing/app/Preferences.java:152
+msgid "Slovenian"
+msgstr "Slovener"
+
+#: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
+msgid ""
+"Some files are marked \"read-only\", so you'll\n"
+"need to re-save the sketch in another location,\n"
+"and try again."
+msgstr "Noen filer er markert som \"skrivebeskyttet\". Derfor må \nskissen lagres på nytt i en annen lokasjon\nog prøv på nytt."
+
+#: Sketch.java:721
+msgid ""
+"Some files are marked \"read-only\", so you'll\n"
+"need to re-save this sketch to another location."
+msgstr "Fordi noen filer er merket \"skrivebeskyttet\", må \ndenne skissen lagres på nytt til en annen lokasjon."
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
+#, java-format
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr "Beklager, mappen \"{0}\" eksisterer allerede."
+
+#: Preferences.java:115
+msgid "Spanish"
+msgstr "Spansk"
+
+#: ../../../../../app/src/processing/app/Base.java:2333
+msgid "Specified folder/zip file does not contain a valid library"
+msgstr "Den valgte mappen/zip filen inneholder ikke et gyldig bibliotek"
+
+#: ../../../../../app/src/processing/app/Base.java:466
+msgid "Starting..."
+msgstr "Starter..."
+
+#: Base.java:540
+msgid "Sunshine"
+msgstr "Solskinn"
+
+#: ../../../processing/app/Preferences.java:153
+msgid "Swedish"
+msgstr "Svenska bror"
+
+#: Preferences.java:84
+msgid "System Default"
+msgstr "System standardverdi"
+
+#: ../../../../../app/src/processing/app/Preferences.java:188
+msgid "Talossan"
+msgstr "Talossan"
+
+#: Preferences.java:116
+msgid "Tamil"
+msgstr "Tamilsk"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr "Telugu"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "Thailandsk"
+
+#: debug/Compiler.java:414
+msgid "The 'BYTE' keyword is no longer supported."
+msgstr "'BYTE' nøkkelordet er ikke støttet lenger."
+
+#: ../../../processing/app/BaseNoGui.java:484
+msgid "The --upload option supports only one file at a time"
+msgstr "--upload alternativet støtter kun en fil om gangen"
+
+#: debug/Compiler.java:426
+msgid "The Client class has been renamed EthernetClient."
+msgstr "Client klassen har blitt omdøpt til EthernetClient."
+
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid ""
+"The IDE includes an updated {0} package, but you're using an older one.\n"
+"Do you want to upgrade {0}?"
+msgstr "IDE'en inkluderer en oppdatert {0} pakke, men du bruker en eldre en.\nØnsker du å oppgradere {0}?"
+
+#: debug/Compiler.java:420
+msgid "The Server class has been renamed EthernetServer."
+msgstr "Server klassen har blitt omdøpt til EthernetServer."
+
+#: debug/Compiler.java:432
+msgid "The Udp class has been renamed EthernetUdp."
+msgstr "Udp klassen har blitt omdøpt til EthernetUdp"
+
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr "Det valgte kortet trenger kjernen '{0}' som ikke er installert."
+
+#: Editor.java:2147
+#, java-format
+msgid ""
+"The file \"{0}\" needs to be inside\n"
+"a sketch folder named \"{1}\".\n"
+"Create this folder, move the file, and continue?"
+msgstr "Filen \"{0}\" må ligge i en skissemappe\nmed følgende navn \"{1}\".\nOpprett denne mappen, flytt filen og fortsett?"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "Biblioteket \"{0}\" kan ikke brukes.\nBibliotekmappenavn må starte med en bokstav eller et nummer, etterfulgt av bokstaver,\ntall, bindestreker, punktum og understreker. Maksimum lengde er 63 tegn."
+
+#: Base.java:1054 Base.java:2674
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library names must contain only basic letters and numbers.\n"
+"(ASCII only and no spaces, and it cannot start with a number)"
+msgstr "Biblioteket \"{0}\" kan ikke benyttes.\nBiblioteksnavn kan kun inneholde bokstaver og tall.\n(kun ASCII, ingen mellomrom, og kan ikke starte med et tall)"
+
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr "Hovedfilen kan ikke bruke en utvidelse"
+
+#: Sketch.java:356
+msgid "The name cannot start with a period."
+msgstr "Navnet kan ikke starte med punktum."
+
+#: Base.java:1412
+msgid ""
+"The selected sketch no longer exists.\n"
+"You may need to restart Arduino to update\n"
+"the sketchbook menu."
+msgstr "Den valgte skissen eksisterer ikke lenger.\nDu må kanskje starte om Arduino for å oppdatere\nskissebokmenyen"
+
+#: Base.java:1430
+#, java-format
+msgid ""
+"The sketch \"{0}\" cannot be used.\n"
+"Sketch names must contain only basic letters and numbers\n"
+"(ASCII-only with no spaces, and it cannot start with a number).\n"
+"To get rid of this message, remove the sketch from\n"
+"{1}"
+msgstr "Skissen \"{0}\" kan ikke benyttes.\nSkissenavn kan kun inneholde bokstaver og tall\n(kun ASCII, ingen mellomrom, og kan ikke starte med et tall).\nFor å bli kvitt denne meldingen, fjern skissen fra\n{1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr "Skissen inneholder allerede en fil med navnet \"{0}\""
+
+#: Sketch.java:1755
+msgid ""
+"The sketch folder has disappeared.\n"
+" Will attempt to re-save in the same location,\n"
+"but anything besides the code will be lost."
+msgstr "Skissemappen har forsvunnet.\n Vil forsøke å lagre på nytt i samme lokasjon,\nmen alt utenom kildekoden vil gå tapt."
+
+#: ../../../../../app/src/processing/app/SketchController.java:849
+msgid ""
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "Skissens navn måtte endres.\nSkisse navn må starte med en bokstav eller et tall, etterfulgt av bokstaver,\ntall, bindestreker, punktum og understreker. Maksimum lengde er 63 tegn."
+
+#: Base.java:259
+msgid ""
+"The sketchbook folder no longer exists.\n"
+"Arduino will switch to the default sketchbook\n"
+"location, and create a new sketchbook folder if\n"
+"necessary. Arduino will then stop talking about\n"
+"himself in the third person."
+msgstr "Mappen for skisser eksisterer ikke lenger.\nArduino vil nå gå over til å bruke standard mappe for\nskisser, og hvis nødvendig opprette en ny mappe\n. Etterpå vil Arduino slutte å omtale seg selv i\ntredje person."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:514
+msgid ""
+"The specified sketchbook folder contains your copy of the IDE.\n"
+"Please choose a different folder for your sketchbook."
+msgstr "Den spesifiserte skissebok-mappen inneholder din kopi av IDE'en.\nVennligst velg en annen mappe som din skissebok."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr "Tema:"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
+msgid ""
+"This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
+"Are you sure you want to delete it?"
+msgstr "Dette biblioteket er ikke listet i Bibliotek Administrasjonen. Du vil ikke kunne reinstallere det fra her.\nEr du sikker på at du ønsker å slette det?"
+
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "Denne rapporten ville hatt mer informasjon med\n\"Vis detaljert informasjon under kompilering\"\nalternativet aktivert i Fil -> Innstillinger.\n"
+
+#: Base.java:535
+msgid "Time for a Break"
+msgstr "Tid for pause"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr "Timing"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
+#, java-format
+msgid "Tool {0} is not available for your operating system."
+msgstr "Verktøy {0} er ikke tilgjengelig for ditt operativsystem."
+
+#: Editor.java:663
+msgid "Tools"
+msgstr "Verktøy"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
+msgid "Topic"
+msgstr "Emne"
+
+#: Editor.java:1070
+msgid "Troubleshooting"
+msgstr "Feilsøking"
+
+#: ../../../processing/app/Preferences.java:117
+msgid "Turkish"
+msgstr "Tyrkisk"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
+msgid "Type"
+msgstr "Type"
+
+#: ../../../processing/app/Editor.java:2507
+msgid "Type board password to access its console"
+msgstr "Tast inn kort-passord for å få tilgang til konsollen"
+
+#: ../../../processing/app/Sketch.java:1673
+msgid "Type board password to upload a new sketch"
+msgstr "Tast inn kort-passord for å laste opp ny skisse"
+
+#: ../../../processing/app/Preferences.java:118
+msgid "Ukrainian"
+msgstr "Ukrainsk"
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr "Kan ikke koble til {0}"
+
+#: ../../../processing/app/Editor.java:2524
+#: ../../../processing/app/NetworkMonitor.java:145
+msgid "Unable to connect: is the sketch using the bridge?"
+msgstr "Kan ikke koble til: bruker skissen broen?"
+
+#: ../../../processing/app/NetworkMonitor.java:130
+msgid "Unable to connect: retrying"
+msgstr "Kan ikke koble til: prøver igjen"
+
+#: ../../../processing/app/Editor.java:2526
+msgid "Unable to connect: wrong password?"
+msgstr "Kan ikke koble til: feil passord?"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
+#, java-format
+msgid "Unable to find {0} in {1}"
+msgstr "Kan ikke finne {0} i {1}"
+
+#: ../../../processing/app/Editor.java:2512
+msgid "Unable to open serial monitor"
+msgstr "Klarer ikke åpne seriell overvåkeren"
+
+#: ../../../../../app/src/processing/app/Editor.java:2709
+msgid "Unable to open serial plotter"
+msgstr "Kan ikke åpne seriell plotteren"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Unable to reach Arduino.cc due to possible network issues."
+msgstr "Kan ikke nå arduino.cc grunnet mulige nettverksproblemer."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr "Ukategorisert"
+
+#: Editor.java:1133 Editor.java:1355
+msgid "Undo"
+msgstr "Angre"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
+#, java-format
+msgid "Unhandled type {0} in context key {1}"
+msgstr "Ubehandlet type {0} i context key {1}"
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr "Ukjent kort "
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
+#, java-format
+msgid "Unknown sketch file extension: {0}"
+msgstr "Ukjent skissefilnavn-endelse: {0}"
+
+#: Platform.java:168
+msgid ""
+"Unspecified platform, no launcher available.\n"
+"To enable opening URLs or folders, add a \n"
+"\"launcher=/path/to/app\" line to preferences.txt"
+msgstr "Uspesifisert platform er ikke lenger tilgjengelig.\nLegg til \"launcher=/sti/til/app\" i preferences.txt for å kunne åpne URLer og mapper."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
+msgid "Updatable"
+msgstr "Kan oppdateres"
+
+#: UpdateCheck.java:111
+msgid "Update"
+msgstr "Oppdater"
+
+#: Preferences.java:428
+msgid "Update sketch files to new extension on save (.pde -> .ino)"
+msgstr "Oppdater skissefilene til ny filtype under lagring (.pde -> .ino)"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "Oppdatering tilgjengelig for noen av dine {0}boards{1}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "Oppdateringer tilgjengelig for noen av dine {0}boards{1} and {2}libraries{3}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "Oppdatering tilgjengelig for noen av dine {0}libraries{1}"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
+msgid "Updating list of installed libraries"
+msgstr "Oppdaterer listen over installerte bibliotek"
+
+#: EditorToolbar.java:41 Editor.java:545
+msgid "Upload"
+msgstr "last opp"
+
+#: EditorToolbar.java:46 Editor.java:553
+msgid "Upload Using Programmer"
+msgstr "Last opp med en Programmerer"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr "Last opp en hvilket som helst skisse for å skaffe den"
+
+#: Editor.java:2403 Editor.java:2439
+msgid "Upload canceled."
+msgstr "Opplasting avbrutt."
+
+#: ../../../processing/app/Sketch.java:1678
+msgid "Upload cancelled"
+msgstr "Opplasting avbrutt"
+
+#: Editor.java:2378
+msgid "Uploading to I/O Board..."
+msgstr "Laster opp til I/O kort..."
+
+#: Sketch.java:1622
+msgid "Uploading..."
+msgstr "Laster opp..."
+
+#: Editor.java:1269
+msgid "Use Selection For Find"
+msgstr "Finn i utvalg"
+
+#: Preferences.java:409
+msgid "Use external editor"
+msgstr "Bruk eksternt redigeringsprogram"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr "Brukernavn:"
+
+#: ../../../processing/app/debug/Compiler.java:410
+#, java-format
+msgid "Using library {0} at version {1} in folder: {2} {3}"
+msgstr "Bruker bibliotek {0} ved versjon {1} i mappe {2} {3}"
+
+#: ../../../processing/app/debug/Compiler.java:94
+#, java-format
+msgid "Using library {0} in folder: {1} {2}"
+msgstr "Bruker bibliotek {0} i mappe {1} {2}"
+
+#: ../../../processing/app/debug/Compiler.java:320
+#, java-format
+msgid "Using previously compiled file: {0}"
+msgstr "Bruker tidligere kompilert fil: {0}"
+
+#: EditorToolbar.java:41 EditorToolbar.java:46
+msgid "Verify"
+msgstr "Verifiser"
+
+#: Preferences.java:400
+msgid "Verify code after upload"
+msgstr "Sjekk kode etter opplasting"
+
+#: ../../../../../app/src/processing/app/Editor.java:725
+msgid "Verify/Compile"
+msgstr "Verifiser/Kompiler"
+
+#: ../../../../../app/src/processing/app/Base.java:451
+msgid "Verifying and uploading..."
+msgstr "Verifiserer og kompilerer..."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
+msgid "Verifying archive integrity..."
+msgstr "Verifiserer arkiv-integriteten..."
+
+#: ../../../../../app/src/processing/app/Base.java:454
+msgid "Verifying..."
+msgstr "Verifiserer..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
+#, java-format
+msgid "Version <b>{0}</b>"
+msgstr "Versjon <b> {0} </b>"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
+msgid "Version unknown"
+msgstr "Ukjent versjon"
+
+#: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
+#, java-format
+msgid "Version {0}"
+msgstr "Versjon {0}"
+
+#: ../../../processing/app/Preferences.java:154
+msgid "Vietnamese"
+msgstr "Vietnameser"
+
+#: Editor.java:1105
+msgid "Visit Arduino.cc"
+msgstr "Besøk Arduino.cc"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
+#, java-format
+msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
+msgstr "ADVARSEL: Kategori '{0}' i bibliotek {1} er ikke gyldig. Innstiller til '{2}'"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
+#, java-format
+msgid "WARNING: Spurious {0} folder in '{1}' library"
+msgstr "ADVARSEL: Falsk {0} mappe i '{1}' biblioteket"
+
+#: ../../../processing/app/debug/Compiler.java:115
+#, java-format
+msgid ""
+"WARNING: library {0} claims to run on {1} architecture(s) and may be "
+"incompatible with your current board which runs on {2} architecture(s)."
+msgstr "ADVARSEL: bibliotek {0} påstår at det kjører på {1} arkitektur(er) og kan være inkompatibel med det valgte kortet som kjører på {2} arkitektur(er)."
+
+#: Base.java:2128
+msgid "Warning"
+msgstr "Advarsel"
+
+#: ../../../processing/app/debug/Compiler.java:1295
+msgid ""
+"Warning: This core does not support exporting sketches. Please consider "
+"upgrading it or contacting its author"
+msgstr "Advarsel: Disse kjernene støtter ikke eksportering av skisser. Vennligst vurder å oppgradere eller kontakte utgiveren"
+
+#: ../../../cc/arduino/utils/ArchiveExtractor.java:197
+#, java-format
+msgid "Warning: file {0} links to an absolute path {1}"
+msgstr "Advarsel: Fil {0} lenker til absolutt bane {1}"
+
+#: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
+msgid "Warning: forced trusting untrusted contributions"
+msgstr "Advarsel: Tvingt til å stole på ukjent bidragsyter"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
+#, java-format
+msgid "Warning: forced untrusted script execution ({0})"
+msgstr "Advarsel: Tvungent ukjent skript er kjørt ({0})"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
+#, java-format
+msgid "Warning: non trusted contribution, skipping script execution ({0})"
+msgstr "Advarsel: Ukjent kontributør, hopper over kjøring av skript  ({0})"
+
+#: ../../../processing/app/debug/LegacyTargetPlatform.java:158
+#, java-format
+msgid ""
+"Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
+" converted to {2}. Consider upgrading this core."
+msgstr "Advarsel: platform.txt fra kjernen '{0}' inneholder utdatert {1}, automatisk konvertert til {2}. Vurder å oppgradere denne kjernen."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:91
+msgid ""
+"Warning: platform.txt from core '{0}' misses property '{1}', using default "
+"value '{2}'. Consider upgrading this core."
+msgstr "Advarsel: platform.txt fra kjernen '{0}' mangler egenskapen '{1}', med standardverdien '{2}'. Vurder å oppgradere denne kjernen."
+
+#: ../../../../../app/src/processing/app/Preferences.java:190
+msgid "Western Frisian"
+msgstr "Vestfrisisk"
+
+#: debug/Compiler.java:444
+msgid "Wire.receive() has been renamed Wire.read()."
+msgstr "Wire.recive() har blitt omdøpt til Wire.read()"
+
+#: debug/Compiler.java:438
+msgid "Wire.send() has been renamed Wire.write()."
+msgstr "Wire.send() har blitt omdøpt til Wire.write()."
+
+#: FindReplace.java:105
+msgid "Wrap Around"
+msgstr "Fortsett fra toppen igjen"
+
+#: debug/Uploader.java:213
+msgid ""
+"Wrong microcontroller found.  Did you select the right board from the Tools "
+"> Board menu?"
+msgstr "Feil mikrokontroller funnet. Valgte du riktig kort fra Verktøy > Kort menyen?"
+
+#: Preferences.java:77 UpdateCheck.java:108
+msgid "Yes"
+msgstr "Ja"
+
+#: ../../../../../app/src/processing/app/Base.java:2312
+msgid "You can't import a folder that contains your sketchbook"
+msgstr "Du kan ikke importere en mappe som inneholder skisseboken"
+
+#: Sketch.java:883
+msgid ""
+"You cannot save the sketch into a folder\n"
+"inside itself. This would go on forever."
+msgstr "Du kan ikke lagre skissen i en mappe inn \ni seg selv. Dette vil fortsette i all evighet."
+
+#: Base.java:1888
+msgid "You forgot your sketchbook"
+msgstr "Du glemte skisseboken din"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr "Du har ulagrede endringer!\nDu må lagre alle skissene dine for å aktivere dette alternativet."
+
+#: ../../../processing/app/AbstractMonitor.java:92
+msgid ""
+"You've pressed {0} but nothing was sent. Should you select a line ending?"
+msgstr "Du har trykket {0}, men ingenting ble sendt. Burde du valgt et linjeskift?"
+
+#: Base.java:536
+msgid ""
+"You've reached the limit for auto naming of new sketches\n"
+"for the day. How about going for a walk instead?"
+msgstr "Du har nådd maksimalt antall skissenavn som kan genereres\nautomatisk i løpet av en dag. Hva med å ta seg en tur i stedet?"
+
+#: ../../../processing/app/BaseNoGui.java:768
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your settings folder.\n"
+"Please move the IDE to another folder."
+msgstr "Utviklingsverktøyet er installert i en mappe under mappen med innstillinger.\nVennligst flytt utviklingsverktøyet til en annen mappe."
+
+#: ../../../processing/app/BaseNoGui.java:771
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
+"Please move the IDE to another folder."
+msgstr "Din versjon av utviklingsverktøyet er installert i en mappe under skisseboken.\nVennligst flytt utviklingsverktøyet til en annen mappe."
+
+#: Base.java:2638
+msgid "ZIP files or folders"
+msgstr "ZIPfiler eller mapper"
+
+#: Base.java:2661
+msgid "Zip doesn't contain a library"
+msgstr "Zipfilen inneholder ikke noe bibliotek"
+
+#: Sketch.java:364
+#, java-format
+msgid "\".{0}\" is not a valid extension."
+msgstr "\".{0}\" er ikke en gyldig filtype"
+
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
+#, java-format
+msgid ""
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr "\"{0}\" inneholder ukjente tegn. Hvis denne koden ble opprettet med en eldre versjon av Arduino, kan det hende du må bruke Verktøy -> Reparer tekstkoding & Last på nytt for å oppdatere skissen til å benytte UTF-8 tekstkoding. Hvis ikke, må du kanskje slette de ukjente tegnene for å bli kvitt advarselen. "
+
+#: debug/Compiler.java:409
+msgid ""
+"\n"
+"As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
+"You appear to be using it or another library that depends on the SPI library.\n"
+"\n"
+msgstr "\nFra Arduino 0019, er Ethernet bilioteket avhengig av SPI biblioteket.\nDet ser ut som du benytter et bibliotek som er avhangig av SPI biblioteket.\n\n"
+
+#: debug/Compiler.java:415
+msgid ""
+"\n"
+"As of Arduino 1.0, the 'BYTE' keyword is no longer supported.\n"
+"Please use Serial.write() instead.\n"
+"\n"
+msgstr "\nFra Arduino 1.0, er ikke 'BYTE' nøkkelordet lenger støttet.\nVennligst benytt Serial.write() i stedet.\n\n"
+
+#: debug/Compiler.java:427
+msgid ""
+"\n"
+"As of Arduino 1.0, the Client class in the Ethernet library has been renamed to EthernetClient.\n"
+"\n"
+msgstr "\nFra Arduino 1.0 er Client klassen i Ethernet biblioteket blitt omdøpttil EthernetClient.\n\n"
+
+#: debug/Compiler.java:421
+msgid ""
+"\n"
+"As of Arduino 1.0, the Server class in the Ethernet library has been renamed to EthernetServer.\n"
+"\n"
+msgstr "\nFra Arduino 1.0 er Server klassen i Ethernet biblioteket blitt omdøpt til EthernetServer.\n\n"
+
+#: debug/Compiler.java:433
+msgid ""
+"\n"
+"As of Arduino 1.0, the Udp class in the Ethernet library has been renamed to EthernetUdp.\n"
+"\n"
+msgstr "\nFra Arduino 1.0 er Udp klassen i Ethernet biblioteket blitt omdøpt til EthernetUdp.\n\n"
+
+#: debug/Compiler.java:445
+msgid ""
+"\n"
+"As of Arduino 1.0, the Wire.receive() function was renamed to Wire.read() for consistency with other libraries.\n"
+"\n"
+msgstr "\nFra Arduion 1.0 er Wire.receive() funksjonen omdøpt til Wire.read() for konsistens med andre bibliotek.\n\n"
+
+#: debug/Compiler.java:439
+msgid ""
+"\n"
+"As of Arduino 1.0, the Wire.send() function was renamed to Wire.write() for consistency with other libraries.\n"
+"\n"
+msgstr "\nFra Arduino 1.0 er Wire.send() funksjonen omdøpt til Wire.write() for konsistens med andre bibliotek.\n\n"
+
+#: SerialMonitor.java:130 SerialMonitor.java:133
+msgid "baud"
+msgstr "baud"
+
+#: Preferences.java:389
+msgid "compilation "
+msgstr "kompilering "
+
+#: ../../../processing/app/NetworkMonitor.java:111
+msgid "connected!"
+msgstr "tilkoblet!"
+
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr "http://www.arduino.cc/"
+
+#: UpdateCheck.java:118
+msgid "http://www.arduino.cc/en/Main/Software"
+msgstr "http://www.arduino.cc/en/Main/Software"
+
+#: UpdateCheck.java:53
+msgid "http://www.arduino.cc/latest.txt"
+msgstr "http://www.arduino.cc/latest.txt"
+
+#: Preferences.java:625
+#, java-format
+msgid "ignoring invalid font size {0}"
+msgstr "ser bort fra ugyldig skriftstørrelse {0}"
+
+#: Editor.java:936 Editor.java:943
+msgid "name is null"
+msgstr "name er null"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr "ingen 'header' filer (.h) funnet i {0}"
+
+#: Editor.java:932
+msgid "serialMenu is null"
+msgstr "serialMenu er null"
+
+#: debug/Uploader.java:195
+#, java-format
+msgid ""
+"the selected serial port {0} does not exist or your board is not connected"
+msgstr "den valgte serieporten {0} eksisterer ikke, eller kortet ditt er ikke tilkoblet"
+
+#: ../../../processing/app/Base.java:389
+#, java-format
+msgid "unknown option: {0}"
+msgstr "ukjent opsjon: {0}"
+
+#: Preferences.java:391
+msgid "upload"
+msgstr "last opp"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
+#, java-format
+msgid "version <b>{0}</b>"
+msgstr "versjon <b>{0}</b>"
+
+#: ../../../../../app/src/processing/app/Editor.java:2243
+#, java-format
+msgid "{0} - {1} | Arduino {2}"
+msgstr "{0} - {1} | Arduino {2}"
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr "{0} signatursjekk av filen feilet"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
+#, java-format
+msgid "{0} file signature verification failed. File ignored."
+msgstr "{0} sjekk av filsignatur feilet. Ser bort fra filen."
+
+#: Editor.java:380
+#, java-format
+msgid "{0} files added to the sketch."
+msgstr "{0} filer ble lagt til skissen."
+
+#: ../../../../../app/src/processing/app/Base.java:1201
+#, java-format
+msgid "{0} libraries"
+msgstr "{0} biblioteker"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
+#, java-format
+msgid "{0} must be a folder"
+msgstr "{0} må være en mappe"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} på {1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
+#, java-format
+msgid "{0} pattern is missing"
+msgstr "{0} mønster mangler"
+
+#: debug/Compiler.java:365
+#, java-format
+msgid "{0} returned {1}"
+msgstr "{0} returnerte {1}"
+
+#: Editor.java:2213
+#, java-format
+msgid "{0} | Arduino {1}"
+msgstr "{0} | Arduino {1}"
+
+#: ../../../processing/app/Base.java:519
+#, java-format
+msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
+msgstr "{0}: Ugyldig argument til --pref, må være på formen \"pref=verdi\""
+
+#: ../../../processing/app/Base.java:476
+#, java-format
+msgid ""
+"{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
+"\"package:arch:board:options\""
+msgstr "{0}: Ugyldig navn på kort, det bør ha formen \"pakke:arkitektur:kort\" eller \"pakke:arkitektur:kort:opsjon\""
+
+#: ../../../processing/app/Base.java:507
+#, java-format
+msgid "{0}: Invalid option for board \"{1}\""
+msgstr "{0}: Ugyldig opsjon for kort \"{1}\""
+
+#: ../../../processing/app/Base.java:502
+#, java-format
+msgid "{0}: Invalid option, should be of the form \"name=value\""
+msgstr "{0}: Ugyldig opsjon, må ha formen \"navn=verdi\""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr "{0}: Ugyldig verdi for alternativ \"{1}\" for kortet \"{2}\""
+
+#: ../../../processing/app/Base.java:486
+#, java-format
+msgid "{0}: Unknown architecture"
+msgstr "{0}: Ukjent arkitektur"
+
+#: ../../../processing/app/Base.java:491
+#, java-format
+msgid "{0}: Unknown board"
+msgstr "{0}: Ukjent kort"
+
+#: ../../../processing/app/Base.java:481
+#, java-format
+msgid "{0}: Unknown package"
+msgstr "{0}: Ukjent pakke"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr "{0}Installer denne pakken{1} for å bruke {2} kortet ditt"

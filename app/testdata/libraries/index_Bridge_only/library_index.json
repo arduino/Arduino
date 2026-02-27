@@ -1,0 +1,284 @@
+{
+  "libraries": [
+    {
+      "name": "Bridge",
+      "version": "1.0.0",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.0.zip",
+      "archiveFileName": "Bridge-1.0.0.zip",
+      "size": 79554,
+      "checksum": "SHA-256:9b80eb3c4064a2905a2be385fc2ee0ab2d19f5add43a743776fa9bff30c662d7"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.0.1",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.1.zip",
+      "archiveFileName": "Bridge-1.0.1.zip",
+      "size": 79571,
+      "checksum": "SHA-256:72f177e2711d558f655937f9c85edff8fb83a738156ab3b2b4b765267f395af0"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.0.2",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.2.zip",
+      "archiveFileName": "Bridge-1.0.2.zip",
+      "size": 79574,
+      "checksum": "SHA-256:8b228c5d2025682ef4bdefbee7682ef31025c1c061156757d20b247ac4cc8344"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.0.3",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.3.zip",
+      "archiveFileName": "Bridge-1.0.3.zip",
+      "size": 79616,
+      "checksum": "SHA-256:ead0482c236be1b9467cbb68481f9a0e6dcd30066bb069569ed0804b19a6a832"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.0.4",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.4.zip",
+      "archiveFileName": "Bridge-1.0.4.zip",
+      "size": 79635,
+      "checksum": "SHA-256:cb093c35c572f2a63f1dbe52a2bf3f4234aa3f0327b6bc32ebce023c9819d313"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.0.5",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.5.zip",
+      "archiveFileName": "Bridge-1.0.5.zip",
+      "size": 79691,
+      "checksum": "SHA-256:4541c53e88fb4d829d93a7ff5293b8d4bcc731cbfd89243e1f4d3361712b5257"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.0.6",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.6.zip",
+      "archiveFileName": "Bridge-1.0.6.zip",
+      "size": 79699,
+      "checksum": "SHA-256:4722f3d6cea9bcea355078ca531a295c53a867f58a9de9b907984fcb38d7826d"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.0.7",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.0.7.zip",
+      "archiveFileName": "Bridge-1.0.7.zip",
+      "size": 80447,
+      "checksum": "SHA-256:48e0e63cb5f49e9ecf318441b6bf22aebee3fec87e88877902cddd93ad30721d"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.1.0",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.1.0.zip",
+      "archiveFileName": "Bridge-1.1.0.zip",
+      "size": 58761,
+      "checksum": "SHA-256:6d12dc0e0e0a7f28a2d70f4ed662c6084b2bbd3ae0a3830e6a6f0b3bc5e25308"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.6.0",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the AVR. For Arduino Yún and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.6.0.zip",
+      "archiveFileName": "Bridge-1.6.0.zip",
+      "size": 59403,
+      "checksum": "SHA-256:a8cf61d099550cd9a6f37f1f1a40369a6448cc52c2a87183e27240915b858fd7"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.6.1",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the microcontroller. For Arduino/Genuino Yún, Yún Shield and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.6.1.zip",
+      "archiveFileName": "Bridge-1.6.1.zip",
+      "size": 61137,
+      "checksum": "SHA-256:f0b33f6191a9b8bb3d693bd3f811ef175b92470a420d6112bbabdfd41c9efc62"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.6.2",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the microcontroller. For Arduino/Genuino Yún, Yún Shield and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.6.2.zip",
+      "archiveFileName": "Bridge-1.6.2.zip",
+      "size": 66457,
+      "checksum": "SHA-256:d6ac5785fd1dad7d34c31e02c76e4cbc08b8a20906fc4e40a48cd2569a2fcdd8"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.6.3",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the microcontroller. For Arduino/Genuino Yún, Yún Shield and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.6.3.zip",
+      "archiveFileName": "Bridge-1.6.3.zip",
+      "size": 61306,
+      "checksum": "SHA-256:a2f81451f2379a633ffff96a89321c519bea9cd33d986ece9f1d3c95a0d49b32"
+    },
+    {
+      "name": "Bridge",
+      "version": "1.7.0",
+      "author": "Arduino",
+      "maintainer": "Arduino \u003cinfo@arduino.cc\u003e",
+      "sentence": "Enables the communication between the Linux processor and the microcontroller. For Arduino/Genuino Yún, Yún Shield and TRE only.",
+      "paragraph": "The Bridge library feature: access to the shared storage, run and manage linux processes, open a remote console, access to the linux file system, including the SD card, enstablish http clients or servers.",
+      "website": "http://www.arduino.cc/en/Reference/YunBridgeLibrary",
+      "category": "Communication",
+      "architectures": [
+        "*"
+      ],
+      "types": [
+        "Arduino"
+      ],
+      "url": "http://downloads.arduino.cc/libraries/github.com/arduino-libraries/Bridge-1.7.0.zip",
+      "archiveFileName": "Bridge-1.7.0.zip",
+      "size": 61431,
+      "checksum": "SHA-256:3bb1bae4ca76ac8849977fe9c5966a1d18d97bdfd3d808ee2a66581576acfa58"
+    }
+  ]
+}

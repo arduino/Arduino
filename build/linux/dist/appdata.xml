@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- See https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html -->
+<component type="desktop-application">
+  <id>cc.arduino.arduinoide.desktop</id>
+  <metadata_license>CC-BY-SA-3.0</metadata_license>
+  <project_license>LGPL-2.1</project_license>
+  <developer_name>Arduino LLC</developer_name>
+
+  <name>Arduino IDE</name>
+  <summary>Open-source electronics prototyping platform</summary>
+
+  <description>
+    <p>
+      Arduino is an open-source electronics prototyping platform based
+      on flexible, easy-to-use hardware and software.  It's intended for
+      artists, designers, hobbyists, and anyone interested in creating
+      interactive objects or environments.
+    </p>
+    <p>
+      Included is an integrated development environment that can be used
+      to develop and upload code to compatible microcontrollers.
+    </p>
+  </description>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://mavit.fedorapeople.org/appdata/arduino-screenshot.png</image>
+      <caption>The Arduino IDE showing a simple example program</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://mavit.fedorapeople.org/appdata/arduino-photo.jpg</image>
+      <caption>Arduino hardware being connected to a breadboard</caption>
+    </screenshot>
+  </screenshots>
+
+  <content_rating type="oars-1.1" />
+
+  <releases>
+    <release date="2020-01-27" version="1.8.11"/>
+    <release date="2019-09-13" version="1.8.10"/>
+    <release date="2019-03-15" version="1.8.9"/>
+    <release date="2018-12-06" version="1.8.8"/>
+    <release date="2018-09-11" version="1.8.7"/>
+    <release date="2018-08-23" version="1.8.6"/>
+    <release date="2017-10-02" version="1.8.5"/>
+    <release date="2017-08-21" version="1.8.4"/>
+    <release date="2017-06-05" version="1.8.3"/>
+    <release date="2017-03-22" version="1.8.2"/>
+    <release date="2017-01-09" version="1.8.1"/>
+  </releases>
+
+  <url type="homepage">http://www.arduino.cc/</url>
+  <url type="help">https://www.arduino.cc/en/Guide/HomePage</url>
+  <url type="bugtracker">https://github.com/arduino/Arduino/issues</url>
+  <url type="translate">https://github.com/arduino/Arduino/tree/master/arduino-core/src/processing/app/i18n</url>
+  <url type="donation">https://www.arduino.cc/en/Main/Contribute</url>
+
+  <update_contact>arduino.appdata.xml@mavit.org.uk</update_contact>
+</component>

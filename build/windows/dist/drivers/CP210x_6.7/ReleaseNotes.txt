@@ -1,0 +1,341 @@
+CP210x Windows XP/Vista(32/64)/7(32/64)/8,8.1(32/64) Driver v6.7 Release Notes
+Copyright (C) 2014 Silicon Laboratories, Inc.
+
+This release contains the following components:
+
+* x64 directory
+	* silabser.sys
+	* silabenm.sys
+* x86 directory
+	* silabser.sys
+	* silabenm.sys
+* CP210xVCPInstaller_x86.exe (DPInst)
+* CP210xVCPInstaller_x64.exe (DPInst)
+* dpinst.xml (DPInst initialization file)
+* silabser.cat
+* slabvcp.inf
+* ReleaseNotes.txt (this file)
+
+
+Driver Installation
+-------------------
+
+	See Kit User's Guide for installation instructions.
+
+
+Release Dates
+-------------
+
+	CP210x USB to UART Bridge Driver v6.7 - April 11, 2013
+
+
+Supported Operating Systems
+---------------------------
+
+	Windows 8/8.1 (64/32), 7 (64/32), Vista (64/32), and XP
+
+
+CP210x Windows Driver Revision History
+--------------------------------------
+
+version 6.7 (Apr 11, 2014)
+
+	Corrections
+	-----------
+	Added vendor-specific commands to the driver that do not affect normal operation with
+	standard CP210x devices.
+	Modified write behavior to packetize data as a work around for a rare USB 2.0 hub behavior
+	seen only in Windows XP (x86).
+
+version 6.6.1 (Oct 24, 2013)
+	New features/Enhancements
+	-------------------------
+	Added certification for Windows 8.1
+
+version 6.6.1
+	New features/Enhancements
+	-------------------------
+	Added support for CP2108 devices
+
+	Corrections
+	-----------
+	Corrected bug where OS would hang on repitition of many rapid open/closes on
+	certain systems.
+
+version 6.6
+	New features/Enhancements
+	-------------------------
+	Moving installer format to DPInst
+	Supported under Windows 8
+
+	Corrections
+	-----------
+	Corrected bug in total write timeout calculation
+	Corrected bug where EV_BREAK event could be misreported based on incoming data
+	Corrected another BSOD corner case regarding write cancellation
+
+version 6.5.3
+	Corrections
+	-----------
+	Corrected BSOD corner case for a write cancellation
+
+	Corrected memory leak that occurs when a device is plugged/unplugged rapidly enough to
+	allow driver startup function to fail
+
+version 6.5
+	Corrections
+	-----------
+	Corrected BSOD corner case issue for handling control requests
+
+	Corrected issue where USB 3.0 hubs would deliver data to the driver out of order
+
+version 6.4
+	Corrections
+	-----------
+	Corrected multiple BSOD issues by updating request handling for control requests to the USB
+	device, and the write completion method
+
+	Corrected device removal routine to also undo the COM port naming in the registry at removal time
+	instead of when the device is closed after the removal.
+
+version 6.3a
+	Corrections
+	-----------
+	Updated to 3.2 DriverInstaller to correct a bug seen when updating from an old driver
+	installer version	
+
+version 6.3
+	Corrections
+	-----------
+	Corrected a bug introduced in 6.2 which caused BSOD during surprise removal.
+	
+	Corrected a bug found in I/O cancellation corner case
+	
+	
+version 6.2
+	Corrections
+	-----------
+	Corrected return value for DeviceIoControl() and other COM API functions once the device is
+	removed to properly show ERROR_ACCESS_DENIED (0x05) instead of ERROR_BAD_COMMAND in GetLastError()
+
+	Corrected bug in DTR/RTS reporting latency seen if you set DTR/RTS and ask for it before the
+	device has reported it to the host - now when it is written it reads back immediately
+
+	Corrected several USB requests that were improperly defined as device requests when they are actually
+	interface requests - this doesn't exhibit and bugs in current single interface devices but was changed
+	to be complete and correct
+
+	New features/Enhancements
+	-------------------------
+	Added support for CP2104 and CP2105 devices	
+
+version 6.1
+	Corrections
+	-----------	
+	Corrected a memory leak which could bog the system down after extended use of a contiuously
+	opened COM port, and conditionally yield bluescreens on certain systems
+
+	Corrected a problem where an IO reqest would sometimes return a busy status to
+	user mode, instead the queue is restarted if necessary before adding an IO request
+	to the queue
+
+	Corrected a condition which would blue screen on cancelling write request that hasn't been
+	fully sent out USB
+
+	Corrected the Capabilites return value, which incorrectly reported that timeouts are not supported
+
+	Corrected several Queue size return values, which affected behavior in the MSCOMM control
+	
+	Corrected DTR/RTS value on device insertion, visible when Serial Enumeration is disabled
+
+	Corrected the ability to override Baud Rate and Line Control from the INF file
+
+version 6.0
+	Corrections
+	-----------
+	Corrected multiple blue screens and driver hangs related to race conditions in the driver
+	Corrected problem where driver hangs when 4 or more devices are connected to a single
+	transaction translator hub
+	Corrected bugs that prohibited serial enumeration
+	Corrected problem where IO requests were not completed/cancelled on a close
+	Corrected problem with dialing out or PPP connections
+	
+	New features/Enhancements
+	-------------------------
+	Created IO queueing mechanism so that multiple reads, writes, etc. can be queued and
+	waited on
+
+version 5.4.29
+	Corrections
+	-----------
+	Fixed a bug which causes GET_COMM_STATUS to take longer than expected (previously corrected
+	in version 5.3)
+	Corrected several conditions which cause blue screens
+	Corrected bug in surprise removal which can cause a blue screen
+	Corrected bug where TX_EMPTY wasn't being reported properly
+
+	New features/Enhancements
+	-------------------------
+	Added Windows 7 to the general installer for XP/2003/Vista under KMDF 1.9
+	Modified driver to support selective suspend in Vista/7
+	Updated silabenm.sys to include latest changes from serenum in the WDK
+	WHQL Certified for XP/2003/Vista(32/64)/7(32/64)
+
+version 5.4.24
+	Corrections
+	-----------
+	Fixed a bug which caused a random crash if a write took longer than normal to complete
+
+	New features/Enhancements
+	-------------------------
+	WHQL Certified for XP/2000/2003/Vista(32/64)
+
+version 5.4.23
+	Corrections
+	-----------
+	Fixed a bug which caused a crash if the device is surprise removed during communication.
+	Fixed a bug which incorrectly uses the TX_EMPTY flag.
+	Fixed incorrect/incosistent status return values.
+	Corrected the default software flow control values
+
+version 5.4
+	Corrections
+	-----------
+	Fixed bug where the first packet of data is dropped in Windows 2000.
+	
+	New features/Enhancements
+	-------------------------
+	Added support to keep all GPIO pin states and all baud rate and line control data if
+	the device loses power during standby or hibernation.
+	Updated to use the latest version 1.7 of KMDF
+
+version 5.3
+	Corrections
+	-----------
+	Corrected the IOCTL_SERIAL_SET_QUEUE_SIZE to allow expansion of the receive buffer.
+	Modified driver to limit the device access only when necessary to improve performance.
+	Corrected a case where read interval timeouts do not get started properly.
+
+version 5.2.2
+	Corrections
+	-----------
+	Fixed a bug that was causing random bluescreens after a device is opened and closed.
+
+version 5.2.1
+	Corrections
+	-----------
+	Fixed a bug caused by the previous fix for incomplete reads in Hyperterminal.
+	Fixed a bug when using the Manufacturing DLL where no data comes back from the part for
+	customization type settings in Vista 64.
+
+
+version 5.2
+	Corrections
+	-----------
+	Fixed a BAD_POOL_HEADER blue screen issue.
+	Fixed a crash during surprise disconnect in HyperTerminal on Vista.
+	Fixed a problem causing various incomplete reads, sometimes visible in HyperTerminal.
+	
+	New features/Enhancements
+	-------------------------
+	CP210xVCPInstaller.exe updated to v2.4.
+	
+	
+version 5.1
+	Corrections
+	-----------
+	Multiple devices can be used now with no problems.
+	Driver now correctly works with the MSCOMM ActiveX control.
+
+
+version 5.0
+	New features/Enhancements
+	-------------------------
+	Driver has been updated to use the KMDF.
+	Driver now includes a Serial Enumeration filter driver.
+	WHQL Certified for XP/2000/2003/Vista(32/64).
+
+
+version 4.40
+	New features/Enhancements
+	-------------------------
+	Driver has been updated to include Vista (x86/x64) support.
+	CP210xVCPInstaller.exe updated to v2.0.
+
+
+version 4.38a
+	New features/Enhancements
+	-------------------------
+	Driver version 4.38 is the same, however the installation procedure changed and a new
+	installation utility has been provided.
+
+	INF files have been changed to be independent of the installer, making reseller submissions
+	easier.
+
+	Windows 2K\XP\2003 now all have the same catalog file making the installation a single
+	utility for all OS's.
+
+
+version 4.38
+	New features/Enhancements
+	-------------------------
+	Extended surprise removal support added to fix COM port hang.
+	WHQL Certified for Windows XP and 2000.
+
+
+Version 4.28a
+	New features/Enhancements
+	-------------------------
+	WHQL Certified for Windows XP and 2000.
+
+
+Version 4.28
+	New features/Enhancements
+	-------------------------
+	Includes Preinstaller executable and with added preinstaller support in uninstaller
+	executable and ini files.
+	
+	Corrections
+	-----------
+	Fixed driver lock condition caused by certain invalid port settings.
+
+	Fixed Windows 98 PreInstaller issue.
+
+
+Version 4.20
+
+	New features/Enhancements
+	-------------------------
+
+	Changed driver binary file names from cyg_* to slab*.  Also changed 
+	default inf file strings to SLAB and Silicon Laboratories.
+
+	This installation includes catalog files for Windows 2000/XP Windows 
+	Hardware Quality Lab (WHQL) Certification.
+
+	
+	Corrections
+        -----------
+
+	Modified behavior of SERIAL_EV_TXEMPTY event notification.  Applications 
+	will no longer miss TXEMPTY events if a	write is pending during the 
+	IOCTL_SERIAL_WAIT_ON_MASK control request.
+
+
+Version 4.16
+
+	New features/Enhancements
+	-------------------------
+	
+	Corrections
+        -----------
+
+	Changed behavior for IOCTL_SERIAL_LSRMST_INSERT for correct modem 
+	event insertion.
+
+
+Version 4.09
+	
+	Initial Release
+
+
