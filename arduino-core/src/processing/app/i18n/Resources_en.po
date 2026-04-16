@@ -2004,8 +2004,8 @@ msgstr "Sketchbook path not defined"
 
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
-msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr "Skipping contributed index file {0}, parsing error occured:"
+msgid "Skipping contributed index file {0}, parsing error occurred:"
+msgstr "Skipping contributed index file {0}, parsing error occurred:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
