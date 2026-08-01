@@ -68,7 +68,7 @@ public class PApplet {
   /**
    * Splits a string into pieces, using any of the chars in the String 'delim'
    * as separator characters. For instance, in addition to white space, you
-   * might want to treat commas as a separator. The delimeter characters won't
+   * might want to treat commas as a separator. The delimiter characters won't
    * appear in the returned String array.
    * 
    * <PRE>
@@ -97,8 +97,8 @@ public class PApplet {
    * Split a string into pieces along a specific character. Most commonly used
    * to break up a String along a space or a tab character.
    * <P>
-   * This operates differently than the others, where the single delimeter is
-   * the only breaking point, and consecutive delimeters will produce an empty
+   * This operates differently than the others, where the single delimiter is
+   * the only breaking point, and consecutive delimiters will produce an empty
    * string (""). This way, one can split on tab characters, but maintain the
    * column alignments (of say an excel file) where there are empty columns.
    */
