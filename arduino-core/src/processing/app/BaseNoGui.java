@@ -43,7 +43,8 @@ public class BaseNoGui {
   /** Version string to be used for build */
   public static final int REVISION = 10820;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.8.20";
+  public static final String VERSION_NAME = "1.8.20"
+  ;
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
